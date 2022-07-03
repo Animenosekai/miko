@@ -240,6 +240,23 @@ def func():
 
 ### Warnings
 
+You can give warnings to the user using the `Warning` tag.
+
+You just need to put `Warning`, followed by a colon, a space and the warning itself.
+
+> Example
+
+```python
+def func():
+    """
+    Warning: This is a serious warning
+
+    ...description...
+
+    Warning: Another warning
+    """
+```
+
 ### Notes
 
 ### Change log
