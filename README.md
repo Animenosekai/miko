@@ -220,9 +220,25 @@ def func(a = False):
 
 You can use `# comments` to explain your example.
 
-### Warnings
-
 ### Exceptions
+
+You can inform the users about any exception/error your callable might be raising using the `Raising` section.
+
+Like the `Returns` section, you need to give the name of the exception and then a description of why it would raise this exception and the special attribute the exception might have on a new line, left-padded.
+
+> Example
+
+```python
+def func():
+    """
+    Raises
+    ------
+    ValueError
+        If there is an error with the value
+    """
+```
+
+### Warnings
 
 ### Notes
 
