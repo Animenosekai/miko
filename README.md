@@ -329,6 +329,24 @@ def func():
 
 ### Copyright
 
+You can add copyright/authors of the code using the `Copyright` section.
+
+Like the `Returns` section, you need to give the name of the author and then a description of what they did on a new line, left-padded. The description could include stuff like the year they worked on the code, what they did, etc.
+
+> Example
+
+```python
+def func():
+    """
+    Copyright
+    ---------
+    Animenosekai
+        The initial author
+    Some other dev
+        A very cool collaborator
+    """
+```
+
 ## Usage
 
 *Here, there will be the Python API Reference.*
