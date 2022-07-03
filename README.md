@@ -156,8 +156,9 @@ The options are separated from the parameter name using a colon and a space.
 Each option is separated by a comma.
 
 - `<type>` : defines the type of the parameter.
-- `optional` : defines a parameter as being optional, without needing to specify its default value. *(useful for example with keyword arguments)*
+- `optional` : defines a parameter as being optional, without needing to specify its default value. *(useful with keyword arguments for instance)*
 - `default` : defines a parameter as being optional, by giving it a default value.
+- `deprecated` : when a parameter is deprecated.
 
 ##### Types
 
@@ -277,6 +278,7 @@ def func():
 ```
 
 ### Change log
+
 
 ### Deprecation Notice
 
