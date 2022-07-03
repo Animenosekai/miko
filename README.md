@@ -298,6 +298,35 @@ def func():
 
 ### Deprecation Notice
 
+To add a deprecation notice to your object, you can add `! DEPRECATED !` at the beginning of the docstring.
+
+It must be the first thing (aside from whitespace) of the docstring.
+
+> Example: At the very beginning of the docstring
+
+```python
+def func():
+    """! DEPRECATED !
+    This is a cool function.
+
+    Changelog
+    ---------
+    1.5
+        Added a deprecation notice, with the intention of the function being removed on the next major version.
+    """
+```
+
+> Example: With a slight variation
+
+```python
+def func():
+    """
+    !DEPRECATED!
+
+    This is a cool function.
+    """
+```
+
 ### Copyright
 
 ## Usage
