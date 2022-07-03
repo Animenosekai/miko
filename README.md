@@ -279,6 +279,22 @@ def func():
 
 ### Change log
 
+You can inform the users about how the object got modified over time using the `Changelog` section.
+
+Like the `Returns` section, you need to give the name of the version it got changed on and then a description of how it changed on a new line, left-padded.
+
+> Example
+
+```python
+def func():
+    """
+    Changelog
+    ---------
+    1.4
+        New default string
+    0.6
+        Raises ImportError instead of RuntimeError
+```
 
 ### Deprecation Notice
 
