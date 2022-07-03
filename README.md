@@ -294,6 +294,7 @@ def func():
         New default string
     0.6
         Raises ImportError instead of RuntimeError
+    """
 ```
 
 ### Deprecation Notice
