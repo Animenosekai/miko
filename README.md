@@ -259,6 +259,23 @@ def func():
 
 ### Notes
 
+If you only want to notify the user about something, you can use the `Note` tag.
+
+You just need to put `Note`, followed by a colon, a space and the note itself.
+
+> Example
+
+```python
+def func():
+    """
+    Note: Yup, that's true
+
+    ...description...
+
+    Note: Another note
+    """
+```
+
 ### Change log
 
 ### Deprecation Notice
