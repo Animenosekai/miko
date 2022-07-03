@@ -177,7 +177,48 @@ You can define a default value using an equal sign.
 
 ### Returned Value
 
+You can define what are the values returned by a callable object using the `Returns` section.
+
+Each returning element is explained with the following rules: the type of the value and a description with a left-padding on a new line.
+
+> Example
+
+```python
+def func():
+    """
+    Returns
+    -------
+    int
+        the number returned
+    str
+        if it is a string returned
+    list[int, str]
+        if it's a list of both
+    translatepy.Language
+        using dot notation
+    """
+```
+
 ### Example
+
+You can give examples of your code, writing them as you would in a Python REPL.
+
+```python
+def func(a = False):
+    """
+    Example
+    -------
+    >>> func()
+    "It is false"
+    >>> func(True)
+    "It is true"
+    # when using something other than a boolean
+    >>> func(1)
+    2
+    """
+```
+
+You can use `# comments` to explain your example.
 
 ### Warnings
 
