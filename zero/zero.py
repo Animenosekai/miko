@@ -49,7 +49,9 @@ class Docs:
     def __init__(self, docs: str, signature: inspect.Signature = None) -> None:
         self.original = inspect.cleandoc(str(docs))
         self.elements = {}
+
         description = []
+
         for section in self.original.split("\n\n"):
             name, _, body = section.partition("\n---")
             if not body:
@@ -65,5 +67,6 @@ class Docs:
                 self.elements[parse.__name__].append(content)
             except Exception:
                 self.elements[parse.__name__] = [content]
+
 
 Docs(func.__doc__)
