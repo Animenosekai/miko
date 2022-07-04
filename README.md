@@ -174,7 +174,7 @@ You can specify multiple types using the vertical bar separator.
 
 You can define a default value using an equal sign.
 
-> Example: `a = 1`, `b=True`
+> Example: `default = 1`, `default=True`
 
 ### Returned Value
 
