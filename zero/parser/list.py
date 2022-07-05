@@ -23,6 +23,12 @@ class List(Parser):
         self.elements = {}
         self.extend(self.original, add_to_original=False)
 
+    def __iter__(self) -> typing.Iterator:
+        """
+        Returns the iterator.
+        """
+        return self.elements.values().__iter__()
+
     def extend(self, content: str, add_to_original: bool = True):
         current = None
         for line in content.splitlines():
