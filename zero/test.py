@@ -82,7 +82,7 @@ def func():
 
 def func_bad():
     """
-    !deprecated!
+        ! deprecated ! hellooooo
 
     Hello, this is a description
 

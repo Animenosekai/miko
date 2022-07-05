@@ -118,7 +118,8 @@ class Docs:
             self.deprecated = str(self.description[0]).replace(" ", "").upper().startswith("!DEPRECATED!")
             if self.deprecated:
                 index = self.description[0].find("!")
-                self.description[0] = self.description[0][:index] + "!DEPRECATED!" + self.description[0][index + 12:]
+                second_index = index + self.description[0][index + 1:].find("!") + 2
+                self.description[0] = "! DEPRECATED !" + self.description[0][second_index:]
 
     def __repr__(self) -> str:
         return "<Docs sections={sections}>".format(sections=list(self.elements.keys()))
