@@ -1,4 +1,4 @@
-from test import func, func_without_docs
+from test import func, func_without_docs, func_bad
 import typing
 import inspect
 import parser.list
@@ -103,16 +103,22 @@ class Docs:
             self.elements[attr] = parse()
 
         # HANDLING TAGS
-        for line in self.description:
+        for index, line in enumerate(self.description):
             start, _, content = str(line).partition(":")
             start = start.replace(" ", "").upper()
+            content = content.strip()
             if start in {"WARNING", "WARNINGS"}:
-                self.warnings.append(content.strip())
+                self.warnings.append(content)
+                self.description[index] = "Warning: {content}".format(content=content)
             elif start in {"NOTE", "NOTES", "SEEALSO", "INFORMATION"}:
-                self.notes.append(content.strip())
+                self.notes.append(content)
+                self.description[index] = "Note: {content}".format(content=content)
 
         if len(self.description) > 0:
             self.deprecated = str(self.description[0]).replace(" ", "").upper().startswith("!DEPRECATED!")
+            if self.deprecated:
+                index = self.description[0].find("!")
+                self.description[0] = self.description[0][:index] + "!DEPRECATED!" + self.description[0][index + 12:]
 
     def __repr__(self) -> str:
         return "<Docs sections={sections}>".format(sections=list(self.elements.keys()))
@@ -169,3 +175,4 @@ class Docs:
 
 a = Function(func)
 b = Function(func_without_docs)
+c = Function(func_bad)
