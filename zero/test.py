@@ -1,5 +1,7 @@
 def func():
     """
+    !deprecated!
+
     Hello, this is a description
 
     Parameters
