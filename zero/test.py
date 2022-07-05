@@ -40,6 +40,13 @@ def func():
     ------
     ValueError
         If there is an error with the value
+    InputError
+        If there is an error with the value
+
+    Raises
+    ------
+    RuntimeError
+        If there is an error with the value
 
     Warning: This is a serious warning
 
@@ -70,3 +77,7 @@ def func():
     But this is also part of the description
     """
     pass
+
+
+def func_without_docs(a: int, b: str = "hello") -> float:
+    return 1.2
