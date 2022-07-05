@@ -5,7 +5,7 @@ from parser.parser import Parser
 
 class ListElement:
     def __init__(self, name: str, options: list = None, content: list = None, signature: inspect.Signature = None) -> None:
-        self.name = str(name)
+        self.name = name.__name__ if isinstance(name, type) else str(name)
         self.options = options if options else []
         self.content = content if content else []
         self.signature = signature
@@ -28,6 +28,9 @@ class List(Parser):
         Returns the iterator.
         """
         return self.elements.values().__iter__()
+
+    def __len__(self):
+        return len(self.elements)
 
     def extend(self, content: str, add_to_original: bool = True):
         current = None
@@ -77,9 +80,11 @@ class Parameter(ListElement):
                 return element
 
         try:
-            return self.signature.parameters[self.name].default
+            result = self.signature.parameters[self.name].default
+            if not isinstance(result, inspect._empty):
+                return result.__name__ if isinstance(result, type) else str(result)
         except KeyError:
-            return inspect._empty
+            return None
 
     @property
     def types(self):
