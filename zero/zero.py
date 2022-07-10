@@ -165,6 +165,8 @@ class Docs:
                 second_index = index + self.description[0][index + 1:].find("!") + 2
                 self.description[0] = "! DEPRECATED !" + self.description[0][second_index:]
 
+        self.description = "\n\n".join(self.description)
+
     def __repr__(self) -> str:
         return "<Docs sections={sections}>".format(sections=self.original_sections)
 
