@@ -115,7 +115,7 @@ class Parameter(ListElement):
             annotation = param.annotation
             if hasattr(annotation, "__origin__") and annotation.__origin__ is typing.Union:
                 results.update([str(v) for v in annotation.__args__])
-            else:
+            elif annotation:
                 results.add(annotation)
         except Exception:
             pass

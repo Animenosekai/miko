@@ -44,7 +44,7 @@ setup(
     long_description_content_type="text/markdown",
     include_package_data=True,
     python_requires=">=3.3, <4",
-    entry_points={"console_scripts": ["translatepy = translatepy.__main__:main"]},
+    entry_points={"console_scripts": ["zero = zero.__main__:main"]},
     package_data={
         "translatepy": ["LICENSE"],
     },
