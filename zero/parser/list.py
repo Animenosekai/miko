@@ -1,6 +1,7 @@
-import typing
 import inspect
-from parser.parser import Parser
+import typing
+
+from zero.parser.parser import Parser
 
 
 class ListElement:

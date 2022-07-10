@@ -1,8 +1,16 @@
+"""
+zero.py
+
+Contains the main code for the Zero documentation style
+"""
+
 import inspect
-import parser.example
-import parser.list
+import sys
 import types
 import typing
+
+import zero.parser.example as example_parsers
+import zero.parser.list as list_parsers
 
 
 class Function:
@@ -51,44 +59,51 @@ class Function:
 
 
 SECTIONS_MAP = {
-    "PARAMETERS": parser.list.Parameters,
-    "PARAMETER": parser.list.Parameters,
-    "PARAMS": parser.list.Parameters,
-    "PARAM": parser.list.Parameters,
+    "PARAMETERS": list_parsers.Parameters,
+    "PARAMETER": list_parsers.Parameters,
+    "PARAMS": list_parsers.Parameters,
+    "PARAM": list_parsers.Parameters,
 
-    "RETURNS": parser.list.Returns,
-    "RETURN": parser.list.Returns,
-    "RETURNING": parser.list.Returns,
+    "RETURNS": list_parsers.Returns,
+    "RETURN": list_parsers.Returns,
+    "RETURNING": list_parsers.Returns,
 
-    "RAISES": parser.list.Raises,
-    "RAISE": parser.list.Raises,
-    "EXCEPTIONS": parser.list.Raises,
-    "EXCEPTION": parser.list.Raises,
-    "ERRORS": parser.list.Raises,
-    "ERROR": parser.list.Raises,
+    "RAISES": list_parsers.Raises,
+    "RAISE": list_parsers.Raises,
+    "EXCEPTIONS": list_parsers.Raises,
+    "EXCEPTION": list_parsers.Raises,
+    "ERRORS": list_parsers.Raises,
+    "ERROR": list_parsers.Raises,
 
-    "CHANGELOG": parser.list.Changelog,
-    "CHANGES": parser.list.Changelog,
+    "CHANGELOG": list_parsers.Changelog,
+    "CHANGES": list_parsers.Changelog,
 
-    "COPYRIGHTS": parser.list.Copyright,
-    "COPYRIGHT": parser.list.Copyright,
-    "AUTHORS": parser.list.Copyright,
-    "AUTHOR": parser.list.Copyright,
+    "COPYRIGHTS": list_parsers.Copyright,
+    "COPYRIGHT": list_parsers.Copyright,
+    "AUTHORS": list_parsers.Copyright,
+    "AUTHOR": list_parsers.Copyright,
 
-    "EXAMPLES": parser.example.Example,
-    "EXAMPLE": parser.example.Example
+    "EXAMPLES": example_parsers.Example,
+    "EXAMPLE": example_parsers.Example
 }
 
 
 class Docs:
-    parameters: parser.list.Parameters
-    returns: parser.list.Returns
-    raises: parser.list.Raises
-    changelog: parser.list.Changelog
-    copyright: parser.list.Copyright
-    example: parser.example.Example
-    warnings: typing.List[str]
-    notes: typing.List[str]
+    parameters = list_parsers.Parameters()
+    returns = list_parsers.Returns()
+    raises = list_parsers.Raises()
+    changelog = list_parsers.Changelog()
+    copyright = list_parsers.Copyright()
+    example = example_parsers.Example()
+    if sys.version_info >= (3, 6):
+        warnings: typing.List[str]  # novermin
+        notes: typing.List[str]  # novermin
+    else:
+        warnings = []
+        notes = []
+
+    __elements_mapping__ = {v.__map_attribute__ for v in (list_parsers.Parameters, list_parsers.Returns,
+                                                          list_parsers.Raises, list_parsers.Changelog, list_parsers.Copyright, example_parsers.Example)}
 
     def __init__(self, docs: str, signature: inspect.Signature = None) -> None:
         self.original = inspect.cleandoc(str(docs))
@@ -97,14 +112,8 @@ class Docs:
         self.warnings = []
         self.notes = []
 
-        missing = {
-            parser.list.Parameters.__map_attribute__: parser.list.Parameters,
-            parser.list.Returns.__map_attribute__: parser.list.Returns,
-            parser.list.Raises.__map_attribute__: parser.list.Raises,
-            parser.list.Changelog.__map_attribute__: parser.list.Changelog,
-            parser.list.Copyright.__map_attribute__: parser.list.Copyright,
-            parser.example.Example.__map_attribute__: parser.example.Example
-        }
+        missing = {v.__map_attribute__: v for v in (list_parsers.Parameters, list_parsers.Returns,
+                                                    list_parsers.Raises, list_parsers.Changelog, list_parsers.Copyright, example_parsers.Example)}
 
         self.description = []
 
@@ -123,15 +132,16 @@ class Docs:
             except Exception:
                 self.elements[parse.__map_attribute__] = parse(content, signature=signature)
                 missing.pop(parse.__map_attribute__, None)
+        self.original_sections = list(self.elements.keys())
 
         if signature:
-            if parser.list.Parameters.__map_attribute__ not in self.elements:
-                self.elements[parser.list.Parameters.__map_attribute__] = parser.list.Parameters(signature=signature)
-                missing.pop(parser.list.Parameters.__map_attribute__, None)
+            if list_parsers.Parameters.__map_attribute__ not in self.elements:
+                self.elements[list_parsers.Parameters.__map_attribute__] = list_parsers.Parameters(signature=signature)
+                missing.pop(list_parsers.Parameters.__map_attribute__, None)
 
-            if parser.list.Returns.__map_attribute__ not in self.elements:
-                self.elements[parser.list.Returns.__map_attribute__] = parser.list.Returns(signature=signature)
-                missing.pop(parser.list.Returns.__map_attribute__, None)
+            if list_parsers.Returns.__map_attribute__ not in self.elements:
+                self.elements[list_parsers.Returns.__map_attribute__] = list_parsers.Returns(signature=signature)
+                missing.pop(list_parsers.Returns.__map_attribute__, None)
 
         for attr, parse in missing.items():
             self.elements[attr] = parse()
@@ -156,10 +166,12 @@ class Docs:
                 self.description[0] = "! DEPRECATED !" + self.description[0][second_index:]
 
     def __repr__(self) -> str:
-        return "<Docs sections={sections}>".format(sections=list(self.elements.keys()))
+        return "<Docs sections={sections}>".format(sections=self.original_sections)
 
     def __getattr__(self, key: str):
-        return self.elements.__getitem__(key)
+        if key in self.__elements_mapping__:
+            return self.elements.__getitem__(key)
+        raise AttributeError
 
     def dumps(self, indent=4):
         result = ""
@@ -167,7 +179,7 @@ class Docs:
         result += "\n\n"
         sections = []
         for section in (self.parameters, self.returns, self.raises, self.example, self.changelog, self.copyright):
-            if not isinstance(section, parser.example.Example) and len(section) <= 0:
+            if not isinstance(section, example_parsers.Example) and len(section) <= 0:
                 continue
 
             current_section = ""
@@ -175,14 +187,14 @@ class Docs:
             current_section += section.__class__.__name__ + "\n"
             current_section += "-" * len(section.__class__.__name__) + "\n"
 
-            if isinstance(section, parser.example.Example):
+            if isinstance(section, example_parsers.Example):
                 current_section += section.original + "\n"
             else:
                 for element in section:
                     # element = self.parameters.__element_type__()
                     current_section += element.name
 
-                    if isinstance(element, parser.list.Parameter):
+                    if isinstance(element, list_parsers.Parameter):
                         options = []
                         if len(element.types) > 0:
                             options.append(" | ".join([v.__name__ if isinstance(v, type) else str(v) for v in element.types]))
@@ -206,8 +218,3 @@ class Docs:
         result += "\n\n".join(sections)
 
         return result
-
-
-a = Function(func)
-b = Function(func_without_docs)
-c = Function(func_bad)
