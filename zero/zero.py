@@ -1,8 +1,8 @@
-from test import func, func_without_docs, func_bad
-import typing
 import inspect
-import parser.list
 import parser.example
+import parser.list
+import types
+import typing
 
 
 class Function:
@@ -11,6 +11,40 @@ class Function:
         self.name = self.original.__name__
         self.signature = inspect.signature(func)
         self.docs = Docs(self.original.__doc__ if self.original.__doc__ is not None else "No description", self.signature)
+        self.code = Function.get_code(self.original)
+        self.source_filename = self.code.co_filename
+        self.source_linenumber = self.code.co_firstlineno
+        self.source_name = self.code.co_name
+        self.local_variables = self.code.co_names
+        self.parameters = self.signature.parameters
+        self.return_annotation = self.signature.return_annotation
+
+    @staticmethod
+    def get_code(obj: typing.Any) -> types.CodeType:
+        """
+        Returns the __code__ object of a given callable object.
+
+        Parameters
+        ----------
+        obj: Callable
+            The object to get the __code__ from
+
+        Returns
+        -------
+        CodeType
+            The __code__ object
+        """
+        if inspect.ismethod(obj):
+            obj = obj.__func__
+        if inspect.isfunction(obj):
+            obj = obj.__code__
+        if inspect.istraceback(obj):
+            obj = obj.tb_frame
+        if inspect.isframe(obj):
+            obj = obj.f_code
+        if not inspect.iscode(obj):
+            raise TypeError('method, function, traceback, frame, or code object was expected, got {}'.format(type(obj).__name__))
+        return obj
 
     def __repr__(self) -> str:
         return "<Function '{name}'>".format(name=self.name)
@@ -79,7 +113,7 @@ class Docs:
             if not body:
                 self.description.append(name)  # name would be the content here
                 continue
-            parse = SECTIONS_MAP.get(name.replace(" ", "").upper(), None)
+            parse = SECTIONS_MAP.get(name.replace(" ", "").upper().strip(), None)
             if parse is None:
                 self.description.append("\n---".join((name, body)))
                 continue
@@ -105,7 +139,7 @@ class Docs:
         # HANDLING TAGS
         for index, line in enumerate(self.description):
             start, _, content = str(line).partition(":")
-            start = start.replace(" ", "").upper()
+            start = start.replace(" ", "").upper().strip()
             content = content.strip()
             if start in {"WARNING", "WARNINGS"}:
                 self.warnings.append(content)
