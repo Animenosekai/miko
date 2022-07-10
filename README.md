@@ -34,7 +34,7 @@ You will need Python 3 to use this module
 
 ```bash
 # vermin output
-Minimum required versions: 3.0
+Minimum required versions: 3.3
 Incompatible versions:     2
 ```
 
@@ -258,6 +258,9 @@ def func():
     """
 ```
 
+> Note
+> Warnings are part of the description
+
 ### Notes
 
 If you only want to notify the user about something, you can use the `Note` tag.
@@ -276,6 +279,9 @@ def func():
     Note: Another note
     """
 ```
+
+> Note
+> Notes are part of the description
 
 ### Change log
 
