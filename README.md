@@ -258,7 +258,7 @@ def func():
     """
 ```
 
-> **Note**
+> **Note**  
 > Warnings are part of the description
 
 ### Notes
@@ -280,7 +280,7 @@ def func():
     """
 ```
 
-> **Note**
+> **Note**  
 > Notes are part of the description
 
 ### Change log

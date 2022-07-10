@@ -177,7 +177,7 @@ class Docs:
 
     def dumps(self, indent=4):
         result = ""
-        result += "\n\n".join(self.description)
+        result += self.description
         result += "\n\n"
         sections = []
         for section in (self.parameters, self.returns, self.raises, self.example, self.changelog, self.copyright):
