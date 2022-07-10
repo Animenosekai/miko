@@ -7,12 +7,19 @@ from zero.parser.parser import Parser
 class ListElement:
     def __init__(self, name: str, options: list = None, content: list = None, signature: inspect.Signature = None) -> None:
         self.name = name.__name__ if isinstance(name, type) else str(name)
-        self.options = options if options else []
-        self.content = content if content else []
+        self.options = [v for v in options if v] if options else []
+        self.content = [c for c in content if c] if content else []
         self.signature = signature
 
     def __repr__(self) -> str:
         return "<ListElement options={options}, content={content} lines>".format(options=", ".join(self.options) if len(self.options) > 1 else "None", content=len(self.content))
+
+    def as_dict(self, camelCase: bool = False):
+        return {
+            "name": self.name,
+            "options": self.options,
+            "content": self.content
+        }
 
 
 class List(Parser):
@@ -32,6 +39,13 @@ class List(Parser):
 
     def __len__(self):
         return len(self.elements)
+
+    def as_dict(self, camelCase: bool = False):
+        results = super().as_dict(camelCase)
+        results.update({
+            "elements": {str(k) if camelCase else k: v.as_dict(camelCase) for k, v in self.elements.items()}
+        })
+        return results
 
     def extend(self, content: str, add_to_original: bool = True):
         current = None
@@ -62,16 +76,16 @@ class List(Parser):
 
 class Parameter(ListElement):
     @property
-    def deprecated(self):
+    def deprecated(self) -> bool:
         return "deprecated" in [str(v).lower() for v in self.options]
 
     @property
-    def optional(self):
+    def optional(self) -> bool:
         options = [str(v).lower() for v in self.options]
         return "optional" in options or any(v.startswith("default") for v in options)
 
     @property
-    def default(self):
+    def default(self) -> typing.Optional[str]:
         for opt in self.options:
             opt = str(opt)
             if opt.lower().startswith("default"):
@@ -82,13 +96,13 @@ class Parameter(ListElement):
 
         try:
             result = self.signature.parameters[self.name].default
-            if not isinstance(result, inspect._empty):
+            if not isinstance(result, inspect._empty) and not result is inspect._empty:
                 return result.__name__ if isinstance(result, type) else str(result)
         except KeyError:
             return None
 
     @property
-    def types(self):
+    def types(self) -> set:
         results = set()
         for opt in self.options:
             option = str(opt).lower()
@@ -110,6 +124,16 @@ class Parameter(ListElement):
 
     def __repr__(self) -> str:
         return "<Parameter types={types} optional={optional} default={default}>".format(types=self.types, optional=self.optional, default=self.default)
+
+    def as_dict(self, camelCase: bool = False):
+        results = super().as_dict(camelCase)
+        results.update({
+            "types": [str(t) for t in self.types] if camelCase else self.types,
+            "optional": self.optional,
+            "default": self.default,
+            "deprecated": self.deprecated
+        })
+        return results
 
 
 class Parameters(List):
@@ -137,7 +161,8 @@ class Returns(List):
             else:
                 annotations = [annotation]
             for annotation in annotations:
-                self.elements[annotation] = self.__element_type__(name=annotation)
+                if annotation not in self.elements and not isinstance(annotation, inspect._empty) and not annotation is inspect._empty:
+                    self.elements[annotation] = self.__element_type__(name=annotation)
 
 
 class Raises(List):

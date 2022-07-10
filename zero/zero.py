@@ -106,6 +106,8 @@ class Docs:
                                                           list_parsers.Raises, list_parsers.Changelog, list_parsers.Copyright, example_parsers.Example)}
 
     def __init__(self, docs: str, signature: inspect.Signature = None) -> None:
+        if docs is None:
+            docs = ""
         self.original = inspect.cleandoc(str(docs))
         self.elements = {}
 
@@ -220,3 +222,13 @@ class Docs:
         result += "\n\n".join(sections)
 
         return result
+
+    def as_dict(self, camelCase: bool = False):
+        results = {
+            "description": self.description,
+            "notes": self.notes,
+            "warnings": self.warnings,
+            "deprecated": self.deprecated
+        }
+        results.update({k: v.as_dict(camelCase) for k, v in self.elements.items()})
+        return results
