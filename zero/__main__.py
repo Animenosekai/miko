@@ -49,7 +49,25 @@ class ZeroSignature:
         self.return_annotation = str(definition).strip()
         self.return_annotation = self.return_annotation if self.return_annotation else inspect._empty
 
-        results = [self.Parameter(v) for v in annotations.split(",")]  # problem if using type annotation with commas like Union[hello, world]
+        annotations_results = [""]
+
+        OPENED_BRACKET = 0
+
+        for c in annotations:
+            if c == "," and OPENED_BRACKET <= 0:
+                annotations_results.append("")
+                continue
+            elif c == "[":
+                OPENED_BRACKET += 1
+            elif c == "]":
+                OPENED_BRACKET -= 1
+
+            annotations_results[-1] += c
+
+        # print("annotations", annotations)
+        # print("annotations_results", annotations_results)
+
+        results = [self.Parameter(v) for v in annotations_results if v]  # problem if using type annotation with commas like Union[hello, world]
         self.parameters = {v.name: v for v in results}
 
     def as_dict(self, camelCase: bool = False):
@@ -185,28 +203,28 @@ def main():
                     INDEXES[l] = False
         # {
         #     "line<int>": FileReadingElement,
-        #     "line+1<int>": None,
-        #     "line+2<int>": None,
+        #     "line+1<int>": False,
+        #     "line+2<int>": False,
 
-        #     "line<int>": FileReadingElement,  # add_line if not FileReadingElement.had_docstring else continue
-        #     "line+1<int>": None,
+        #     "line<int>": FileReadingElement,
+        #     "line+1<int>": False,
         # }
         for index, line in enumerate(text.splitlines(), start=1):
             current = INDEXES.get(index, None)
-            
+
             if current is False:
-                print("🈲 LINE", str(index).zfill(3), ":", '\033[91m', line, '\033[0m')
+                # print("🈲 LINE", str(index).zfill(3), ":", '\033[91m', line, '\033[0m')
                 continue
-            print("✅ LINE", str(index).zfill(3), ":", '\033[92m', line, '\033[0m')
-            
+            # print("✅ LINE", str(index).zfill(3), ":", '\033[92m', line, '\033[0m')
+
             if current is None or current.signature:
                 returning.append(line)
 
             if current is None:
                 continue
-            
-            current: FileReadingElement
-            
+
+            # current: FileReadingElement
+
             returning.append("{i}{q}".format(i=" " * current.indent, q=current.quotation))
             for l in current.docs.dumps(indent=args.indent).splitlines():
                 returning.append("{i}{l}".format(i=" " * current.indent, l=l))

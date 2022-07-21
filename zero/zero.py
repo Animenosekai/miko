@@ -179,10 +179,11 @@ class Docs:
 
     def dumps(self, indent=4):
         result = ""
-        result += self.description
-        result += "\n\n"
+        if self.description:
+            result += self.description
+            result += "\n\n"
         sections = []
-        for section in (self.parameters, self.returns, self.raises, self.example, self.changelog, self.copyright):
+        for section in self.elements.values():
             if not isinstance(section, example_parsers.Example) and len(section) <= 0:
                 continue
 
@@ -224,7 +225,7 @@ class Docs:
 
             sections.append(current_section)
 
-        result += "\n\n".join(sections)
+        result += "\n".join(sections)
 
         return result
 

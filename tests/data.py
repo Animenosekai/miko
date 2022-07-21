@@ -177,3 +177,7 @@ def func_with_some_sections(a: int):
 
 def func_without_docs(a: int, b: str = "hello") -> float:
     return 1.2
+
+
+def func_with_bracket_annotations(a: int, b: list[str], c: dict[str, int]) -> float:
+    return 1.2
