@@ -174,6 +174,9 @@ def main():
     parser_clean = subparser.add_parser("clean", help="Clean the docstring")
     parser_clean.add_argument('--text', '-t', action='store', type=str, required=False, help='The docstring to clean')
     parser_clean.add_argument("--file", "-f", action='store', type=str, required=False, help='The file to get the docstrings from.')
+    parser_clean.add_argument("--output", "-o", action='store', type=str, required=False,
+                              default=None, help='The file to output the cleaned result to.')
+
     parser_clean.add_argument("--indent", "-i", action='store', type=int, required=False, default=4, help='The indentation to clean the docs.')
     parser_clean.add_argument("--noself", action='store_true', required=False, default=False,
                               help='Ignoring the "self" parameter from signatures. (useful for class methods)')
@@ -186,7 +189,12 @@ def main():
 
     if args.text:
         if args.action == "clean":
-            return print(zero.Docs(args.text, noself=args.noself).dumps(indent=args.indent))
+            result = zero.Docs(args.text, noself=args.noself).dumps(indent=args.indent)
+            if parser_clean.output:
+                with open(parser_clean.output, "w") as f:
+                    f.write(result)
+                return
+            return print(result)
         return print(json.dumps(zero.Docs(args.text, noself=args.noself).as_dict(True), indent=args.indent, ensure_ascii=False))
 
     file = pathlib.Path(args.file)
@@ -234,7 +242,12 @@ def main():
             for l in current.docs.dumps(indent=args.indent).splitlines():
                 returning.append("{i}{l}".format(i=" " * current.indent, l=l))
             returning.append("{i}{q}".format(i=" " * current.indent, q=current.quotation))
-        return print("\n".join(returning))
+        output = "\n".join(returning)
+        if args.output:
+            with open(args.output, "w") as f:
+                f.write(output)
+            return
+        return print(output)
     print(json.dumps([r.as_dict(True) for r in results], indent=args.indent, ensure_ascii=False))
 
 
