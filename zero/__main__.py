@@ -79,7 +79,7 @@ class ZeroSignature:
 
 
 class FileReadingElement:
-    def __init__(self, start_line: int = None, end_line: int = None, indent: int = 0, docstring: str = "", signature: ZeroSignature = None, had_docstring: bool = False, quotation: str = '"""') -> None:
+    def __init__(self, start_line: int = None, end_line: int = None, indent: int = 0, docstring: str = "", signature: ZeroSignature = None, had_docstring: bool = False, quotation: str = '"""', noself: bool = False) -> None:
         self.start_line = start_line
         self.end_line = end_line
         self.indent = indent
@@ -87,10 +87,11 @@ class FileReadingElement:
         self.signature = signature
         self.had_docstring = had_docstring
         self.quotation = str(quotation)
+        self.noself = noself
 
     @property
     def docs(self) -> zero.Docs:
-        return zero.Docs(self.docstring, self.signature)
+        return zero.Docs(self.docstring, self.signature, noself=self.noself)
 
     def as_dict(self, camelCase: bool = False):
         return {
@@ -104,11 +105,11 @@ class FileReadingElement:
         }
 
 
-def read_file(text: str):
+def read_file(text: str, noself: bool = False):
     results = []
 
     IN_DOCSTRING = False
-    LAST_ELEMENT = FileReadingElement()
+    LAST_ELEMENT = FileReadingElement(noself=noself)
     for index, line in enumerate(text.splitlines(), start=1):
         current_indent = len(line) - len(line.lstrip())
         docstring_line = line.removeprefix(" " * LAST_ELEMENT.indent)
@@ -117,7 +118,7 @@ def read_file(text: str):
         if LAST_ELEMENT.signature is not None and index - LAST_ELEMENT.signature.line > 1 and not IN_DOCSTRING:
             # print("LINE:", line, "HAS_SIGNATURE_AND_PASSED", index - LAST_ELEMENT.signature.line)
             results.append(LAST_ELEMENT)
-            LAST_ELEMENT = FileReadingElement()
+            LAST_ELEMENT = FileReadingElement(noself=noself)
 
         if line.startswith("def ") and not IN_DOCSTRING:
             # print("LINE:", line, "STARTSWITH_DEF")
@@ -135,7 +136,7 @@ def read_file(text: str):
                 # print("LINE:", line, "IN_DOCSTRING_STARTSWITH_QUOTATION:", LAST_ELEMENT.quotation)
                 LAST_ELEMENT.end_line = index
                 results.append(LAST_ELEMENT)
-                LAST_ELEMENT = FileReadingElement()
+                LAST_ELEMENT = FileReadingElement(noself=noself)
                 IN_DOCSTRING = False
             elif not IN_DOCSTRING:
                 # print("LINE:", line, "NOT_IN_DOCSTRING")
@@ -167,11 +168,15 @@ def main():
     parser_info.add_argument('--text', '-t', action='store', type=str, required=False, help='The docstring to get the information from')
     parser_info.add_argument("--file", "-f", action='store', type=str, required=False, help='The file to get the docstrings from.')
     parser_info.add_argument("--indent", "-i", action='store', type=int, required=False, default=4, help='The indentation for the JSON result.')
+    parser_info.add_argument("--noself", action='store_true', required=False, default=False,
+                             help='Ignoring the "self" parameter from signatures. (useful for class methods)')
 
     parser_clean = subparser.add_parser("clean", help="Clean the docstring")
     parser_clean.add_argument('--text', '-t', action='store', type=str, required=False, help='The docstring to clean')
     parser_clean.add_argument("--file", "-f", action='store', type=str, required=False, help='The file to get the docstrings from.')
     parser_clean.add_argument("--indent", "-i", action='store', type=int, required=False, default=4, help='The indentation to clean the docs.')
+    parser_clean.add_argument("--noself", action='store_true', required=False, default=False,
+                              help='Ignoring the "self" parameter from signatures. (useful for class methods)')
 
     args = parser.parse_args()
 
@@ -181,8 +186,8 @@ def main():
 
     if args.text:
         if args.action == "clean":
-            return print(zero.Docs(args.text).dumps(indent=args.indent))
-        return print(json.dumps(zero.Docs(args.text).as_dict(True), indent=args.indent, ensure_ascii=False))
+            return print(zero.Docs(args.text, noself=args.noself).dumps(indent=args.indent))
+        return print(json.dumps(zero.Docs(args.text, noself=args.noself).as_dict(True), indent=args.indent, ensure_ascii=False))
 
     file = pathlib.Path(args.file)
     if not file.is_file():
@@ -190,7 +195,7 @@ def main():
 
     text = file.read_text()
 
-    results = read_file(text)
+    results = read_file(text, noself=args.noself)
     if args.action == "clean":
         returning = []
         INDEXES = {}

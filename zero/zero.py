@@ -105,7 +105,7 @@ class Docs:
     __elements_mapping__ = {v.__map_attribute__ for v in (list_parsers.Parameters, list_parsers.Returns,
                                                           list_parsers.Raises, list_parsers.Changelog, list_parsers.Copyright, example_parsers.Example)}
 
-    def __init__(self, docs: str, signature: inspect.Signature = None) -> None:
+    def __init__(self, docs: str, signature: inspect.Signature = None, noself: bool = False) -> None:
         if docs is None:
             docs = ""
         self.original = inspect.cleandoc(str(docs))
@@ -132,13 +132,13 @@ class Docs:
             try:
                 self.elements[parse.__map_attribute__].extend(content)
             except Exception:
-                self.elements[parse.__map_attribute__] = parse(content, signature=signature)
+                self.elements[parse.__map_attribute__] = parse(content, signature=signature, noself=noself)
                 missing.pop(parse.__map_attribute__, None)
         self.original_sections = list(self.elements.keys())
 
         if signature:
             if list_parsers.Parameters.__map_attribute__ not in self.elements:
-                self.elements[list_parsers.Parameters.__map_attribute__] = list_parsers.Parameters(signature=signature)
+                self.elements[list_parsers.Parameters.__map_attribute__] = list_parsers.Parameters(signature=signature, noself=noself)
                 missing.pop(list_parsers.Parameters.__map_attribute__, None)
 
             if list_parsers.Returns.__map_attribute__ not in self.elements:

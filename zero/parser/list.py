@@ -26,7 +26,7 @@ class List(Parser):
     __element_type__ = ListElement
     __map_attribute__ = "list"
 
-    def __init__(self, body: str = "", signature: inspect.Signature = None) -> None:
+    def __init__(self, body: str = "", signature: inspect.Signature = None, **kwargs) -> None:
         super().__init__(body, signature)
         self.elements = {}
         self.extend(self.original, add_to_original=False)
@@ -141,11 +141,13 @@ class Parameters(List):
     __element_type__ = Parameter
     __map_attribute__ = "parameters"
 
-    def __init__(self, body: str = "", signature: inspect.Signature = None) -> None:
+    def __init__(self, body: str = "", signature: inspect.Signature = None, noself: bool = False, **kwargs) -> None:
         super().__init__(body, signature)
         if signature:
             for parameter in signature.parameters:
                 parameter = str(parameter)
+                if parameter == "self" and noself:
+                    continue
                 if parameter not in self.elements:
                     self.elements[parameter] = self.__element_type__(name=parameter, signature=signature)
 
@@ -153,7 +155,7 @@ class Parameters(List):
 class Returns(List):
     __map_attribute__ = "returns"
 
-    def __init__(self, body: str = "", signature: inspect.Signature = None) -> None:
+    def __init__(self, body: str = "", signature: inspect.Signature = None, **kwargs) -> None:
         super().__init__(body, signature)
         if signature:
             annotation = signature.return_annotation
