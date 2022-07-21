@@ -47,7 +47,7 @@ class ZeroSignature:
         _, _, definition = definition.rpartition("->")
         definition = definition.strip(":")
         self.return_annotation = str(definition).strip()
-        self.return_annotation if self.return_annotation else inspect._empty
+        self.return_annotation = self.return_annotation if self.return_annotation else inspect._empty
 
         results = [self.Parameter(v) for v in annotations.split(",")]  # problem if using type annotation with commas like Union[hello, world]
         self.parameters = {v.name: v for v in results}
@@ -61,7 +61,7 @@ class ZeroSignature:
 
 
 class FileReadingElement:
-    def __init__(self, start_line: int = None, end_line: int = None, indent: int = None, docstring: str = "", signature: ZeroSignature = None, had_docstring: bool = False, quotation: str = '"""') -> None:
+    def __init__(self, start_line: int = None, end_line: int = None, indent: int = 0, docstring: str = "", signature: ZeroSignature = None, had_docstring: bool = False, quotation: str = '"""') -> None:
         self.start_line = start_line
         self.end_line = end_line
         self.indent = indent
@@ -86,17 +86,14 @@ class FileReadingElement:
         }
 
 
-def read_file(filepath: typing.Union[str, pathlib.Path]):
-    file = pathlib.Path(filepath)
-    if not file.is_file():
-        raise ValueError("The given file '{path}' does not seem to be a file".format(path=filepath))
-
+def read_file(text: str):
     results = []
 
     IN_DOCSTRING = False
     LAST_ELEMENT = FileReadingElement()
-    for index, line in enumerate(file.read_text().splitlines(), start=1):
+    for index, line in enumerate(text.splitlines(), start=1):
         current_indent = len(line) - len(line.lstrip())
+        docstring_line = line.removeprefix(" " * LAST_ELEMENT.indent)
         line = line.strip()
 
         if LAST_ELEMENT.signature is not None and index - LAST_ELEMENT.signature.line > 1 and not IN_DOCSTRING:
@@ -107,6 +104,8 @@ def read_file(filepath: typing.Union[str, pathlib.Path]):
         if line.startswith("def ") and not IN_DOCSTRING:
             # print("LINE:", line, "STARTSWITH_DEF")
             LAST_ELEMENT.signature = ZeroSignature(line, index)
+            LAST_ELEMENT.start_line = index
+            LAST_ELEMENT.indent = current_indent + 4
         elif (line.startswith('"""') or line.startswith("'''")):
             if line.startswith('"""'):
                 if '"""' in line.removeprefix('"""'):  # if inline
@@ -122,14 +121,16 @@ def read_file(filepath: typing.Union[str, pathlib.Path]):
                 IN_DOCSTRING = False
             elif not IN_DOCSTRING:
                 # print("LINE:", line, "NOT_IN_DOCSTRING")
-                LAST_ELEMENT.start_line = index
+                if not LAST_ELEMENT.signature:
+                    LAST_ELEMENT.start_line = index
                 LAST_ELEMENT.indent = current_indent
                 LAST_ELEMENT.had_docstring = True
                 LAST_ELEMENT.quotation = '"""' if line.startswith('"""') else "'''"
                 IN_DOCSTRING = True
+                LAST_ELEMENT.docstring += line.removeprefix(LAST_ELEMENT.quotation) + "\n"
         elif IN_DOCSTRING:
             # print("LINE:", line, "IN_DOCSTRING")
-            LAST_ELEMENT.docstring += line + "\n"
+            LAST_ELEMENT.docstring += docstring_line + "\n"
 
     if not LAST_ELEMENT.had_docstring and LAST_ELEMENT.signature is not None:
         # print("LINE:", "HAD_DOCSTRING_AND_SIGNATURE")
@@ -165,9 +166,52 @@ def main():
             return print(zero.Docs(args.text).dumps(indent=args.indent))
         return print(json.dumps(zero.Docs(args.text).as_dict(True), indent=args.indent, ensure_ascii=False))
 
-    results = read_file(args.file)
+    file = pathlib.Path(args.file)
+    if not file.is_file():
+        raise ValueError("The given file '{path}' does not seem to be a file".format(path=file))
+
+    text = file.read_text()
+
+    results = read_file(text)
     if args.action == "clean":
-        return
+        returning = []
+        INDEXES = {}
+        for element in results:
+            # element: FileReadingElement
+            # if element.signature:
+            INDEXES[element.start_line] = element
+            if element.end_line:
+                for l in range(element.start_line + 1, element.end_line + 1):
+                    INDEXES[l] = False
+        # {
+        #     "line<int>": FileReadingElement,
+        #     "line+1<int>": None,
+        #     "line+2<int>": None,
+
+        #     "line<int>": FileReadingElement,  # add_line if not FileReadingElement.had_docstring else continue
+        #     "line+1<int>": None,
+        # }
+        for index, line in enumerate(text.splitlines(), start=1):
+            current = INDEXES.get(index, None)
+            
+            if current is False:
+                print("🈲 LINE", str(index).zfill(3), ":", '\033[91m', line, '\033[0m')
+                continue
+            print("✅ LINE", str(index).zfill(3), ":", '\033[92m', line, '\033[0m')
+            
+            if current is None or current.signature:
+                returning.append(line)
+
+            if current is None:
+                continue
+            
+            current: FileReadingElement
+            
+            returning.append("{i}{q}".format(i=" " * current.indent, q=current.quotation))
+            for l in current.docs.dumps(indent=args.indent).splitlines():
+                returning.append("{i}{l}".format(i=" " * current.indent, l=l))
+            returning.append("{i}{q}".format(i=" " * current.indent, q=current.quotation))
+        return print("\n".join(returning))
     print(json.dumps([r.as_dict(True) for r in results], indent=args.indent, ensure_ascii=False))
 
 

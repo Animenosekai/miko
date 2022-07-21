@@ -188,12 +188,17 @@ class Docs:
 
             current_section = ""
 
-            current_section += section.__class__.__name__ + "\n"
-            current_section += "-" * len(section.__class__.__name__) + "\n"
-
             if isinstance(section, example_parsers.Example):
+                if not section.original:
+                    continue
+                current_section += section.__class__.__name__ + "\n"
+                current_section += "-" * len(section.__class__.__name__) + "\n"
+
                 current_section += section.original + "\n"
             else:
+                current_section += section.__class__.__name__ + "\n"
+                current_section += "-" * len(section.__class__.__name__) + "\n"
+
                 for element in section:
                     # element = self.parameters.__element_type__()
                     current_section += element.name
