@@ -358,6 +358,47 @@ def func():
 
 *Here, there will be the Python API Reference.*
 
+### On Python
+
+Two objects are exposed through the Python API
+
+#### The `Docs` object
+
+You can use the `Docs` object by passing a docstring and an optional function signature.
+
+> Example
+
+```python
+from zero import Docs
+
+parsed = Docs(
+    """
+    Hello
+
+    Note: this is a test
+
+    Changelog
+    ---------
+    1.0
+        Adding this docstring
+    """
+)
+```
+
+##### Parameters
+
+| Name | Description | Type | Default |
+|------|-------------|------|---------|
+| `docs` | This is the docstring to parse | str | `` |
+| `signature` | The function signature to get the additional parameters from | inspect.Signature | None |
+| `noself` | If you don't want to use the `self` parameter from the signature, useful for class methods | bool | False |
+
+
+### Using the CLI
+
+
+### Using the VS Code Extension
+
 ## Deployment
 
 This module is currently in development and might contain bugs.
