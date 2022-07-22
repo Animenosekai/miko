@@ -9,7 +9,7 @@
 	},
 	"license": "MIT",
 	"engines": {
-		"vscode": "^1.45.0"
+		"vscode": "^1.69.0"
 	},
 	"categories": ["Formatters"],
 	"activationEvents": [
