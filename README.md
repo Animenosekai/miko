@@ -393,11 +393,148 @@ parsed = Docs(
 | `signature` | The function signature to get the additional parameters from | inspect.Signature | None |
 | `noself` | If you don't want to use the `self` parameter from the signature, useful for class methods | bool | False |
 
+##### Attributes
+
+- **`description`**
+
+> str
+
+The description of the object in the docstring.
+
+- **`parameters`**
+
+> List[Parameter]
+
+This contains the different parameters found on the function and on the docstring
+
+The attribute returns a `List` object with `Parameter` objects.
+
+A `Parameter` object has the following attributes:
+
+| Attribute | Description | Type |
+| --------- | ----------- | ---- |
+| `name` | The name of the parameter | str |
+| `content` | A list of strings, each one being a line of the parameter description | list[str] |
+| `deprecated` | If the parameter is deprecated | bool |
+| `optional` | If the parameter is optional | bool |
+| `default` | The default value for the parameter, if it has any | str, Any |
+| `types` | A list of types the parameter can be | list[str, Any] |
+
+- **`returns`**
+- **`raises`**
+- **`changelog`**
+- **`copyright`**
+
+> List[ListElement]
+
+They all share the same schema, a `List` object with `ListElement` objects.
+
+A `ListElement` object has the following attributes:
+
+| Attribute | Description | Type |
+| --------- | ----------- | ---- |
+| `name` | The name of the element | str |
+| `content` | A list of strings, each one being a line of the element description | list[str] |
+
+- **`example`**
+
+> Example
+
+The `example` attribute contains any example code the docstring might contain.
+
+- **`warnings`**
+- **`notes`**
+
+> list[str]
+
+The `warnings` and `notes` attributes are just a list of warnings or notes it could have find in the description.
+
+- **`deprecated`**
+
+> bool
+
+If the object is marked as deprecated
+
+##### Methods
+
+- **`dumps`**
+
+This function lets you dump the documentation string to the cleanest format possible, using all of the information the current `Docs` has.
+
+The optional `indent` parameter (which defaults to 4), lets you choose the indentation level of the output.
+
+It returns a string with the output documentation string.
+
+- **`as_dict`**
+
+The `as_dict` function lets you convert the `Docs` object to a dictionary.
+
+It takes an optional `camelCase` parameter (which defaults to False), which lets you have a camelCased and JSON friendly dictionary returned.
+
+#### The `Function` object
+
+The `Function` object lets you get information about a function.
+
+On top of the docs, it also lets you retrieve easily its source code filename, line number, name, the different local variables, the parameters, the return annotation, and its name.
 
 ### Using the CLI
 
+`Zero` also has a CLI, which you can use to get information about a docstring or clean a docstring.
+
+```swift
+🧃❯ zero -h                                                                                                     
+usage: zero [-h] [--version] {info,clean} ...
+
+See how to use a Python object at a glance!
+
+positional arguments:
+  {info,clean}   Actions
+    info         Retrieve info on the given docstring
+    clean        Clean the docstring
+
+optional arguments:
+  -h, --help     show this help message and exit
+  --version, -v  show program's version number and exit
+```
+
+#### `zero info`
+
+You can get information about the docstring using `zero info`.
+
+##### Arguments
+
+| Name | Aliases | Description | Type | Default |
+|------|---------|-------------|------|---------|
+| `--text` | `-t` | The docstring to parse | str | `` |
+| `--file` | `-f` | The file to parse | Path(str) | `` |
+| `--indent` | `-i` | The indentation for the JSON result | int | 4 |
+| `--noself` | `` | Ignoring the "self" parameter from signatures. (useful for class methods) | (flag) | False |
+
+It will return information about the given docstring (if `--text` is given) or a list of information about the different docstrings found in the given file (if `--file` is given).
+
+It prints a JSON string.
+
+#### `zero clean`
+
+You can clean a docstring using `zero clean`.
+
+##### Arguments
+
+| Name | Aliases | Description | Type | Default |
+|------|---------|-------------|------|---------|
+| `--text` | `-t` | The docstring to clean | str | `` |
+| `--file` | `-f` | The file to clean | Path(str) | `` |
+| `--indent` | `-i` | The indentation for the cleaned result | int | 4 |
+| `--noself` | `` | Ignoring the "self" parameter from signatures. (useful for class methods) | (flag) | False |
+| `--output` | `-o` | The file to output the cleaned result to | Path(str) | None |
+
+It will clean the given docstring (if `--text` is given) or it will return the file with the docstrings cleaned (if `--file` is given).
+
+It prints the cleaned output.
 
 ### Using the VS Code Extension
+
+You can also use the `Zero` extension for Visual Studio Code.
 
 ## Deployment
 
@@ -411,17 +548,9 @@ Pull requests are welcome. For major changes, please open a discussion first to 
 
 Please make sure to update the tests as appropriate.
 
-## Built With
-
-- [something](https://something.com) - to do something
-
 ## Authors
 
 - **Anime no Sekai** - *Initial work* - [Animenosekai](https://github.com/Animenosekai)
-
-## Acknowledgments
-
-...
 
 ## License
 

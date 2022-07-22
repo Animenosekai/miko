@@ -179,7 +179,7 @@ class Docs:
 
     def dumps(self, indent=4):
         result = ""
-        if self.description:
+        if self.description.replace(" ", ""):
             result += self.description
             result += "\n\n"
         sections = []

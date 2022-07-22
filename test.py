@@ -18,6 +18,8 @@ def func(a: int) -> float:
 
 def func(self, a):
     """
+    Hello world
+    
     Parameters
     ----------
     a
