@@ -32,7 +32,6 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
@@ -43,9 +42,9 @@ setup(
     long_description=readme_description,
     long_description_content_type="text/markdown",
     include_package_data=True,
-    python_requires=">=3.3, <4",
+    python_requires=">=3.4, <4",
     entry_points={"console_scripts": ["zero = zero.__main__:main"]},
     package_data={
-        "translatepy": ["LICENSE"],
+        "zero": ["LICENSE"],
     },
 )
