@@ -1,16 +1,33 @@
 def hello(a: int) -> float:
+    """
+    Parameters
+    ----------
+    a: int
+    
+    Returns
+    -------
+    float
+    """
     return "hello"
 
 
 def hey(b: int) -> int:
     """
     Hey
-
-    Errors
+    
+    Yes
+    
+    Raises
     ------
     ValueError
         Does it work ?
-
-    Yes
+    
+    Parameters
+    ----------
+    b: int
+    
+    Returns
+    -------
+    int
     """
     return "hey"

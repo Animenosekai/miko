@@ -13,14 +13,21 @@
 	},
 	"categories": ["Formatters"],
 	"activationEvents": [
-		"onCommand:zero.format"
+		"onCommand:zero.format",
+		"onCommand:zero.formatAll"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [{
-			"command": "zero.format",
-			"title": "Format docstrings"
-		}],
+		"commands": [
+			{
+				"command": "zero.format",
+				"title": "Format current document using Zero"
+			},
+			{
+				"command": "zero.formatAll",
+				"title": "Format all visible documents using Zero"
+			}
+		],
 		"configuration": {
 			"title": "Zero Docs",
 			"properties": {

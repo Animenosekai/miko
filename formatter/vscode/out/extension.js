@@ -24,15 +24,39 @@ const execZero = (file, noself) => {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
-    const disposable = vscode.commands.registerCommand('zero.format', () => {
+    const disposableFormat = vscode.commands.registerCommand('zero.format', () => {
         if (!vscode.window.activeTextEditor) {
             return;
         }
-        vscode.window.showInformationMessage('Formatting docstrings...');
-        execZero(vscode.window.activeTextEditor.document.fileName, String(vscode.workspace.getConfiguration("zero-docs").get("noself")) === "true");
-        vscode.window.showInformationMessage("Done formatting docstrings!");
+        vscode.window.activeTextEditor.document.save();
+        execZero(vscode.window.activeTextEditor.document.fileName, String(vscode.workspace.getConfiguration("zero-docs").get("noself")) === "true")
+            .then(() => {
+            // if (vscode.window.activeTextEditor) {
+            //     vscode.window.activeTextEditor.document.save();
+            // }
+            vscode.window.showInformationMessage('🍡 Successfully formatted the current file using Zero!');
+        })
+            .catch(err => {
+            vscode.window.showErrorMessage(err.message);
+        });
     });
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(disposableFormat);
+    const disposableFormatAll = vscode.commands.registerCommand('zero.formatAll', () => {
+        vscode.window.visibleTextEditors.forEach(editor => {
+            editor.document.save();
+            execZero(editor.document.fileName, String(vscode.workspace.getConfiguration("zero-docs").get("noself")) === "true")
+                .then(() => {
+                // editor.document.save();
+                let splitted = editor.document.fileName.split("/");
+                splitted = splitted[splitted.length - 1].split("\\"); // windows
+                vscode.window.showInformationMessage(`🍡 Successfully formatted "${splitted[splitted.length - 1]}" using Zero!`);
+            })
+                .catch(err => {
+                vscode.window.showErrorMessage(err.message);
+            });
+        });
+    });
+    context.subscriptions.push(disposableFormatAll);
 }
 exports.activate = activate;
 // this method is called when your extension is deactivated

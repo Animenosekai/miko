@@ -16,12 +16,17 @@ def func(a: int) -> float:
     """
     pass
 
-def func(self, a):
+def func(self, a, b: int = "hello") -> float:
     """
     Hello world
     
     Parameters
     ----------
     a
+    b: int, default = "hello"
+    
+    Returns
+    -------
+    float
     """
     pass
