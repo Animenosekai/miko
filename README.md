@@ -536,7 +536,7 @@ It prints the cleaned output.
 
 You can also use the `Zero` extension for Visual Studio Code.
 
-It lets you format instantly your files using the command palette.
+It lets you format your files instantly using the command palette.
 
 ![VS Code Command Palette](./assets/docs/vscode_command_palette.png)
 
