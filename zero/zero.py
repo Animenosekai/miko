@@ -63,6 +63,10 @@ SECTIONS_MAP = {
     "PARAMETER": list_parsers.Parameters,
     "PARAMS": list_parsers.Parameters,
     "PARAM": list_parsers.Parameters,
+    "ARGUMENTS": list_parsers.Parameters,
+    "ARGUMENT": list_parsers.Parameters,
+    "ARGS": list_parsers.Parameters,
+    "ARG": list_parsers.Parameters,
 
     "RETURNS": list_parsers.Returns,
     "RETURN": list_parsers.Returns,
@@ -70,6 +74,7 @@ SECTIONS_MAP = {
 
     "RAISES": list_parsers.Raises,
     "RAISE": list_parsers.Raises,
+    "RAISING": list_parsers.Raises,
     "EXCEPTIONS": list_parsers.Raises,
     "EXCEPTION": list_parsers.Raises,
     "ERRORS": list_parsers.Raises,
@@ -161,7 +166,8 @@ class Docs:
                 self.description[index] = "Note: {content}".format(content=content)
 
         if len(self.description) > 0:
-            self.deprecated = str(self.description[0]).replace(" ", "").upper().startswith("!DEPRECATED!")
+            checking = str(self.description[0]).replace(" ", "").upper()
+            self.deprecated = checking.startswith("!DEPRECATED!") or checking.startswith("!DEPRECATION!") or checking.startswith("!DEPRECATE!") or checking.startswith("!DEPRECATIONNOTICE!")
             if self.deprecated:
                 index = self.description[0].find("!")
                 second_index = index + self.description[0][index + 1:].find("!") + 2

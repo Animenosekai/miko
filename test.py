@@ -18,11 +18,16 @@ def func(a: int) -> float:
 
 def func(self, a, b: int = "hello") -> float:
     """
+    ! DEPRECATED !
     Hello world
-
     
     Returns
     -------
     float
+    
+    Parameters
+    ----------
+    a
+    b: int, default = "hello"
     """
     pass

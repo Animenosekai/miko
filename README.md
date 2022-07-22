@@ -147,6 +147,8 @@ def func(a, b: int, c = ""):
     """
 ```
 
+> Aliases: `Parameters`, `Parameter`, `Params`, `Parm`, `Arguments`, `Argument`, `Args`, `Arg`
+
 #### The options
 
 You can specify options for each parameter.
@@ -200,6 +202,8 @@ def func():
     """
 ```
 
+> Aliases: `Returns`, `Return`, `Returning`
+
 ### Example
 
 You can give examples of your code, writing them as you would in a Python REPL.
@@ -221,6 +225,8 @@ def func(a = False):
 
 You can use `# comments` to explain your example.
 
+> Aliases: `Examples`, `Example`
+
 ### Exceptions
 
 You can inform the users about any exception/error your callable might be raising using the `Raising` section.
@@ -238,6 +244,8 @@ def func():
         If there is an error with the value
     """
 ```
+
+> Aliases: `Raises`, `Raise`, `Raising`, `Exceptions`, `Exception`, `Errors`, `Error`
 
 ### Warnings
 
@@ -257,6 +265,10 @@ def func():
     Warning: Another warning
     """
 ```
+
+> Aliases: `Warnings`, `Warning`
+
+<br>
 
 > **Note**  
 > Warnings are part of the description
@@ -280,6 +292,10 @@ def func():
     """
 ```
 
+> Aliases: `Notes`, `Note`, `See Also`, `Information`
+
+<br>
+
 > **Note**  
 > Notes are part of the description
 
@@ -302,6 +318,8 @@ def func():
         Raises ImportError instead of RuntimeError
     """
 ```
+
+> Aliases: `Changelog`, `Changes`
 
 ### Deprecation Notice
 
@@ -333,6 +351,7 @@ def func():
     This is a cool function.
     """
 ```
+> Aliases: `Deprecated`, `Deprecation`, `Deprecate`, `Deprecation Notice`
 
 ### Copyright
 
@@ -353,6 +372,8 @@ def func():
         A very cool collaborator
     """
 ```
+
+> Aliases: `Copyrights`, `Copyright`, `Authors`, `Author`
 
 ## Usage
 
