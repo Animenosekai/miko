@@ -201,7 +201,9 @@ def main():
     if not file.is_file():
         raise ValueError("The given file '{path}' does not seem to be a file".format(path=file))
 
-    text = file.read_text()
+    with open(file) as f:
+        text = f.read()
+    # text = file.read_text()
 
     results = read_file(text, noself=args.noself)
     if args.action == "clean":

@@ -34,7 +34,7 @@ You will need Python 3 to use this module
 
 ```bash
 # vermin output
-Minimum required versions: 3.3
+Minimum required versions: 3.4
 Incompatible versions:     2
 ```
 
