@@ -1,6 +1,6 @@
 # `zero`
 
-<img src="./docs/zero_syo.svg" alt="zero" align="right" height="220px">
+<img src="./assets/miko.jpg" alt="zero" align="right" height="220px">
 
  A new Python documentation style
 
