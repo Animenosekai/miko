@@ -1,6 +1,6 @@
 # `zero`
 
-<img src="./assets/miko.jpg" alt="zero" align="right" height="220px">
+<img src="./assets/miko_icon_rounded.png" alt="zero" align="right" height="220px">
 
  A new Python documentation style
 
