@@ -563,6 +563,14 @@ It lets you format your files instantly using the command palette.
 
 You can add the `--noself` flag using the `Noself` setting in the Settings (UI) or the `zero-docs.noself` settings (JSON).
 
+#### Installing the extension
+
+To install the VS Code extension, head to the [extension folder](./formatter/vscode) and download the [`.vsix`](./formatter/vscode/zero-docs-1.0.0.vsix) file.
+
+Then, go to the *Extensions* section in VS Code, click on the three dots and select *Install from VSIX...*
+
+![Install from VSIX](./assets/docs/vscode_install_from_vsix.png)
+
 ## Deployment
 
 This module is currently in development and might contain bugs.
