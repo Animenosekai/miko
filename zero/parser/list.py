@@ -98,7 +98,7 @@ class Parameter(ListElement):
             result = self.signature.parameters[self.name].default
             if not isinstance(result, inspect._empty) and not result is inspect._empty:
                 return result.__name__ if isinstance(result, type) else str(result)
-        except KeyError:
+        except Exception:
             return None
 
     @property
