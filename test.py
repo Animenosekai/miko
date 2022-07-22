@@ -19,11 +19,7 @@ def func(a: int) -> float:
 def func(self, a, b: int = "hello") -> float:
     """
     Hello world
-    
-    Parameters
-    ----------
-    a
-    b: int, default = "hello"
+
     
     Returns
     -------

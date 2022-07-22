@@ -21,11 +21,11 @@
 		"commands": [
 			{
 				"command": "zero.format",
-				"title": "Format current document using Zero"
+				"title": "🧃 Format current document using Zero"
 			},
 			{
 				"command": "zero.formatAll",
-				"title": "Format all visible documents using Zero"
+				"title": "🧃 Format all visible documents using Zero"
 			}
 		],
 		"configuration": {

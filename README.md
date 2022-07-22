@@ -536,6 +536,12 @@ It prints the cleaned output.
 
 You can also use the `Zero` extension for Visual Studio Code.
 
+It lets you format instantly your files using the command palette.
+
+![VS Code Command Palette](./assets/docs/vscode_command_palette.png)
+
+You can add the `--noself` flag using the `Noself` setting in the Settings (UI) or the `zero-docs.noself` settings (JSON).
+
 ## Deployment
 
 This module is currently in development and might contain bugs.
