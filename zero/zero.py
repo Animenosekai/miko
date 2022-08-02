@@ -233,6 +233,9 @@ class Docs:
 
         result += "\n".join(sections)
 
+        if result.endswith("\n\n"):
+            result = result.removesuffix("\n")
+
         return result
 
     def as_dict(self, camelCase: bool = False):
