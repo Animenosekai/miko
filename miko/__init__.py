@@ -11,7 +11,7 @@ Animenosekai
 from miko.miko import Function, Docs
 
 
-__version_tuple__ = (1, 0, '(beta)')
+__version_tuple__ = (1, 0)
 
 
 def __version_string__():
