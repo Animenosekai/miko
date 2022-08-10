@@ -12,7 +12,7 @@ usage: miko [-h] [--version] {info,clean} ...
 miko: error: the following arguments are required: action"""
 
 
-class ZeroSignature:
+class MikoSignature:
     class Parameter:
         def __init__(self, annotation: str) -> None:
             annotation = str(annotation).strip()
@@ -79,7 +79,7 @@ class ZeroSignature:
 
 
 class FileReadingElement:
-    def __init__(self, start_line: int = None, end_line: int = None, indent: int = 0, docstring: str = "", signature: ZeroSignature = None, had_docstring: bool = False, quotation: str = '"""', noself: bool = False) -> None:
+    def __init__(self, start_line: int = None, end_line: int = None, indent: int = 0, docstring: str = "", signature: MikoSignature = None, had_docstring: bool = False, quotation: str = '"""', noself: bool = False) -> None:
         self.start_line = start_line
         self.end_line = end_line
         self.indent = indent
@@ -122,7 +122,7 @@ def read_file(text: str, noself: bool = False):
 
         if line.startswith("def ") and not IN_DOCSTRING:
             # print("LINE:", line, "STARTSWITH_DEF")
-            LAST_ELEMENT.signature = ZeroSignature(line, index)
+            LAST_ELEMENT.signature = MikoSignature(line, index)
             LAST_ELEMENT.start_line = index
             LAST_ELEMENT.indent = current_indent + 4
         elif (line.startswith('"""') or line.startswith("'''")):

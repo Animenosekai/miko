@@ -5,7 +5,7 @@ const cp = require("child_process");
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
-const execZero = (file, noself) => {
+const execMiko = (file, noself) => {
     const pythonPath = String(vscode.workspace.getConfiguration("python").get("pythonPath"));
     console.log(`Current Python path: ${pythonPath}`);
     const args = ["-m", "miko", "clean", "-f", file, "-o", file];
@@ -29,7 +29,7 @@ function activate(context) {
             return;
         }
         vscode.window.activeTextEditor.document.save();
-        execZero(vscode.window.activeTextEditor.document.fileName, String(vscode.workspace.getConfiguration("miko-docs").get("noself")) === "true")
+        execMiko(vscode.window.activeTextEditor.document.fileName, String(vscode.workspace.getConfiguration("miko-docs").get("noself")) === "true")
             .then(() => {
             // if (vscode.window.activeTextEditor) {
             //     vscode.window.activeTextEditor.document.save();
@@ -44,7 +44,7 @@ function activate(context) {
     const disposableFormatAll = vscode.commands.registerCommand('miko.formatAll', () => {
         vscode.window.visibleTextEditors.forEach(editor => {
             editor.document.save();
-            execZero(editor.document.fileName, String(vscode.workspace.getConfiguration("miko-docs").get("noself")) === "true")
+            execMiko(editor.document.fileName, String(vscode.workspace.getConfiguration("miko-docs").get("noself")) === "true")
                 .then(() => {
                 // editor.document.save();
                 let splitted = editor.document.fileName.split("/");

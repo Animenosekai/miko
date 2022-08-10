@@ -571,7 +571,11 @@ You can add the `--noself` flag using the `Noself` setting in the Settings (UI) 
 
 #### Installing the extension
 
-To install the VS Code extension, head to the [extension folder](./formatter/vscode) and download the [`.vsix`](./formatter/vscode/miko-docs-1.0.0.vsix) file.
+Go to [https://marketplace.visualstudio.com/items?itemName=Animenosekai.miko-docs](https://marketplace.visualstudio.com/items?itemName=Animenosekai.miko-docs) to download the published version from the marketplace.
+
+You can also use the `.vsix` file to install the extension.
+
+Head to the [extension folder](./formatter/vscode) and download the [`.vsix`](./formatter/vscode/miko-docs-1.0.0.vsix) file.
 
 Then, go to the *Extensions* section in VS Code, click on the three dots and select *Install from VSIX...*
 

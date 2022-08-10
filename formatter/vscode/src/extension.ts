@@ -3,7 +3,7 @@ import * as cp from "child_process";
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-const execZero = (file: string, noself: boolean) => {
+const execMiko = (file: string, noself: boolean) => {
     const pythonPath = String(vscode.workspace.getConfiguration("python").get("pythonPath"));
     console.log(`Current Python path: ${pythonPath}`);
     const args = ["-m", "miko", "clean", "-f", file, "-o", file]
@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
     const disposableFormat = vscode.commands.registerCommand('miko.format', () => {
         if (!vscode.window.activeTextEditor) { return }
         vscode.window.activeTextEditor.document.save();
-        execZero(vscode.window.activeTextEditor.document.fileName, String(vscode.workspace.getConfiguration("miko-docs").get("noself")) === "true")
+        execMiko(vscode.window.activeTextEditor.document.fileName, String(vscode.workspace.getConfiguration("miko-docs").get("noself")) === "true")
             .then(() => {
                 // if (vscode.window.activeTextEditor) {
                 //     vscode.window.activeTextEditor.document.save();
@@ -42,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
     const disposableFormatAll = vscode.commands.registerCommand('miko.formatAll', () => {
         vscode.window.visibleTextEditors.forEach(editor => {
             editor.document.save();
-            execZero(editor.document.fileName, String(vscode.workspace.getConfiguration("miko-docs").get("noself")) === "true")
+            execMiko(editor.document.fileName, String(vscode.workspace.getConfiguration("miko-docs").get("noself")) === "true")
                 .then(() => {
                     // editor.document.save();
                     let splitted = editor.document.fileName.split("/")
