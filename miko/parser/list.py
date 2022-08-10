@@ -108,13 +108,13 @@ class Parameter(ListElement):
             option = str(opt).lower()
             if option.startswith("default") or option in {"optional", "required", "deprecated"}:
                 continue
-            results.update([v.strip() for v in option.split("|") if str(v).strip().replace(" ", "") != "<class'inspect._empty'>"])
+            results.update([v.strip() for v in str(opt).split("|") if str(v).strip().replace(" ", "") != "<class'inspect._empty'>"])
 
         try:
             param = self.signature.parameters[self.name]
             annotation = param.annotation
             if annotation is not inspect._empty and str(annotation).strip().replace(" ", "") != "<class 'inspect._empty'>":
-                if hasattr(annotation, "__origin__") and annotation.__origin__ is typing.Union:
+                if hasattr(annotation, "__origin__") and annotation.__origin__ == typing.Union:
                     for a in annotation.__args__:
                         if str(a).lower().strip('"').strip("'").strip() not in {str(r).lower() for r in results}:
                             results.add(a)
