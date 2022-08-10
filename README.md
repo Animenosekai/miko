@@ -60,6 +60,12 @@ $ python -c "import miko; print(miko.__version__)"
 miko v1.0
 ```
 
+```bash
+$ miko --version
+# output:
+miko v1.0
+```
+
 ## Purpose
 
 This new style aims at bringing an ease of use for both humans and computers.
