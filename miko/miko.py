@@ -18,7 +18,10 @@ class Function:
         self.original = func
         self.name = self.original.__name__
         self.signature = inspect.signature(func)
-        self.docs = Docs(self.original.__doc__ if self.original.__doc__ is not None else "No description", self.signature)
+        self.docs = Docs(
+            docs=self.original.__doc__ if self.original.__doc__ is not None else "No description",
+            signature=self.signature
+        )
         self.code = Function.get_code(self.original)
         self.source_filename = self.code.co_filename
         self.source_linenumber = self.code.co_firstlineno
@@ -51,7 +54,8 @@ class Function:
         if inspect.isframe(obj):
             obj = obj.f_code
         if not inspect.iscode(obj):
-            raise TypeError('method, function, traceback, frame, or code object was expected, got {}'.format(type(obj).__name__))
+            raise TypeError('''method, function, traceback, frame,\
+                or code object was expected, got {}'''.format(type(obj).__name__))
         return obj
 
     def __repr__(self) -> str:
@@ -108,7 +112,8 @@ class Docs:
         notes = []
 
     __elements_mapping__ = {v.__map_attribute__ for v in (list_parsers.Parameters, list_parsers.Returns,
-                                                          list_parsers.Raises, list_parsers.Changelog, list_parsers.Copyright, example_parsers.Example)}
+                                                          list_parsers.Raises, list_parsers.Changelog,
+                                                          list_parsers.Copyright, example_parsers.Example)}
 
     def __init__(self, docs: str, signature: inspect.Signature = None, noself: bool = False) -> None:
         if docs is None:
@@ -120,7 +125,8 @@ class Docs:
         self.notes = []
 
         missing = {v.__map_attribute__: v for v in (list_parsers.Parameters, list_parsers.Returns,
-                                                    list_parsers.Raises, list_parsers.Changelog, list_parsers.Copyright, example_parsers.Example)}
+                                                    list_parsers.Raises, list_parsers.Changelog,
+                                                    list_parsers.Copyright, example_parsers.Example)}
 
         self.description = []
 
@@ -167,7 +173,8 @@ class Docs:
 
         if len(self.description) > 0:
             checking = str(self.description[0]).replace(" ", "").upper()
-            self.deprecated = checking.startswith("!DEPRECATED!") or checking.startswith("!DEPRECATION!") or checking.startswith("!DEPRECATE!") or checking.startswith("!DEPRECATIONNOTICE!")
+            self.deprecated = checking.startswith("!DEPRECATED!") or checking.startswith(
+                "!DEPRECATION!") or checking.startswith("!DEPRECATE!") or checking.startswith("!DEPRECATIONNOTICE!")
             if self.deprecated:
                 index = self.description[0].find("!")
                 second_index = index + self.description[0][index + 1:].find("!") + 2

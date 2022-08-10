@@ -1,5 +1,5 @@
 """
-Miko  
+Miko
 A new Python documentation style
 
 Author

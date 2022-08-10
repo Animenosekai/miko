@@ -3,7 +3,6 @@ import inspect
 import json
 import pathlib
 import sys
-import typing
 
 import miko
 
