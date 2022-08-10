@@ -1,7 +1,7 @@
 """
-zero.py
+miko.py
 
-Contains the main code for the Zero documentation style
+Contains the main code for the Miko documentation style
 """
 
 import inspect
@@ -9,8 +9,8 @@ import sys
 import types
 import typing
 
-import zero.parser.example as example_parsers
-import zero.parser.list as list_parsers
+import miko.parser.example as example_parsers
+import miko.parser.list as list_parsers
 
 
 class Function:

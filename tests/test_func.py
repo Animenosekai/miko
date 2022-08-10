@@ -1,9 +1,9 @@
 from . import data
-from zero import Function
+from miko import Function
 
 
 def test_func():
-    print("[test] Testing zero.Function")
+    print("[test] Testing miko.Function")
     a = Function(data.func)
     b = Function(data.func_bad)
     c = Function(data.func_with_some_sections)

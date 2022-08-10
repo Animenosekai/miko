@@ -1,5 +1,5 @@
 """
-Zero  
+Miko  
 A new Python documentation style
 
 Author
@@ -8,7 +8,7 @@ Animenosekai
     Original author
 """
 
-from zero.zero import Function, Docs
+from miko.miko import Function, Docs
 
 
 __version_tuple__ = (1, 0, '(beta)')
@@ -21,10 +21,10 @@ def __version_string__():
 
 
 __author__ = 'Anime no Sekai'
-__copyright__ = 'Copyright 2022, zero'
+__copyright__ = 'Copyright 2022, miko'
 __credits__ = ['animenosekai']
 __license__ = 'MIT License'
-__version__ = 'zero v{}'.format(__version_string__())
+__version__ = 'miko v{}'.format(__version_string__())
 __maintainer__ = 'Anime no Sekai'
 __email__ = 'niichannomail@gmail.com'
 __status__ = 'Stable'

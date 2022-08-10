@@ -1,11 +1,11 @@
 {
-	"name": "zero-docs",
-	"displayName": "Zero Docs",
+	"name": "miko-docs",
+	"displayName": "Miko Docs",
 	"publisher": "Animenosekai",
-	"description": "A formatter for the Zero documentation style",
+	"description": "A formatter for the Miko documentation style",
 	"version": "1.0.0",
 	"repository": {
-		"url": "https://github.com/Animenosekai/zero"
+		"url": "https://github.com/Animenosekai/miko"
 	},
 	"license": "MIT",
 	"engines": {
@@ -13,26 +13,26 @@
 	},
 	"categories": ["Formatters"],
 	"activationEvents": [
-		"onCommand:zero.format",
-		"onCommand:zero.formatAll"
+		"onCommand:miko.format",
+		"onCommand:miko.formatAll"
 	],
 	"icon": "miko_icon_rounded.png",
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "zero.format",
-				"title": "🧃 Format current document using Zero"
+				"command": "miko.format",
+				"title": "🧃 Format current document using Miko"
 			},
 			{
-				"command": "zero.formatAll",
-				"title": "🧃 Format all visible documents using Zero"
+				"command": "miko.formatAll",
+				"title": "🧃 Format all visible documents using Miko"
 			}
 		],
 		"configuration": {
-			"title": "Zero Docs",
+			"title": "Miko Docs",
 			"properties": {
-				"zero-docs.noself": {
+				"miko-docs.noself": {
 					"type": "boolean",
 					"default": true,
 					"description": "Ignoring the 'self' parameter from signatures. (useful for class methods)"

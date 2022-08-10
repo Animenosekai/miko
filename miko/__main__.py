@@ -5,11 +5,11 @@ import pathlib
 import sys
 import typing
 
-import zero
+import miko
 
 NO_ACTION = """\
-usage: zero [-h] [--version] {info,clean} ...
-zero: error: the following arguments are required: action"""
+usage: miko [-h] [--version] {info,clean} ...
+miko: error: the following arguments are required: action"""
 
 
 class ZeroSignature:
@@ -90,8 +90,8 @@ class FileReadingElement:
         self.noself = noself
 
     @property
-    def docs(self) -> zero.Docs:
-        return zero.Docs(self.docstring, self.signature, noself=self.noself)
+    def docs(self) -> miko.Docs:
+        return miko.Docs(self.docstring, self.signature, noself=self.noself)
 
     def as_dict(self, camelCase: bool = False):
         return {
@@ -159,8 +159,8 @@ def read_file(text: str, noself: bool = False):
 
 
 def main():
-    parser = argparse.ArgumentParser("zero", description="See how to use a Python object at a glance!")
-    parser.add_argument('--version', '-v', action='version', version=zero.__version__)
+    parser = argparse.ArgumentParser("miko", description="See how to use a Python object at a glance!")
+    parser.add_argument('--version', '-v', action='version', version=miko.__version__)
 
     subparser = parser.add_subparsers(help='Actions', dest="action")
 
@@ -189,13 +189,13 @@ def main():
 
     if args.text:
         if args.action == "clean":
-            result = zero.Docs(args.text, noself=args.noself).dumps(indent=args.indent)
+            result = miko.Docs(args.text, noself=args.noself).dumps(indent=args.indent)
             if parser_clean.output:
                 with open(parser_clean.output, "w") as f:
                     f.write(result)
                 return
             return print(result)
-        return print(json.dumps(zero.Docs(args.text, noself=args.noself).as_dict(True), indent=args.indent, ensure_ascii=False))
+        return print(json.dumps(miko.Docs(args.text, noself=args.noself).as_dict(True), indent=args.indent, ensure_ascii=False))
 
     file = pathlib.Path(args.file)
     if not file.is_file():

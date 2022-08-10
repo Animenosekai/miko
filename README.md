@@ -1,6 +1,6 @@
-# `zero`
+# `miko` (originally: `zero`)
 
-<img src="./assets/miko_icon_rounded.png" alt="zero" align="right" height="220px">
+<img src="./assets/miko_icon_rounded.png" alt="miko" align="right" height="220px">
 
  A new Python documentation style
 
@@ -9,18 +9,18 @@
 <br>
 <br>
 
-[![PyPI version](https://badge.fury.io/py/zero.svg)](https://pypi.org/project/zero/)
-[![Downloads](https://static.pepy.tech/personalized-badge/zero?period=total&units=international_system&left_color=grey&right_color=blue&left_text=Total%20Downloads)](https://pepy.tech/project/zero)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/zero)](https://pypistats.org/packages/zero)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/zero)](https://pypi.org/project/zero/)
-[![PyPI - Status](https://img.shields.io/pypi/status/zero)](https://pypi.org/project/zero/)
-[![GitHub - License](https://img.shields.io/github/license/Animenosekai/zero)](https://github.com/Animenosekai/zero/blob/master/LICENSE)
-[![GitHub top language](https://img.shields.io/github/languages/top/Animenosekai/zero)](https://github.com/Animenosekai/zero)
-[![CodeQL Checks Badge](https://github.com/Animenosekai/zero/workflows/CodeQL%20Python%20Analysis/badge.svg)](https://github.com/Animenosekai/zero/actions?query=workflow%3ACodeQL)
-[![Pytest](https://github.com/Animenosekai/zero/actions/workflows/pytest.yml/badge.svg)](https://github.com/Animenosekai/zero/actions/workflows/pytest.yml)
-![Code Size](https://img.shields.io/github/languages/code-size/Animenosekai/zero)
-![Repo Size](https://img.shields.io/github/repo-size/Animenosekai/zero)
-![Issues](https://img.shields.io/github/issues/Animenosekai/zero)
+[![PyPI version](https://badge.fury.io/py/miko.svg)](https://pypi.org/project/miko/)
+[![Downloads](https://static.pepy.tech/personalized-badge/miko?period=total&units=international_system&left_color=grey&right_color=blue&left_text=Total%20Downloads)](https://pepy.tech/project/miko)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/miko)](https://pypistats.org/packages/miko)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/miko)](https://pypi.org/project/miko/)
+[![PyPI - Status](https://img.shields.io/pypi/status/miko)](https://pypi.org/project/miko/)
+[![GitHub - License](https://img.shields.io/github/license/Animenosekai/miko)](https://github.com/Animenosekai/miko/blob/master/LICENSE)
+[![GitHub top language](https://img.shields.io/github/languages/top/Animenosekai/miko)](https://github.com/Animenosekai/miko)
+[![CodeQL Checks Badge](https://github.com/Animenosekai/miko/workflows/CodeQL%20Python%20Analysis/badge.svg)](https://github.com/Animenosekai/miko/actions?query=workflow%3ACodeQL)
+[![Pytest](https://github.com/Animenosekai/miko/actions/workflows/pytest.yml/badge.svg)](https://github.com/Animenosekai/miko/actions/workflows/pytest.yml)
+![Code Size](https://img.shields.io/github/languages/code-size/Animenosekai/miko)
+![Repo Size](https://img.shields.io/github/repo-size/Animenosekai/miko)
+![Issues](https://img.shields.io/github/issues/Animenosekai/miko)
 
 ## Getting Started
 
@@ -43,21 +43,21 @@ Incompatible versions:     2
 ### Option 1: From PyPI
 
 ```bash
-pip install --upgrade zero
+pip install --upgrade miko
 ```
 
 ### Option 2: From Git
 
 ```bash
-pip install --upgrade git+https://github.com/Animenosekai/zero
+pip install --upgrade git+https://github.com/Animenosekai/miko
 ```
 
 You can check if you successfully installed it by printing out its version:
 
 ```bash
-$ python -c "import zero; print(zero.__version__)"
+$ python -c "import miko; print(miko.__version__)"
 # output:
-zero v1.0
+miko v1.0
 ```
 
 ## Purpose
@@ -68,13 +68,13 @@ It also helps me get concise while writing docstrings as I tend to use different
 
 ## Style
 
-Zero defines a new way of documenting your source code.
+Miko defines a new way of documenting your source code.
 
 You will here learn the different sections of your documentation string.
 
 ### Outline
 
-The *Zero* way of documenting stuff is by using Markdown in your documentation and following the rules below.
+The *Miko* way of documenting stuff is by using Markdown in your documentation and following the rules below.
 
 #### Start
 
@@ -390,7 +390,7 @@ You can use the `Docs` object by passing a docstring and an optional function si
 > Example
 
 ```python
-from zero import Docs
+from miko import Docs
 
 parsed = Docs(
     """
@@ -500,11 +500,11 @@ On top of the docs, it also lets you retrieve easily its source code filename, l
 
 ### Using the CLI
 
-`Zero` also has a CLI, which you can use to get information about a docstring or clean a docstring.
+`Miko` also has a CLI, which you can use to get information about a docstring or clean a docstring.
 
 ```swift
-🧃❯ zero -h                                                                                                     
-usage: zero [-h] [--version] {info,clean} ...
+🧃❯ miko -h                                                                                                     
+usage: miko [-h] [--version] {info,clean} ...
 
 See how to use a Python object at a glance!
 
@@ -518,9 +518,9 @@ optional arguments:
   --version, -v  show program's version number and exit
 ```
 
-#### `zero info`
+#### `miko info`
 
-You can get information about the docstring using `zero info`.
+You can get information about the docstring using `miko info`.
 
 ##### Arguments
 
@@ -535,9 +535,9 @@ It will return information about the given docstring (if `--text` is given) or a
 
 It prints a JSON string.
 
-#### `zero clean`
+#### `miko clean`
 
-You can clean a docstring using `zero clean`.
+You can clean a docstring using `miko clean`.
 
 ##### Arguments
 
@@ -555,17 +555,17 @@ It prints the cleaned output.
 
 ### Using the VS Code Extension
 
-You can also use the `Zero` extension for Visual Studio Code.
+You can also use the `Miko` extension for Visual Studio Code.
 
 It lets you format your files instantly using the command palette.
 
 ![VS Code Command Palette](./assets/docs/vscode_command_palette.png)
 
-You can add the `--noself` flag using the `Noself` setting in the Settings (UI) or the `zero-docs.noself` settings (JSON).
+You can add the `--noself` flag using the `Noself` setting in the Settings (UI) or the `miko-docs.noself` settings (JSON).
 
 #### Installing the extension
 
-To install the VS Code extension, head to the [extension folder](./formatter/vscode) and download the [`.vsix`](./formatter/vscode/zero-docs-1.0.0.vsix) file.
+To install the VS Code extension, head to the [extension folder](./formatter/vscode) and download the [`.vsix`](./formatter/vscode/miko-docs-1.0.0.vsix) file.
 
 Then, go to the *Extensions* section in VS Code, click on the three dots and select *Install from VSIX...*
 

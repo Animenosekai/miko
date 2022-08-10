@@ -12,19 +12,19 @@ def read_requirements(filename):
 
 
 setup(
-    name="zero",
-    packages=["zero"],
+    name="miko",
+    packages=["miko"],
     version="1.0",
     license="MIT License",
     description="See how to use a Python object at a glance!",
     author="Anime no Sekai",
     author_email="niichannomail@gmail.com",
-    url="https://github.com/Animenosekai/zero",
-    download_url="https://github.com/Animenosekai/zero/archive/v1.0.tar.gz",
+    url="https://github.com/Animenosekai/miko",
+    download_url="https://github.com/Animenosekai/miko/archive/v1.0.tar.gz",
     keywords=[
         "python",
         "documentation",
-        "zero",
+        "miko",
         "docs"
     ],
     install_requires=read_requirements("requirements.txt"),
@@ -43,8 +43,8 @@ setup(
     long_description_content_type="text/markdown",
     include_package_data=True,
     python_requires=">=3.4, <4",
-    entry_points={"console_scripts": ["zero = zero.__main__:main"]},
+    entry_points={"console_scripts": ["miko = miko.__main__:main"]},
     package_data={
-        "zero": ["LICENSE"],
+        "miko": ["LICENSE"],
     },
 )

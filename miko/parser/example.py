@@ -1,4 +1,4 @@
-from zero.parser.parser import Parser
+from miko.parser.parser import Parser
 
 
 class Example(Parser):
