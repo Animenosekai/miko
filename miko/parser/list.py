@@ -11,6 +11,10 @@ class ListElement:
         self.content = [c for c in content if c] if content else []
         self.signature = signature
 
+    @property
+    def body(self) -> str:
+        return "\n".join(self.content)
+
     def __repr__(self) -> str:
         return "<ListElement options={options}, content={content} lines>".format(options=", ".join(self.options) if len(self.options) > 1 else "None", content=len(self.content))
 
