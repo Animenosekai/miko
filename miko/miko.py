@@ -98,6 +98,7 @@ SECTIONS_MAP = {
 
 
 class Docs:
+    deprecated = False
     parameters = list_parsers.Parameters()
     returns = list_parsers.Returns()
     raises = list_parsers.Raises()
@@ -185,10 +186,10 @@ class Docs:
     def __repr__(self) -> str:
         return "<Docs sections={sections}>".format(sections=self.original_sections)
 
-    def __getattr__(self, key: str):
-        if key in self.__elements_mapping__:
+    def __getattribute__(self, key: str):
+        if key in super().__getattribute__("__elements_mapping__"):
             return self.elements.__getitem__(key)
-        raise AttributeError
+        return super().__getattribute__(key)
 
     def dumps(self, indent=4):
         result = ""
