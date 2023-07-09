@@ -11,9 +11,12 @@ import typing
 
 import miko.parser.example as example_parsers
 import miko.parser.list as list_parsers
+from miko.parser.parser import Parser
 
 
 class Function:
+    """Retrieves information on a given function"""
+
     def __init__(self, func: typing.Callable) -> None:
         self.original = func
         self.name = self.original.__name__
@@ -62,6 +65,9 @@ class Function:
         return "<Function '{name}'>".format(name=self.name)
 
 
+if sys.version_info >= (3, 6):
+    SECTIONS_MAP: typing.Dict[str, typing.Type[Parser]]
+
 SECTIONS_MAP = {
     "PARAMETERS": list_parsers.Parameters,
     "PARAMETER": list_parsers.Parameters,
@@ -95,51 +101,74 @@ SECTIONS_MAP = {
     "EXAMPLES": example_parsers.Example,
     "EXAMPLE": example_parsers.Example
 }
+"""All of the default sections and their alternative names"""
 
 
 class Docs:
-    deprecated = False
-    parameters = list_parsers.Parameters()
-    returns = list_parsers.Returns()
-    raises = list_parsers.Raises()
-    changelog = list_parsers.Changelog()
-    copyright = list_parsers.Copyright()
-    example = example_parsers.Example()
-    if sys.version_info >= (3, 6):
-        warnings: typing.List[str]  # novermin
-        notes: typing.List[str]  # novermin
-    else:
-        warnings = []
-        notes = []
+    """Parses docstrings"""
 
-    __elements_mapping__ = {v.__map_attribute__ for v in (list_parsers.Parameters, list_parsers.Returns,
-                                                          list_parsers.Raises, list_parsers.Changelog,
-                                                          list_parsers.Copyright, example_parsers.Example)}
+    def __init__(self,
+                 docs: str,
+                 signature: typing.Optional[inspect.Signature] = None,
+                 noself: bool = False,
+                 extra_sections: typing.Optional[typing.Dict[str, typing.Type[Parser]]] = None) -> None:
+        sections_map = SECTIONS_MAP.copy()
+        sections_map.update(extra_sections or {})
 
-    def __init__(self, docs: str, signature: inspect.Signature = None, noself: bool = False) -> None:
+        #  Initializing default values
+        self.deprecated = False
+        self.parameters = list_parsers.Parameters()
+        self.returns = list_parsers.Returns()
+        self.raises = list_parsers.Raises()
+        self.changelog = list_parsers.Changelog()
+        self.copyright = list_parsers.Copyright()
+        self.example = example_parsers.Example()
+        if sys.version_info >= (3, 6):
+            # Always better to have typed attributes
+            self.warnings: typing.List[str] = []  # novermin
+            self.notes: typing.List[str] = []  # novermin
+        else:
+            self.warnings = []
+            self.notes = []
+
+        self.__elements_mapping__ = {v.__map_attribute__: v for v in (list_parsers.Parameters, list_parsers.Returns,
+                                                                      list_parsers.Raises, list_parsers.Changelog,
+                                                                      list_parsers.Copyright, example_parsers.Example)}
+
         if docs is None:
             docs = ""
+
         self.original = inspect.cleandoc(str(docs))
-        self.elements = {}
+
+        if sys.version_info >= (3, 6):
+            self.elements: typing.Dict[str, Parser] = {}
+        else:
+            self.elements = {}
 
         self.warnings = []
         self.notes = []
 
-        missing = {v.__map_attribute__: v for v in (list_parsers.Parameters, list_parsers.Returns,
-                                                    list_parsers.Raises, list_parsers.Changelog,
-                                                    list_parsers.Copyright, example_parsers.Example)}
+        # First, everything is missing
+        missing = self.__elements_mapping__.copy()
 
-        self.description = []
+        description = []
+
+        def clean_name(name: str) -> str:
+            """Cleans the string name to normalize it"""
+            return name.replace(" ", "").upper().strip()
 
         for section in self.original.split("\n\n"):
             name, _, body = section.partition("\n---")
             if not body:
-                self.description.append(name)  # name would be the content here
+                description.append(name)  # name would be the content here
                 continue
-            parse = SECTIONS_MAP.get(name.replace(" ", "").upper().strip(), None)
+
+            # Getting the parser
+            parse = sections_map.get(clean_name(name), None)
             if parse is None:
-                self.description.append("\n---".join((name, body)))
+                description.append("\n---".join((name, body)))
                 continue
+
             content = body.lstrip("-").lstrip("\n")
             try:
                 self.elements[parse.__map_attribute__].extend(content)
@@ -161,37 +190,41 @@ class Docs:
             self.elements[attr] = parse()
 
         # HANDLING TAGS
-        for index, line in enumerate(self.description):
+        for index, line in enumerate(description):
             start, _, content = str(line).partition(":")
-            start = start.replace(" ", "").upper().strip()
+            start = clean_name(start)
             content = content.strip()
             if start in {"WARNING", "WARNINGS"}:
                 self.warnings.append(content)
-                self.description[index] = "Warning: {content}".format(content=content)
+                description[index] = "Warning: {content}".format(content=content)
             elif start in {"NOTE", "NOTES", "SEEALSO", "INFORMATION"}:
                 self.notes.append(content)
-                self.description[index] = "Note: {content}".format(content=content)
+                description[index] = "Note: {content}".format(content=content)
 
-        if len(self.description) > 0:
-            checking = str(self.description[0]).replace(" ", "").upper()
+        if len(description) > 0:
+            checking = str(description[0]).replace(" ", "").upper()
             self.deprecated = checking.startswith("!DEPRECATED!") or checking.startswith(
                 "!DEPRECATION!") or checking.startswith("!DEPRECATE!") or checking.startswith("!DEPRECATIONNOTICE!")
             if self.deprecated:
-                index = self.description[0].find("!")
-                second_index = index + self.description[0][index + 1:].find("!") + 2
-                self.description[0] = "! DEPRECATED !" + self.description[0][second_index:]
+                index = description[0].find("!")
+                second_index = index + description[0][index + 1:].find("!") + 2
+                description[0] = "! DEPRECATED !" + description[0][second_index:]
 
-        self.description = "\n\n".join(self.description)
+        self.description = "\n\n".join(description)
 
     def __repr__(self) -> str:
         return "<Docs sections={sections}>".format(sections=self.original_sections)
 
     def __getattribute__(self, key: str):
         if key in super().__getattribute__("__elements_mapping__"):
-            return self.elements.__getitem__(key)
+            return self.__getitem__(key)
         return super().__getattribute__(key)
 
+    def __getitem__(self, key: str):
+        return self.elements[key]
+
     def dumps(self, indent=4):
+        """Returns a clean docstring"""
         result = ""
         if self.description.replace(" ", ""):
             result += self.description
@@ -247,6 +280,7 @@ class Docs:
         return result
 
     def as_dict(self, camelCase: bool = False):
+        """Returns the parsed docstring information as a dictionary"""
         results = {
             "description": self.description,
             "notes": self.notes,

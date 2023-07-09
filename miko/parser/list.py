@@ -75,6 +75,9 @@ class List(Parser):
         return "<{name} elements={elements}>".format(name=self.__class__.__name__, elements=list(self.elements.keys()))
 
     def __getattr__(self, key: str):
+        return self[key]
+
+    def __getitem__(self, key: str):
         return self.elements.__getitem__(key)
 
 
