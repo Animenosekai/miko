@@ -88,6 +88,12 @@ class Parameter(ListElement):
 
     @property
     def optional(self) -> bool:
+        try:
+            result = self.signature.parameters[self.name].default
+            if not isinstance(result, inspect._empty) and not result is inspect._empty:
+                return True
+        except Exception:
+            pass
         options = [str(v).lower() for v in self.options]
         return "optional" in options or any(v.startswith("default") for v in options)
 
