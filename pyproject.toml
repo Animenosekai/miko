@@ -51,7 +51,6 @@ miko = 'miko.__main__:main'
 "Issue Tracker" = "https://github.com/Animenosekai/miko/issues"
 
 [tool.poetry.group.dev.dependencies]
-mypy = "^1.4.1"
 autopep8 = "^2.0.2"
 
 [build-system]
