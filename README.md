@@ -34,7 +34,7 @@ You will need Python 3 to use this module
 
 ```bash
 # vermin output
-Minimum required versions: 3.4
+Minimum required versions: 3.6
 Incompatible versions:     2
 ```
 
@@ -57,7 +57,7 @@ You can check if you successfully installed it by printing out its version:
 ```bash
 $ python -c "import miko; print(miko.__version__)"
 # output:
-miko v1.0
+miko v1.1
 ```
 
 ```bash

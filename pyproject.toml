@@ -1,0 +1,59 @@
+[tool.poetry]
+name = "miko"
+version = "1.1"
+description = "See how to use a Python object at a glance!"
+license = "MIT"
+authors = ["Animenosekai <animenosekai.mail@gmail.com>"]
+maintainers = ["Animenosekai <animenosekai.mail@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/Animenosekai/miko"
+documentation = "https://github.com/Animenosekai/miko/blob/main/README.md"
+keywords = [
+    "animenosekai",
+    "miko",
+    "docs",
+    "documentation",
+    "parser"
+]
+classifiers = [
+    # Status
+    "Development Status :: 4 - Beta",
+
+    # Environment
+    "Environment :: Console",
+
+    # Audience
+    "Intended Audience :: Developers",
+
+    # Licensing
+    "License :: OSI Approved :: MIT License",
+
+    # Software Requirements
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+
+    # Topics
+    "Topic :: Documentation",
+    "Topic :: Software Development :: Documentation",
+
+    # Code quality
+    "Typing :: Typed",
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+[tool.poetry.scripts]
+miko = 'miko.__main__:main'
+
+[tool.poetry.urls]
+"Issue Tracker" = "https://github.com/Animenosekai/miko/issues"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.4.1"
+autopep8 = "^2.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

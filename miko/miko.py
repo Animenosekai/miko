@@ -66,7 +66,7 @@ class Function:
 
 
 if sys.version_info >= (3, 6):
-    SECTIONS_MAP: typing.Dict[str, typing.Type[Parser]]
+    SECTIONS_MAP: typing.Dict[str, typing.Type[Parser]] # novermin
 
 SECTIONS_MAP = {
     "PARAMETERS": list_parsers.Parameters,
