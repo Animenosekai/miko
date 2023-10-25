@@ -5,13 +5,10 @@ Contains the main code for the Miko documentation style
 """
 
 import inspect
-import sys
 import types
 import typing
 
-import miko.parser.example as example_parsers
-import miko.parser.list as list_parsers
-from miko.parser.parser import Parser
+from miko import parsers
 
 
 class Function:
@@ -21,8 +18,8 @@ class Function:
         self.original = func
         self.name = self.original.__name__
         self.signature = inspect.signature(func)
-        self.docs = Docs(
-            docs=self.original.__doc__ if self.original.__doc__ is not None else "No description",
+        self.docs = Documentation(
+            docstring=self.original.__doc__ if self.original.__doc__ is not None else "No description",
             signature=self.signature
         )
         self.code = Function.get_code(self.original)
@@ -57,235 +54,218 @@ class Function:
         if inspect.isframe(obj):
             obj = obj.f_code
         if not inspect.iscode(obj):
-            raise TypeError('''method, function, traceback, frame,\
-                or code object was expected, got {}'''.format(type(obj).__name__))
+            raise TypeError(f'''method, function, traceback, frame,\
+                or code object was expected, got {type(obj).__name__}''')
         return obj
 
     def __repr__(self) -> str:
         return "<Function '{name}'>".format(name=self.name)
 
 
-if sys.version_info >= (3, 6):
-    SECTIONS_MAP: typing.Dict[str, typing.Type[Parser]] # novermin
+class Documentation:
+    """Parses a docstring"""
+    original: str
+    """Original text"""
+    description: str
+    """The description"""
 
-SECTIONS_MAP = {
-    "PARAMETERS": list_parsers.Parameters,
-    "PARAMETER": list_parsers.Parameters,
-    "PARAMS": list_parsers.Parameters,
-    "PARAM": list_parsers.Parameters,
-    "ARGUMENTS": list_parsers.Parameters,
-    "ARGUMENT": list_parsers.Parameters,
-    "ARGS": list_parsers.Parameters,
-    "ARG": list_parsers.Parameters,
+    # Flags
+    deprecated: parsers.deprecated.Deprecated
 
-    "RETURNS": list_parsers.Returns,
-    "RETURN": list_parsers.Returns,
-    "RETURNING": list_parsers.Returns,
+    # Inline Parsers
+    notes: parsers.notes.Notes
+    """Notes about the element"""
+    warnings: parsers.warnings.Warnings
+    """Warnings about the element"""
+    important: parsers.important.Important
+    """Important notes about the element"""
 
-    "RAISES": list_parsers.Raises,
-    "RAISE": list_parsers.Raises,
-    "RAISING": list_parsers.Raises,
-    "EXCEPTIONS": list_parsers.Raises,
-    "EXCEPTION": list_parsers.Raises,
-    "ERRORS": list_parsers.Raises,
-    "ERROR": list_parsers.Raises,
+    example: parsers.example.Example
+    """Examples of usage"""
 
-    "CHANGELOG": list_parsers.Changelog,
-    "CHANGES": list_parsers.Changelog,
-
-    "COPYRIGHTS": list_parsers.Copyright,
-    "COPYRIGHT": list_parsers.Copyright,
-    "AUTHORS": list_parsers.Copyright,
-    "AUTHOR": list_parsers.Copyright,
-
-    "EXAMPLES": example_parsers.Example,
-    "EXAMPLE": example_parsers.Example
-}
-"""All of the default sections and their alternative names"""
-
-
-class Docs:
-    """Parses docstrings"""
+    # Map Parsers
+    parameters: parsers.parameters.Parameters
+    """Parameters for the callable"""
+    returns: parsers.returns.Returns
+    """Return value for the callable"""
+    yields: parsers.yields.Yields
+    """Return value for the callable"""
+    raises: parsers.raises.Raises
+    """Raisable exception by the callable"""
+    changelog: parsers.changelog.Changelog
+    """Changelog of the element"""
+    copyright: parsers.copyright.Copyright
+    """Copyright notes for the element"""
 
     def __init__(self,
-                 docs: str,
-                 signature: typing.Optional[inspect.Signature] = None,
-                 noself: bool = False,
-                 extra_sections: typing.Optional[typing.Dict[str, typing.Type[Parser]]] = None) -> None:
-        sections_map = SECTIONS_MAP.copy()
-        sections_map.update(extra_sections or {})
+                 docstring: str,
+                 flag_prefix: str = "!",
+                 **kwargs) -> None:
 
-        #  Initializing default values
-        self.deprecated = False
-        self.parameters = list_parsers.Parameters()
-        self.returns = list_parsers.Returns()
-        self.raises = list_parsers.Raises()
-        self.changelog = list_parsers.Changelog()
-        self.copyright = list_parsers.Copyright()
-        self.example = example_parsers.Example()
-        if sys.version_info >= (3, 6):
-            # Always better to have typed attributes
-            self.warnings: typing.List[str] = []  # novermin
-            self.notes: typing.List[str] = []  # novermin
-        else:
-            self.warnings = []
-            self.notes = []
+        self.__annotations__ = (self.__annotations__
+                                if hasattr(self, "__annotations__")
+                                else {})
+        """The different type annotations for the class"""
 
-        self.__elements_mapping__ = {v.__map_attribute__: v for v in (list_parsers.Parameters, list_parsers.Returns,
-                                                                      list_parsers.Raises, list_parsers.Changelog,
-                                                                      list_parsers.Copyright, example_parsers.Example)}
+        self.extra_arguments = kwargs
+        """The extra arguments passed with the docstring parser"""
 
-        if docs is None:
-            docs = ""
+        self.flag_prefix = str(flag_prefix)
 
-        self.original = inspect.cleandoc(str(docs))
+        block_map: typing.Dict[str, str] = {}
+        inline_map: typing.Dict[str, str] = {}
+        flag_map: typing.Dict[str, str] = {}
 
-        if sys.version_info >= (3, 6):
-            self.elements: typing.Dict[str, Parser] = {}
-        else:
-            self.elements = {}
+        for attr, annotation in self.__annotations__.items():
+            for mapping, parser in [(block_map, parsers.map.MapParser),
+                                    (inline_map, parsers.inline.InlineParser),
+                                    (flag_map, parsers.flag.FlagParser)]:
+                if issubclass(annotation, parser):
+                    for name in annotation.names:
+                        name = self._normalize_name(name)
+                        mapping[name] = attr
+                    setattr(self, attr, annotation(**self.extra_arguments))
 
-        self.warnings = []
-        self.notes = []
-
-        # First, everything is missing
-        missing = self.__elements_mapping__.copy()
+        self.original = inspect.cleandoc(str(docstring or ""))
 
         description = []
 
-        def clean_name(name: str) -> str:
-            """Cleans the string name to normalize it"""
-            return name.replace(" ", "").upper().strip()
+        # Handling the different sections
+        # Example:
 
+        # Section 1
+        # ---------
+        # Do something
+        #
+        # Section 2
+        # ---------
+        # Do another thing
+
+        # Between "Do something" and "Section 2", there are two newline characters
         for section in self.original.split("\n\n"):
+            # Between "Section 1" and the content,
+            # there is a newline character and at least 3 hyphens
             name, _, body = section.partition("\n---")
+
+            # Nothing describing the paragraph
+            # Example:
+            #
+            # Section 1
+            # ---------
+            # (no content)
             if not body:
+                # The section should be considered as a description element
                 description.append(name)  # name would be the content here
                 continue
 
             # Getting the parser
-            parse = sections_map.get(clean_name(name), None)
-            if parse is None:
+            name = self._normalize_name(name)
+            attr = block_map.get(name, None)
+            if attr is None:
+                attr = inline_map.get(name, None)
+
+            # If there is no parser associated with the paragraph name
+            if attr is None:
+                # Reconstruct the content and add it to the description body
                 description.append("\n---".join((name, body)))
                 continue
 
+            # Removing the extra hyphens and the newline character
             content = body.lstrip("-").lstrip("\n")
-            try:
-                self.elements[parse.__map_attribute__].extend(content)
-            except Exception:
-                self.elements[parse.__map_attribute__] = parse(content, signature=signature, noself=noself)
-                missing.pop(parse.__map_attribute__, None)
-        self.original_sections = list(self.elements.keys())
 
-        if signature:
-            if list_parsers.Parameters.__map_attribute__ not in self.elements:
-                self.elements[list_parsers.Parameters.__map_attribute__] = list_parsers.Parameters(signature=signature, noself=noself)
-                missing.pop(list_parsers.Parameters.__map_attribute__, None)
+            # Block parser
+            current = getattr(self, attr)
+            if isinstance(current, parsers.map.MapParser):
+                current.extend(content)
+            if isinstance(current, parsers.inline.InlineParser):
+                current.append(content)
 
-            if list_parsers.Returns.__map_attribute__ not in self.elements:
-                self.elements[list_parsers.Returns.__map_attribute__] = list_parsers.Returns(signature=signature)
-                missing.pop(list_parsers.Returns.__map_attribute__, None)
+            # Not added to the description because parsed blocks
+            # are not description content
 
-        for attr, parse in missing.items():
-            self.elements[attr] = parse()
+        for line in description.copy():
+            line = str(line).strip()
 
-        # HANDLING TAGS
-        for index, line in enumerate(description):
+            if line.startswith(self.flag_prefix):
+                flag = line.removeprefix(self.flag_prefix)
+                flag = self._normalize_name(flag)
+
+                flag_attr = flag_map.get(flag, None)
+
+                if flag_attr:
+                    getattr(self, flag_attr).set_flag()
+                    description.remove(line)
+                    continue
+
             start, _, content = str(line).partition(":")
-            start = clean_name(start)
+
+            start = self._normalize_name(start)
             content = content.strip()
-            if start in {"WARNING", "WARNINGS"}:
-                self.warnings.append(content)
-                description[index] = "Warning: {content}".format(content=content)
-            elif start in {"NOTE", "NOTES", "SEEALSO", "INFORMATION"}:
-                self.notes.append(content)
-                description[index] = "Note: {content}".format(content=content)
 
-        if len(description) > 0:
-            checking = str(description[0]).replace(" ", "").upper()
-            self.deprecated = checking.startswith("!DEPRECATED!") or checking.startswith(
-                "!DEPRECATION!") or checking.startswith("!DEPRECATE!") or checking.startswith("!DEPRECATIONNOTICE!")
-            if self.deprecated:
-                index = description[0].find("!")
-                second_index = index + description[0][index + 1:].find("!") + 2
-                description[0] = "! DEPRECATED !" + description[0][second_index:]
+            if not content:
+                continue
 
-        self.description = "\n\n".join(description)
+            # Inline parser
+            attr = inline_map.get(start, None)
+            if attr is None:
+                continue
 
-    def __repr__(self) -> str:
-        return "<Docs sections={sections}>".format(sections=self.original_sections)
+            getattr(self, attr).append(content)
 
-    def __getattribute__(self, key: str):
-        if key in super().__getattribute__("__elements_mapping__"):
-            return self.__getitem__(key)
-        return super().__getattribute__(key)
+            # Not part of the description anymore
+            description.remove(line)
 
-    def __getitem__(self, key: str):
-        return self.elements[key]
+        self.description = "\n".join(description)
 
-    def dumps(self, indent=4):
+    @staticmethod
+    def _normalize_name(name: str) -> str:
+        """Cleans the name to normalize it"""
+        return name.replace(" ", "").upper().strip()
+
+    def dumps(self, indent: int = 4):
         """Returns a clean docstring"""
         result = ""
+
+        # Adding back the description if it has content
         if self.description.replace(" ", ""):
             result += self.description
             result += "\n\n"
-        sections = []
-        for section in self.elements.values():
-            if not isinstance(section, example_parsers.Example) and len(section) <= 0:
-                continue
 
-            current_section = ""
+        # Adding flags
+        for attr in self.__annotations__:
+            parser = getattr(self, attr)
+            if isinstance(parser, parsers.flag.FlagParser):
+                element = parser.dumps(indent=indent)
+                if element:
+                    result += element
+                    result += "\n\n"
 
-            if isinstance(section, example_parsers.Example):
-                if not section.original:
-                    continue
-                current_section += section.__class__.__name__ + "\n"
-                current_section += "-" * len(section.__class__.__name__) + "\n"
+        # Adding inline sections
+        for attr in self.__annotations__:
+            parser = getattr(self, attr)
+            if isinstance(parser, parsers.inline.InlineParser):
+                element = parser.dumps(indent=indent)
+                if element:
+                    result += element
+                    result += "\n\n"
 
-                current_section += section.original + "\n"
-            else:
-                current_section += section.__class__.__name__ + "\n"
-                current_section += "-" * len(section.__class__.__name__) + "\n"
+        # Adding block sections
+        for attr in self.__annotations__:
+            parser = getattr(self, attr)
+            if isinstance(parser, parsers.map.MapParser):
+                element = parser.dumps(indent=indent)
+                if element:
+                    result += element
+                    result += "\n\n"
 
-                for element in section:
-                    # element = self.parameters.__element_type__()
-                    current_section += element.name
+        return result.strip().strip("\n")
 
-                    if isinstance(element, list_parsers.Parameter):
-                        options = []
-                        if len(element.types) > 0:
-                            options.append(" | ".join([v.__name__ if isinstance(v, type) else str(v) for v in element.types]))
-                        if element.default:
-                            options.append("default = {default}".format(default=element.default))
-                        elif element.optional:
-                            options.append("optional")
-                        if element.deprecated:
-                            options.append("deprecated")
+    def __repr__(self) -> str:
+        representations = [f"{attr}={getattr(self, attr)}"
+                           for attr, annotation in self.__annotations__.items()
+                           if getattr(self, attr) and issubclass(annotation, (parsers.parser.Parser, parsers.flag.FlagParser))]
+        return f"{self.__class__.__name__}({', '.join(representations)})"
 
-                        if len(options) > 0:
-                            current_section += ": " + ", ".join(options)
 
-                    current_section += "\n"
-
-                    for sentence in element.content:
-                        current_section += " " * indent + sentence + "\n"
-
-            sections.append(current_section)
-
-        result += "\n".join(sections)
-
-        if result.endswith("\n\n"):
-            result = result.removesuffix("\n")
-
-        return result
-
-    def as_dict(self, camelCase: bool = False):
-        """Returns the parsed docstring information as a dictionary"""
-        results = {
-            "description": self.description,
-            "notes": self.notes,
-            "warnings": self.warnings,
-            "deprecated": self.deprecated
-        }
-        results.update({k: v.as_dict(camelCase) for k, v in self.elements.items()})
-        return results
+# Backward compatibility
+Docs = Documentation

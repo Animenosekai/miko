@@ -63,7 +63,7 @@ miko v1.1
 ```bash
 $ miko --version
 # output:
-miko v1.0
+miko v1.1
 ```
 
 ## Purpose

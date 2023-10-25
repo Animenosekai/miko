@@ -1,3 +1,4 @@
+import ast
 import argparse
 import inspect
 import json
@@ -11,8 +12,23 @@ usage: miko [-h] [--version] {info,clean} ...
 miko: error: the following arguments are required: action"""
 
 
+def retrieve_module_docstrings(tree: ast.Module):
+    ast.get_docstring(tree)
+    if isinstance(tree.body[0], ast.Expr) and isinstance(tree.body[0].value, ast.Constant):
+        tree.body[0].value.value
+
+def retrieve_function_docstrings():
+    pass
+
+def retrieve_docstrings(tree: ast.Module | ):
+    tree.
+
+
 class MikoSignature:
+    """The minimum required for a callable signature"""
     class Parameter:
+        """A parameter in the signature"""
+
         def __init__(self, annotation: str) -> None:
             annotation = str(annotation).strip()
             if "=" in annotation:
@@ -66,7 +82,8 @@ class MikoSignature:
         # print("annotations", annotations)
         # print("annotations_results", annotations_results)
 
-        results = [self.Parameter(v) for v in annotations_results if v]  # problem if using type annotation with commas like Union[hello, world]
+        # problem if using type annotation with commas like Union[hello, world]
+        results = [self.Parameter(v) for v in annotations_results if v]
         self.parameters = {v.name: v for v in results}
 
     def as_dict(self, camelCase: bool = False):
@@ -89,8 +106,8 @@ class FileReadingElement:
         self.noself = noself
 
     @property
-    def docs(self) -> miko.Docs:
-        return miko.Docs(self.docstring, self.signature, noself=self.noself)
+    def docs(self) -> miko.Documentation:
+        return miko.Documentation(self.docstring, self.signature, noself=self.noself)
 
     def as_dict(self, camelCase: bool = False):
         return {
@@ -143,9 +160,11 @@ def read_file(text: str, noself: bool = False):
                     LAST_ELEMENT.start_line = index
                 LAST_ELEMENT.indent = current_indent
                 LAST_ELEMENT.had_docstring = True
-                LAST_ELEMENT.quotation = '"""' if line.startswith('"""') else "'''"
+                LAST_ELEMENT.quotation = '"""' if line.startswith(
+                    '"""') else "'''"
                 IN_DOCSTRING = True
-                LAST_ELEMENT.docstring += line.removeprefix(LAST_ELEMENT.quotation) + "\n"
+                LAST_ELEMENT.docstring += line.removeprefix(
+                    LAST_ELEMENT.quotation) + "\n"
         elif IN_DOCSTRING:
             # print("LINE:", line, "IN_DOCSTRING")
             LAST_ELEMENT.docstring += docstring_line + "\n"
@@ -157,100 +176,128 @@ def read_file(text: str, noself: bool = False):
     return results
 
 
-def main():
-    parser = argparse.ArgumentParser("miko", description="See how to use a Python object at a glance!")
-    parser.add_argument('--version', '-v', action='version', version=miko.__version__)
+def main(args: argparse.Namespace):
+    """
+    Core flow for the CLI
+
+    Parameters
+    ----------
+    args: argparse.Namespace
+        The arguments
+    """
+    if not args.action:
+        return print(NO_ACTION)
+
+    if args.text:
+        if args.action == "clean":
+            docs = miko.Documentation(args.text, noself=args.noself)
+            result = docs.dumps(indent=args.indent)
+
+            if args.output:
+                with open(args.output, "w", encoding="utf-8") as f:
+                    return f.write(result)
+
+            return print(result)
+
+        # The chosen `action` should be `info`
+        return print(json.dumps(miko.Documentation(args.text, noself=args.noself).as_dict(True), indent=args.indent, ensure_ascii=False))
+
+    file = pathlib.Path(args.file)
+    if not file.is_file():
+        raise ValueError(f"The given file '{file}' does not seem to be a file")
+
+    # with open(file, "r", encoding="utf-8") as f:
+    #     text = f.read()
+    text = file.read_text(encoding="utf-8")
+    results = read_file(text, noself=args.noself)
+
+    if args.action == "info":
+        return print(json.dumps([r.as_dict(True) for r in results],
+                                indent=args.indent, ensure_ascii=False))
+
+    returning = []
+    INDEXES = {}
+
+    for element in results:
+        # element: FileReadingElement
+        # if element.signature:
+        INDEXES[element.start_line] = element
+        if element.end_line:
+            for l in range(element.start_line + 1, element.end_line + 1):
+                INDEXES[l] = False
+    # {
+    #     "line<int>": FileReadingElement,
+    #     "line+1<int>": False,
+    #     "line+2<int>": False,
+
+    #     "line<int>": FileReadingElement,
+    #     "line+1<int>": False,
+    # }
+    for index, line in enumerate(text.splitlines(), start=1):
+        current = INDEXES.get(index, None)
+
+        if current is False:
+            # print("🈲 LINE", str(index).zfill(3), ":", '\033[91m', line, '\033[0m')
+            continue
+        # print("✅ LINE", str(index).zfill(3), ":", '\033[92m', line, '\033[0m')
+
+        if current is None or current.signature:
+            returning.append(line)
+
+        if current is None:
+            continue
+
+        # current: FileReadingElement
+
+        returning.append(f"{' ' * current.indent}{current.quotation}")
+        for line in current.docs.dumps(indent=args.indent).splitlines():
+            returning.append(f"{' ' * current.indent}{line}")
+        returning.append(f"{' ' * current.indent}{current.quotation}")
+    output = "\n".join(returning)
+    if args.output:
+        with open(args.output, "w", encoding="utf-8") as f:
+            f.write(output)
+        return
+    return print(output)
+
+
+def entry():
+    """Main entrypoint for the CLI"""
+    parser = argparse.ArgumentParser(
+        "miko", description="See how to use a Python object at a glance!")
+    parser.add_argument('--version', '-v', action='version',
+                        version=miko.__version__)
 
     subparser = parser.add_subparsers(help='Actions', dest="action")
 
-    parser_info = subparser.add_parser('info', help='Retrieve info on the given docstring')
-    parser_info.add_argument('--text', '-t', action='store', type=str, required=False, help='The docstring to get the information from')
-    parser_info.add_argument("--file", "-f", action='store', type=str, required=False, help='The file to get the docstrings from.')
-    parser_info.add_argument("--indent", "-i", action='store', type=int, required=False, default=4, help='The indentation for the JSON result.')
+    parser_info = subparser.add_parser('info',
+                                       help='Retrieve info on the given docstring')
+    parser_info.add_argument('--text', '-t', action='store', type=str,
+                             required=False, help='The docstring to get the information from')
+    parser_info.add_argument("--file", "-f", action='store', type=str,
+                             required=False, help='The file to get the docstrings from.')
+    parser_info.add_argument("--indent", "-i", action='store', type=int,
+                             required=False, default=4, help='The indentation for the JSON result.')
     parser_info.add_argument("--noself", action='store_true', required=False, default=False,
                              help='Ignoring the "self" parameter from signatures. (useful for class methods)')
 
     parser_clean = subparser.add_parser("clean", help="Clean the docstring")
-    parser_clean.add_argument('--text', '-t', action='store', type=str, required=False, help='The docstring to clean')
-    parser_clean.add_argument("--file", "-f", action='store', type=str, required=False, help='The file to get the docstrings from.')
+    parser_clean.add_argument('--text', '-t', action='store',
+                              type=str, required=False, help='The docstring to clean')
+    parser_clean.add_argument("--file", "-f", action='store', type=str,
+                              required=False, help='The file to get the docstrings from.')
     parser_clean.add_argument("--output", "-o", action='store', type=str, required=False,
                               default=None, help='The file to output the cleaned result to.')
 
-    parser_clean.add_argument("--indent", "-i", action='store', type=int, required=False, default=4, help='The indentation to clean the docs.')
+    parser_clean.add_argument("--indent", "-i", action='store', type=int,
+                              required=False, default=4, help='The indentation to clean the docs.')
     parser_clean.add_argument("--noself", action='store_true', required=False, default=False,
                               help='Ignoring the "self" parameter from signatures. (useful for class methods)')
 
     args = parser.parse_args()
 
-    if not args.action:
-        print(NO_ACTION)
-        sys.exit(1)
-
-    if args.text:
-        if args.action == "clean":
-            result = miko.Docs(args.text, noself=args.noself).dumps(indent=args.indent)
-            if parser_clean.output:
-                with open(parser_clean.output, "w") as f:
-                    f.write(result)
-                return
-            return print(result)
-        return print(json.dumps(miko.Docs(args.text, noself=args.noself).as_dict(True), indent=args.indent, ensure_ascii=False))
-
-    file = pathlib.Path(args.file)
-    if not file.is_file():
-        raise ValueError("The given file '{path}' does not seem to be a file".format(path=file))
-
-    with open(file) as f:
-        text = f.read()
-    # text = file.read_text()
-
-    results = read_file(text, noself=args.noself)
-    if args.action == "clean":
-        returning = []
-        INDEXES = {}
-        for element in results:
-            # element: FileReadingElement
-            # if element.signature:
-            INDEXES[element.start_line] = element
-            if element.end_line:
-                for l in range(element.start_line + 1, element.end_line + 1):
-                    INDEXES[l] = False
-        # {
-        #     "line<int>": FileReadingElement,
-        #     "line+1<int>": False,
-        #     "line+2<int>": False,
-
-        #     "line<int>": FileReadingElement,
-        #     "line+1<int>": False,
-        # }
-        for index, line in enumerate(text.splitlines(), start=1):
-            current = INDEXES.get(index, None)
-
-            if current is False:
-                # print("🈲 LINE", str(index).zfill(3), ":", '\033[91m', line, '\033[0m')
-                continue
-            # print("✅ LINE", str(index).zfill(3), ":", '\033[92m', line, '\033[0m')
-
-            if current is None or current.signature:
-                returning.append(line)
-
-            if current is None:
-                continue
-
-            # current: FileReadingElement
-
-            returning.append("{i}{q}".format(i=" " * current.indent, q=current.quotation))
-            for l in current.docs.dumps(indent=args.indent).splitlines():
-                returning.append("{i}{l}".format(i=" " * current.indent, l=l))
-            returning.append("{i}{q}".format(i=" " * current.indent, q=current.quotation))
-        output = "\n".join(returning)
-        if args.output:
-            with open(args.output, "w") as f:
-                f.write(output)
-            return
-        return print(output)
-    print(json.dumps([r.as_dict(True) for r in results], indent=args.indent, ensure_ascii=False))
+    return main(args)
 
 
 if __name__ == "__main__":
-    main()
+    entry()
