@@ -72,8 +72,9 @@ class MapElement(Element):
             The indentation level
         """
         result = self.name
-        if self.options:
-            result += f": {self.render_options()}"
+        options = self.render_options()
+        if options:
+            result += f": {options}"
         result += "\n"
         for line in self.body.splitlines():
             result += " " * indent

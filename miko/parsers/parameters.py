@@ -92,7 +92,9 @@ class Parameter(MapElement):
                  if hasattr(element, "__name__")
                  else str(element)
                  for element in self.types]
-        results.append(" | ".join(sorted(types)))
+        if types:
+            results.append(" | ".join(sorted(types)))
+
         if self.deprecated:
             results.append("deprecated")
 

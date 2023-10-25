@@ -1,5 +1,4 @@
 """Testing AST parsing"""
-import ast
 import builtins
 import dataclasses
 import importlib
@@ -7,6 +6,9 @@ import inspect
 import sys
 import typing
 
+import ast_comments as ast
+import autopep8
+import isort
 from rich.console import Console
 
 import miko
@@ -332,9 +334,6 @@ def get_elements(node: ast.AST,
 
         if isinstance(element, (ast.AsyncFunctionDef, ast.FunctionDef, ast.ClassDef, ast.Module)):
             # We have a callable
-            # if (element.body
-            #     and isinstance(element.body[0], ast.Constant)
-            #         and isinstance(element.body[0].value, str)):
             if (element.body
                     and isinstance(element.body[0], ast.Expr)
                     and isinstance(element.body[0].value, ast.Constant)
@@ -361,16 +360,66 @@ def get_elements(node: ast.AST,
     return results
 
 
+def clean_elements(elements: typing.List[Element], indent: int = 4):
+    """Cleans up the given elements"""
+    for element in elements:
+        if (not element.docstring
+            and element.signature
+                and isinstance(element.node, ast.AsyncFunctionDef | ast.FunctionDef)):
+            new_expr = ast.Expr()
+            new_expr.value = ast.Constant()
+            new_expr.value.value = ""
+            new_expr.value.col_offset = element.node.col_offset + indent
+            element.node.body.insert(0, new_expr)
+            element.docstring = new_expr.value
+
+        if not element.docstring:
+            continue
+
+        result = element.documentation.dumps(indent=indent)
+
+        padding = " " * element.docstring.col_offset
+
+        # We want the right indentation
+        results = []
+        for line in result.splitlines():
+            results.append(padding + line)
+
+        result = "\n".join(results).strip().strip("\n")
+
+        # If this is a multi-line docstring
+        # we want to add a newline before
+        # and after the docstring
+        if "\n" in result:
+            result = f"""\n{padding}{result}\n{padding}"""
+
+        if element.docstring:
+            element.docstring.value = result
+        elif element.signature and isinstance(element.node, ast.AsyncFunctionDef | ast.FunctionDef):
+            new_expr = ast.Expr()
+            new_expr.value = ast.Constant()
+            new_expr.value.value = result
+            element.node.body.insert(0, new_expr)
+
+    return elements
+
+
+def clean(source: str) -> str:
+    """Cleans up the source code"""
+    tree = ast.parse(str(source))
+    elements = get_elements(tree)
+    clean_elements(elements)
+    ast.fix_missing_locations(tree)
+    result = ast.unparse(tree)
+    result = autopep8.fix_code(result)
+    return isort.code(result)
+
+
 if __name__ == "__main__":
     c = Console()
 
-    with open("test.py") as f:
-        r = ast.parse(f.read())
+    with open("test.py", "r", encoding="utf-8") as f:
+        source = f.read()
 
-    c.print(ast.dump(r, indent=4))
-    c.print(get_elements(r))
-    for element in get_elements(r):
-        c.print(element.node.__class__.__name__, "at line", element.node.lineno, ":", element.documentation)
-
-    # for element in ast.iter_child_nodes(r):
-    #     c.print(ast.dump(element, indent=4))
+    with open("test_clean.py", "w", encoding="utf-8") as f:
+        f.write(clean(source))

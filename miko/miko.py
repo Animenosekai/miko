@@ -101,7 +101,6 @@ class Documentation:
                  docstring: str,
                  flag_prefix: str = "!",
                  **kwargs) -> None:
-
         self.__annotations__ = (self.__annotations__
                                 if hasattr(self, "__annotations__")
                                 else {})

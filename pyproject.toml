@@ -42,7 +42,10 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.8"
+ast-comments = "^1.1.2"
+autopep8 = "^2.0.4"
+isort = "^5.12.0"
 
 [tool.poetry.scripts]
 miko = 'miko.__main__:main'
