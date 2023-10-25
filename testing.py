@@ -1,5 +1,7 @@
+"""Testing AST parsing"""
 import ast
 import builtins
+import dataclasses
 import importlib
 import inspect
 import sys
@@ -7,20 +9,14 @@ import typing
 
 from rich.console import Console
 
-c = Console()
-
-with open("test.py") as f:
-    r = ast.parse(f.read())
-
-c.print(ast.dump(r, indent=4))
-
-for element in ast.iter_child_nodes(r):
-    c.print(ast.dump(element, indent=4))
+import miko
 
 
 def get_element(dot_path: str, builtin: bool = False) -> typing.Any:
     """
     Get a element from its dot path
+
+    Warning: Keep in mind that the full dot path needs to be provided
 
     Parameters
     ----------
@@ -35,11 +31,13 @@ def get_element(dot_path: str, builtin: bool = False) -> typing.Any:
     Any
         Any element pointed by the dot path
     """
+    # Might be a builtin element ?
     try:
         return getattr(builtins, dot_path)
     except AttributeError:
         pass
 
+    # Might be an element already loaded ?
     try:
         return globals()[dot_path]
     except KeyError:
@@ -52,22 +50,34 @@ def get_element(dot_path: str, builtin: bool = False) -> typing.Any:
 
     module = []
     result = None
+    # Ok, now lets find the module where it was defined
     for element in processing.copy():
         try:
+            # Trying to import the whole module again
             result = importlib.import_module(".".join(module
                                                       + [element]))
+            # Ok so we have at least this found
             module.append(element)
-            processing.pop(0)
+            processing.pop(0)  # we already processed it
         except Exception:
+            # This happens when the we arrive on a non-module element
+            # Example: some_module.some_submodule.some_variable
+            #          ~~~~~~~~~~~~~~~~~~~~~~~~~~
+            #       It should have found all of this
+            #                                  but stopped at this
             break
 
+    # Couldn't find any module
     if not result:
         raise ValueError(
             f"Couldn't find the module from the given dot path ({dot_path})")
 
+    # The dot path leads to a module,
+    # there is nothing to search further
     if not processing:
         return result
 
+    # Trying to find the element within the module
     for element in processing:
         result = getattr(result, element)
 
@@ -186,8 +196,8 @@ def signature_from_ast(node: ast.AsyncFunctionDef | ast.FunctionDef) -> inspect.
     # [arg1, arg2, arg3, arg4, arg5] => len1 == 5
     # [                  def1, def2] => len2 == 2
     #  0   , 1   , 2   , 3   , 4
-    #  -3    -2    -1    0     1 (shift by -1 * (len2 + 1))
-    defaults_length = len(node.args.defaults) + 1
+    #  -3    -2    -1    0     1 (shift by -1 * (len1 - len2))
+    defaults_length = len(node.args.args) - len(node.args.defaults)
     for index, arg in enumerate(node.args.args):
         ind = index - defaults_length
         default = inspect.Parameter.empty
@@ -211,7 +221,7 @@ def signature_from_ast(node: ast.AsyncFunctionDef | ast.FunctionDef) -> inspect.
     # Handling Keyword Only Args
     # Example: (a, b, *, c) -> Any
     #                    ↑
-    defaults_length = len(node.args.kw_defaults) + 1
+    defaults_length = len(node.args.kw_defaults) - len(node.args.kw_defaults)
     for index, arg in enumerate(node.args.kwonlyargs):
         ind = index - defaults_length
         default = inspect.Parameter.empty
@@ -238,6 +248,129 @@ def signature_from_ast(node: ast.AsyncFunctionDef | ast.FunctionDef) -> inspect.
     return inspect.Signature(parameters=parameters, return_annotation=returned)
 
 
-for element in ast.walk(r):
-    if isinstance(element, ast.AsyncFunctionDef | ast.FunctionDef):
-        print(signature_from_ast(element))
+@dataclasses.dataclass
+class Element:
+    """A documented element"""
+    node: ast.AST
+    """The node"""
+    parents: typing.List[ast.AST] = dataclasses.field(default_factory=list)
+    """The nesting where the element was defined"""
+    docstring: typing.Optional[ast.Constant] = None
+    """The docstring element"""
+
+    @property
+    def signature(self) -> typing.Optional[inspect.Signature]:
+        """If available, the signature of the node"""
+        try:
+            return signature_from_ast(self.node)
+        except Exception:
+            return None
+
+    @property
+    def documentation(self) -> miko.Documentation:
+        """Returns the documentation for the node"""
+        return miko.Documentation(self.docstring.value if self.docstring else "",
+                                  signature=self.signature,
+                                  noself=True)
+
+
+def get_elements(node: ast.AST,
+                 parents: typing.Optional[typing.List[ast.AST]] = None):
+    """
+    Gets all of the elements which could be documented inside the AST
+
+    Parameters
+    ----------
+    node: ast.AST
+        The Abstract Syntax Tree element to search into
+    """
+    parents = parents or []
+
+    results: typing.List[Element] = []
+    targets: typing.List[Element] = []  # This holds the last assignements
+
+    for element in ast.iter_child_nodes(node):
+        # If we have a straightforward assignement
+        # Example: some_var = some_value or some_var = another_var = some_value
+        if isinstance(element, ast.Assign):
+            targets = []
+            for target in element.targets:
+                if isinstance(target, ast.Name):
+                    # Add each variable name
+                    # `element` is added to the parents to conform with
+                    # the `ast.AnnAssign` case
+                    targets.append(Element(target,
+                                           parents=parents + [node, element]))
+
+        # If we have an annotated assignement
+        # Example: some_var: some_type = some_value
+        if isinstance(element, ast.AnnAssign):
+            # We are adding `element` to get to retrieve the
+            # annotation when looking into the variable
+            targets = [Element(element.target,
+                               parents=parents + [node, element])]
+
+        # Constants are inside ast.Expr
+        if isinstance(element, ast.Expr):
+            element = element.value
+
+        # If we have a constant that is a string
+        # coming right after `targets` (assignements)
+        if isinstance(element, ast.Constant) and isinstance(element.value, str) and targets:
+            # Then we add this element as the docstring of the assignements
+            for target in targets:
+                target.docstring = element
+        elif isinstance(element, (ast.Assign, ast.AnnAssign)):
+            # If we are assigning something,
+            # we shouldn't get rid of the targets for now
+            pass
+        else:
+            # No docstring was found on the assignements
+            # Clear the assignements as anything after that
+            # is no longer right after
+            targets = []
+
+        if isinstance(element, (ast.AsyncFunctionDef, ast.FunctionDef, ast.ClassDef, ast.Module)):
+            # We have a callable
+            # if (element.body
+            #     and isinstance(element.body[0], ast.Constant)
+            #         and isinstance(element.body[0].value, str)):
+            if (element.body
+                    and isinstance(element.body[0], ast.Expr)
+                    and isinstance(element.body[0].value, ast.Constant)
+                    and isinstance(element.body[0].value.value, str)):
+                # With the first thing in it being a string (docstring)
+                docstring = element.body[0].value
+            else:
+                docstring = None
+
+            # We are adding the callable element
+            adding = [Element(element, parents=parents +
+                              [node], docstring=docstring)]
+        else:
+            # Might be another type of element,
+            # which should be documented if and only if
+            # the element is inside `targets`
+            adding = targets
+
+        # We recursively add the other child elements
+        # and the current element
+        results.extend(adding
+                       + get_elements(element, parents=parents + [node]))
+
+    return results
+
+
+if __name__ == "__main__":
+    c = Console()
+
+    with open("test.py") as f:
+        r = ast.parse(f.read())
+
+    c.print(ast.dump(r, indent=4))
+    c.print(get_elements(r))
+    for element in get_elements(r):
+        c.print(element.node.__class__.__name__, "at line", element.node.lineno, ":", element.documentation)
+
+    # for element in ast.iter_child_nodes(r):
+    #     c.print(ast.dump(element, indent=4))
