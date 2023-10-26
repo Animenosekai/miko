@@ -17,7 +17,7 @@
 [![GitHub - License](https://img.shields.io/github/license/Animenosekai/miko)](https://github.com/Animenosekai/miko/blob/master/LICENSE)
 [![GitHub top language](https://img.shields.io/github/languages/top/Animenosekai/miko)](https://github.com/Animenosekai/miko)
 [![CodeQL Checks Badge](https://github.com/Animenosekai/miko/workflows/CodeQL%20Python%20Analysis/badge.svg)](https://github.com/Animenosekai/miko/actions?query=workflow%3ACodeQL)
-[![Pytest](https://github.com/Animenosekai/miko/actions/workflows/pytest.yml/badge.svg)](https://github.com/Animenosekai/miko/actions/workflows/pytest.yml)
+<!-- [![Pytest](https://github.com/Animenosekai/miko/actions/workflows/pytest.yml/badge.svg)](https://github.com/Animenosekai/miko/actions/workflows/pytest.yml) -->
 ![Code Size](https://img.shields.io/github/languages/code-size/Animenosekai/miko)
 ![Repo Size](https://img.shields.io/github/repo-size/Animenosekai/miko)
 ![Issues](https://img.shields.io/github/issues/Animenosekai/miko)
@@ -55,13 +55,13 @@ pip install --upgrade git+https://github.com/Animenosekai/miko
 You can check if you successfully installed it by printing out its version:
 
 ```bash
-$ python -c "import miko; print(miko.__version__)"
+$ miko --version
 # output:
 2.0
 ```
 
 ```bash
-$ miko --version
+$ python -c "import miko; print(miko.__version__)"
 # output:
 2.0
 ```
@@ -479,7 +479,9 @@ If the flag is present, it will be set to True, otherwise it will be set to Fals
 def func():
     """
     This is a function
+
     ! FLAG
+
     ! YOU'RE COOL
 
     (description)

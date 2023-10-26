@@ -11,7 +11,7 @@ documentation = "https://github.com/Animenosekai/miko/blob/main/README.md"
 keywords = ["animenosekai", "miko", "docs", "documentation", "parser"]
 classifiers = [
     # Status
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
 
     # Environment
     "Environment :: Console",

@@ -9,7 +9,7 @@ __repository__ = "https://github.com/Animenosekai/miko"
 
 # Module
 __module__ = "Miko"
-__status__ = 'Beta'
+__status__ = 'Stable'
 __year__ = 2023
 __license__ = 'MIT License'
 
