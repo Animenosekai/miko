@@ -265,6 +265,19 @@ class Documentation:
                            if getattr(self, attr) and issubclass(annotation, (parsers.parser.Parser, parsers.flag.FlagParser))]
         return f"{self.__class__.__name__}({', '.join(representations)})"
 
+    @property
+    def exported(self):
+        """The exported data"""
+        results = {}
+        for attr in self.__annotations__:
+            result = getattr(self, attr)
+            if isinstance(result, parsers.parser.Parser):
+                results[attr] = result.exported
+            else:
+                results[attr] = result
+
+        return results
+
 
 # Backward compatibility
 Docs = Documentation

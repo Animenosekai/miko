@@ -14,6 +14,7 @@ Example
 ...     """
 '''
 import inspect
+import json
 import typing
 
 from miko.parsers.map import MapElement, MapParser
@@ -106,6 +107,27 @@ class Parameter(MapElement):
                 results.append("optional")
 
         return ", ".join(results)
+
+    @property
+    def exported(self):
+        try:
+            json.dumps(self.default)
+        except TypeError:
+            if isinstance(self.default, Empty):
+                default_value = "@miko.empty"
+            else:
+                default_value = str(self.default)
+        else:
+            default_value = self.default
+        return {
+            **super().exported,
+            "deprecated": self.deprecated,
+            "optional": self.optional,
+            "default": default_value,
+            "types": [t.__name__
+                      if hasattr(t, "__name__") else str(t)
+                      for t in self.types]
+        }
 
 
 class Parameters(MapParser):

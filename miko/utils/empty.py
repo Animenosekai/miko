@@ -1,8 +1,12 @@
 """
 Defines what is empty
 """
-import typing
 import inspect
+import typing
+
+
+class Empty:
+    """Represents an empty element"""
 
 
 def is_empty(value: typing.Any):
@@ -14,7 +18,3 @@ def is_empty(value: typing.Any):
             or (value_repr == "<class'inspect._empty'>")
             or (value is Empty)
             or (isinstance(value, Empty)))
-
-
-class Empty:
-    """Represents an empty element"""

@@ -10,7 +10,7 @@ CONSTANT = 1
 'Documenting a constant'
 
 
-def test(a: int, b: int, /, c: int = 4, d=5, e: int = 6, *args, f: str, **kwargs) -> miko.parsers.changelog.Changelog:
+def test(a: int, b: int, /, c: int = 4, d=5, e: int = 6, *args, f: str, **kwargs) -> int:
     """
     Documenting a function
 
@@ -28,7 +28,7 @@ def test(a: int, b: int, /, c: int = 4, d=5, e: int = 6, *args, f: str, **kwargs
 
     Returns
     -------
-    Changelog
+    int
     """
 
     def inner():
@@ -48,13 +48,14 @@ def test(a: int, b: int, /, c: int = 4, d=5, e: int = 6, *args, f: str, **kwargs
         -------
         str
         """
-        pass
+        return str(a)
     local_variable: int = 2
     'Documenting a local variable'
     local_declaration: int
     'Documenting a local declaration'
     local_declaration = 3
     'Redeclaration of a variable'
+    return local_declaration
 
 
 class Test:

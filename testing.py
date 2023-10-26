@@ -250,6 +250,21 @@ def signature_from_ast(node: ast.AsyncFunctionDef | ast.FunctionDef) -> inspect.
     return inspect.Signature(parameters=parameters, return_annotation=returned)
 
 
+def export_node(node: ast.AST) -> typing.Dict[str, typing.Any]:
+    """Exports the data of an AST node"""
+    return {
+        "type": node.__class__.__name__,
+        "start": {
+            "line": node.lineno if hasattr(node, "lineno") else None,
+            "column": node.col_offset if hasattr(node, "col_offset") else None
+        },
+        "end": {
+            "line": node.end_lineno if hasattr(node, "end_lineno") else None,
+            "column": node.end_col_offset if hasattr(node, "end_col_offset") else None
+        }
+    }
+
+
 @dataclasses.dataclass
 class Element:
     """A documented element"""
@@ -274,6 +289,19 @@ class Element:
         return miko.Documentation(self.docstring.value if self.docstring else "",
                                   signature=self.signature,
                                   noself=True)
+
+    @property
+    def exported(self):
+        """Exported data"""
+        return {
+            "node": export_node(self.node),
+            "parents": [
+                export_node(parent)
+                for parent in self.parents
+            ],
+            "documentation": self.documentation.exported,
+            "docstring": self.documentation.dumps()
+        }
 
 
 def get_elements(node: ast.AST,
@@ -415,11 +443,23 @@ def clean(source: str) -> str:
     return isort.code(result)
 
 
+def info(source: str) -> typing.List[typing.Dict[str, typing.Any]]:
+    """Gathers information on the different elements of the source code"""
+    tree = ast.parse(str(source))
+    elements = get_elements(tree)
+    return [
+        element.exported
+        for element in elements
+    ]
+
+
 if __name__ == "__main__":
     c = Console()
 
     with open("test.py", "r", encoding="utf-8") as f:
         source = f.read()
+
+    c.print(info(source))
 
     with open("test_clean.py", "w", encoding="utf-8") as f:
         f.write(clean(source))

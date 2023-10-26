@@ -82,6 +82,14 @@ class MapElement(Element):
             result += "\n"
         return result
 
+    @property
+    def exported(self):
+        return {
+            **super().exported,
+            "name": self.name,
+            "options": list(self.options)
+        }
+
 
 class MapParser(Parser):
     """A parser for map paragraphs"""

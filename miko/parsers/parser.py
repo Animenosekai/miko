@@ -39,6 +39,13 @@ class Element:
         else:
             self.body += "\n" + value.strip("\n")
 
+    @property
+    def exported(self):
+        """The exported data"""
+        return {
+            "body": self.body
+        }
+
 
 class Parser:
     """The base class for a parser"""
@@ -89,3 +96,14 @@ class Parser:
             return True
         except KeyError:
             return False
+
+    @property
+    def exported(self):
+        """The exported data"""
+        results = []
+        for element in self.elements:
+            try:
+                results.append(element.exported)
+            except AttributeError:
+                results.append(element)
+        return results
