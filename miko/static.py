@@ -346,7 +346,19 @@ def get_elements(node: ast.AST,
     results: typing.List[Element] = []
     targets: typing.List[Element] = []  # This holds the last assignements
 
-    for element in ast.iter_child_nodes(node):
+    def child_nodes():
+        """The child nodes"""
+        # We are adding the parent node because it is not processed by any parent
+        if not parents:
+            yield node
+
+        yield from ast.iter_child_nodes(node)
+
+    if len(parents) >= 2:
+        if parents[0] == parents[1]:
+            parents = parents[1:]
+
+    for element in child_nodes():
         # If we have a straightforward assignement
         # Example: some_var = some_value or some_var = another_var = some_value
         if isinstance(element, ast.Assign):
@@ -356,8 +368,12 @@ def get_elements(node: ast.AST,
                     # Add each variable name
                     # `element` is added to the parents to conform with
                     # the `ast.AnnAssign` case
+                    if parents and parents[-1] != node:
+                        adding_parents = parents + [node, element]
+                    else:
+                        adding_parents = parents + [element]
                     targets.append(Element(target,
-                                           parents=parents + [node, element],
+                                           parents=adding_parents,
                                            safe_annotations=safe_annotations))
 
         # If we have an annotated assignement
@@ -365,8 +381,12 @@ def get_elements(node: ast.AST,
         if isinstance(element, ast.AnnAssign):
             # We are adding `element` to get to retrieve the
             # annotation when looking into the variable
+            if parents and parents[-1] != node:
+                adding_parents = parents + [node, element]
+            else:
+                adding_parents = parents + [element]
             targets = [Element(element.target,
-                               parents=parents + [node, element],
+                               parents=adding_parents,
                                safe_annotations=safe_annotations)]
 
         # Constants are inside ast.Expr
@@ -401,13 +421,19 @@ def get_elements(node: ast.AST,
                 docstring = None
 
             # We are adding the callable element
-            adding = [Element(element, parents=parents +
-                              [node], docstring=docstring,
+            if parents and parents[-1] != node:
+                adding_parents = parents + [node]
+            else:
+                adding_parents = parents
+
+            adding = [Element(element, parents=adding_parents,
+                              docstring=docstring,
                               safe_annotations=safe_annotations)]
         else:
             # Might be another type of element,
             # which should be documented if and only if
             # the element is inside `targets`
+            # adding = targets
             adding = targets
 
         # We recursively add the other child elements
@@ -416,7 +442,15 @@ def get_elements(node: ast.AST,
                        + get_elements(element, parents=parents + [node],
                                       safe_annotations=safe_annotations))
 
-    return results
+    # Filtering out duplicates
+    output = []
+    nodes = []
+    for result in results:
+        if result.node in nodes:
+            continue
+        output.append(result)
+        nodes.append(result.node)
+    return output
 
 
 def clean_elements(elements: typing.List[Element], indent: int = 4, **kwargs):

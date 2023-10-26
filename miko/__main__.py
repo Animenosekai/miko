@@ -40,11 +40,18 @@ def main(args: argparse.Namespace):
                                        flag_prefix=args.flag_prefix,
                                        safe_annotations=args.safe_annotations)
 
-        stringified = json.dumps(
-            info_results,
-            indent=args.indent,
-            ensure_ascii=False
-        )
+        if args.minify:
+            stringified = json.dumps(
+                info_results,
+                ensure_ascii=False,
+                separators=(",", ":")
+            )
+        else:
+            stringified = json.dumps(
+                info_results,
+                indent=args.indent,
+                ensure_ascii=False
+            )
 
         if args.output and pathlib.Path(args.output).is_file():
             with open(args.output, "w", encoding="utf-8") as f:
@@ -101,6 +108,8 @@ def entry():
 
     parser_info = subparser.add_parser('info',
                                        help='Gathers information on the different elements in the input')
+    parser_info.add_argument("--minify", action='store_true', required=False,
+                             help='If the output should be minified. (default: False)')
     parser_clean = subparser.add_parser("clean",
                                         help="Cleans the given input")
 

@@ -126,7 +126,7 @@ CONSTANT = 1
 'Documenting a constant'
 
 b: int
-'! DEPRECATED'
+"""! DEPRECATED"""
 ```
 
 Keep in mind that you need to keep the indentation level of the docstring the same as the definition.
@@ -655,6 +655,9 @@ options:
 The `miko info` command provides information on the different elements in the input.
 
 It statically analyzes the source code, gathers information on all elements (classes, functions, modules, variables, etc.), parses their docstrings and outputs a JSON encoded output with all the information.
+
+> **Note**  
+> The `info` command also has the `--minify` flag which lets you minify the output JSON.
 
 If the `--raw` flag is provided, the input will be treated as only being the docstring and not source code, thus only parsing it as a docstring.
 
