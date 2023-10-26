@@ -202,7 +202,7 @@ You can define what are the different parameters/arguments the callable object i
 
 To start explaining the different parameters, you need to use the `Parameters` section name, followed by a line-break and at least 3 hyphens.
 
-A single parameter element is defined by a name, followed by some options. And, on a new line, with a left padding, its description.
+The parameters can be inferred from a callable signature if provided.
 
 > Example
 
@@ -231,10 +231,10 @@ The options are separated from the parameter name using a colon and a space.
 
 Each option is separated by a comma.
 
-- `<type>` : defines the type of the parameter.
-- `optional` : defines a parameter as being optional, without needing to specify its default value. *(useful with keyword arguments for instance)*
-- `default` : defines a parameter as being optional, by giving it a default value.
-- `deprecated` : when a parameter is deprecated.
+- `<type>` — Defines the type of the parameter.
+- `optional` — Defines a parameter as being optional, without needing to specify its default value. *(useful with keyword arguments for instance)*
+- `default` — Defines a parameter as being optional, by giving it a default value.
+- `deprecated` — When a parameter is deprecated.
 
 ***Types***
 
@@ -258,6 +258,8 @@ You can define what are the values returned by a callable object using the `Retu
 
 Each returning element is explained with the following rules: the type of the value and a description with a left-padding on a new line.
 
+The return value can be inferred from a callable signature if provided.
+
 > Example
 
 ```python
@@ -277,29 +279,6 @@ def func():
 ```
 
 > Aliases: `Returns`, `Return`, `Returning`
-
-##### Example
-
-You can give examples of your code, writing them as you would in a Python REPL.
-
-```python
-def func(a = False):
-    """
-    Example
-    -------
-    >>> func()
-    "It is false"
-    >>> func(True)
-    "It is true"
-    # when using something other than a boolean
-    >>> func(1)
-    2
-    """
-```
-
-You can use `# comments` to explain your example.
-
-> Aliases: `Examples`, `Example`
 
 ##### Exceptions
 
@@ -334,6 +313,8 @@ def func():
     """
     Changelog
     ---------
+    2.0
+        Became deprecated, use `new_func` instead
     1.4
         New default string
     0.6
@@ -349,6 +330,8 @@ You can add copyright/authors of the code using the `Copyright` section.
 
 Like the `Returns` section, you need to give the name of the author and then a description of what they did on a new line, left-padded. The description could include stuff like the year they worked on the code, what they did, etc.
 
+Each element in the options here is the license used to distribute the code.
+
 > Example
 
 ```python
@@ -356,31 +339,97 @@ def func():
     """
     Copyright
     ---------
-    Animenosekai
+    Animenosekai: MIT License, from = 2021, to = 2023
         The initial author
-    Some other dev
+    Some other dev: year = 2023
         A very cool collaborator
     """
 ```
+
+##### Options
+
+You can specify options for each author.
+
+Each option is separated by a comma.
+
+- `<license>` — Defines the license for the code.
+- `year` — The year the author worked on the code.
+- `from` — The year the author started working on the code.
+- `to` — The year the author stopped working on the code.
 
 > Aliases: `Copyrights`, `Copyright`, `Authors`, `Author`
 
 #### Inline Sections
 
+Inline sections can be used inline when there
+is no need to have more than a line to describe the section.
+
+If it requires multiple lines, you can use a syntax similar to the
+map parser one, and start the section with at least 3 hyphens
+and add the lines.
+
+```python
+def func():
+    """
+    This is a function
+
+    Inline: This is an inline section
+
+    Inline
+    ------
+    This is a multi line inline section
+    Wow I can write multiple lines here
+    """
+```
+
+Here are the built-in inline sections you can use:
+
+##### Example
+
+It is recommended that you give examples on how to use your object.
+
+You can use the `Example` tag to give an example of how to use your object.
+
+```python
+def func(a: typing.Union[bool, typing.Any] = False):
+    """
+    Example
+    -------
+    >>> func()
+    "That's wrong"
+    >>> func(True)
+    "That's right"
+    # when using something other than a boolean
+    >>> func(1)
+    1 # gives it right back
+
+    Example: Another example
+
+    Note: This function wouldn't really make sense
+    """
+```
+
+> Aliases: `Examples`, `Example`
+
 ##### Notes
 
-If you only want to notify the user about something, you can use the `Note` tag.
+If you want to notify the user about something, you can use the `Note` tag.
 
 > Example
 
 ```python
 def func():
     """
-    Note: Yup, that's true
+    Note: Yup, that's right
 
     ...description...
 
     Note: Another note
+
+    Note
+    ----
+    Wow this is a
+    really long note
     """
 ```
 
@@ -405,19 +454,52 @@ def func():
 
 > Aliases: `Warnings`, `Warning`
 
+##### Important
+
+You can give important notes to the user using the `Important` tag.
+
+> Example
+
+```python
+def func():
+    """
+    Important: Remember to close the fridge before leaving
+    """
+```
+
+> Aliases: `Important`, `Important Notice`
+
 #### Flag Sections
+
+A flag is what describes a boolean value in a docstring
+
+If the flag is present, it will be set to True, otherwise it will be set to False
+
+```python
+def func():
+    """
+    This is a function
+    ! FLAG
+    ! YOU'RE COOL
+
+    (description)
+    """
+```
+
+> **Note**  
+> You can customize the prefix used to recognize a flag using the `flag_prefix` parameter when creating the `Documentation` object.
+
+Here are the built-in flag sections you can use:
 
 ##### Deprecation Notice
 
-To add a deprecation notice to your object, you can add `! DEPRECATED !` at the beginning of the docstring.
-
-It must be the first thing (aside from whitespace) of the docstring.
+To add a deprecation notice to your object, you can add `! DEPRECATED` in the docstring.
 
 > Example: At the very beginning of the docstring
 
 ```python
 def func():
-    """! DEPRECATED !
+    """! DEPRECATED
     This is a cool function.
 
     Changelog
@@ -432,7 +514,7 @@ def func():
 ```python
 def func():
     """
-    !DEPRECATED!
+    !DEPRECATED
 
     This is a cool function.
     """
@@ -442,26 +524,24 @@ def func():
 
 ## Usage
 
-*Here, there will be the Python API Reference.*
+### Python API
 
-### On Python
+Here are the two main classes exposed by the Python API:
 
-Two objects are exposed through the Python API
+#### The `Documentation` object
 
-#### The `Docs` object
-
-You can use the `Docs` object by passing a docstring and an optional function signature.
+This object is the core implementation of the docstring parser.
 
 > Example
 
 ```python
-from miko import Docs
+from miko import Documentation
 
-parsed = Docs(
+parsed = Documentation(
     """
     Hello
 
-    Note: this is a test
+    Note: This is a test
 
     Changelog
     ---------
@@ -471,152 +551,121 @@ parsed = Docs(
 )
 ```
 
-##### Parameters
-
-| Name | Description | Type | Default |
-|------|-------------|------|---------|
-| `docs` | This is the docstring to parse | str | `` |
-| `signature` | The function signature to get the additional parameters from | inspect.Signature | None |
-| `noself` | If you don't want to use the `self` parameter from the signature, useful for class methods | bool | False |
-
 ##### Attributes
 
-- **`description`**
+- The `original` attribute contains the original docstring.
+- The `description` attribute contains the description of the object.
 
-> str
+All the other attributes are the different sections of the docstring.
 
-The description of the object in the docstring.
+##### Properties
 
-- **`parameters`**
+- The `exported` property renders a dictionary with the different elements of the docstring.
 
-> List[Parameter]
+##### Extending
 
-This contains the different parameters found on the function and on the docstring
+You can also easily extend and customize the docstring parser by subclassing the different elements :
 
-The attribute returns a `List` object with `Parameter` objects.
+```python
+from miko import Documentation, parsers
 
-A `Parameter` object has the following attributes:
+class MyCoolParser(parsers.map.MapParser):
+    names = ["New Section", "New Sections"]
 
-| Attribute | Description | Type |
-| --------- | ----------- | ---- |
-| `name` | The name of the parameter | str |
-| `content` | A list of strings, each one being a line of the parameter description | list[str] |
-| `deprecated` | If the parameter is deprecated | bool |
-| `optional` | If the parameter is optional | bool |
-| `default` | The default value for the parameter, if it has any | str, Any |
-| `types` | A list of types the parameter can be | list[str, Any] |
+class MyCoolDocumentation(Documentation):
+    new_section: MyCoolParser
 
-- **`returns`**
-- **`raises`**
-- **`changelog`**
-- **`copyright`**
-
-> List[ListElement]
-
-They all share the same schema, a `List` object with `ListElement` objects.
-
-A `ListElement` object has the following attributes:
-
-| Attribute | Description | Type |
-| --------- | ----------- | ---- |
-| `name` | The name of the element | str |
-| `content` | A list of strings, each one being a line of the element description | list[str] |
-
-- **`example`**
-
-> Example
-
-The `example` attribute contains any example code the docstring might contain.
-
-- **`warnings`**
-- **`notes`**
-
-> list[str]
-
-The `warnings` and `notes` attributes are just a list of warnings or notes it could have find in the description.
-
-- **`deprecated`**
-
-> bool
-
-If the object is marked as deprecated
+parsed = MyCoolDocumentation(
+    """
+    New Section
+    -----------
+    This is a new section
+    """
+)
+# You can now use `parsed.new_section`
+```
 
 ##### Methods
 
-- **`dumps`**
+- **`Documentation.dumps`**
 
-This function lets you dump the documentation string to the cleanest format possible, using all of the information the current `Docs` has.
+The `dumps` method, which might look familiar to common serialization libraries, lets you dump the documentation string to the cleanest format possible, using all the information the current `Documentation` has.
 
 The optional `indent` parameter (which defaults to 4), lets you choose the indentation level of the output.
 
 It returns a string with the output documentation string.
 
-- **`as_dict`**
+#### The `Callable` object
 
-The `as_dict` function lets you convert the `Docs` object to a dictionary.
+This object gathers information on the given callable and its docstring.
 
-It takes an optional `camelCase` parameter (which defaults to False), which lets you have a camelCased and JSON friendly dictionary returned.
+It automatically passes its `inspect.Signature` for the parsers to have a better understanding of the object.
 
-#### The `Function` object
+It also exposes several attributes and methods to get information on the callable.
 
-The `Function` object lets you get information about a function.
+#### `miko.static`
 
-On top of the docs, it also lets you retrieve easily its source code filename, line number, name, the different local variables, the parameters, the return annotation, and its name.
+This module provides different tools to statically analyze Python code and get information on it.
 
 ### Using the CLI
 
 `Miko` also has a CLI, which you can use to get information about a docstring or clean a docstring.
 
 ```swift
-🧃❯ miko -h                                                                                                     
+🧃❯ miko --help
 usage: miko [-h] [--version] {info,clean} ...
 
 See how to use a Python object at a glance!
 
 positional arguments:
   {info,clean}   Actions
-    info         Retrieve info on the given docstring
-    clean        Clean the docstring
+    info         Gathers information on the different elements in the input
+    clean        Cleans the given input
 
-optional arguments:
+options:
   -h, --help     show this help message and exit
   --version, -v  show program's version number and exit
 ```
 
-#### `miko info`
+Both `info` and `clean` have the same arguments :
 
-You can get information about the docstring using `miko info`.
+```swift
+usage: miko <action> [-h] [--indent INDENT] [--noself] [--flag-prefix FLAG_PREFIX] [--safe-annotations] [--output OUTPUT] [--raw] input
 
-##### Arguments
+positional arguments:
+  input                 The snippet of code or file to get the docstrings from.
 
-| Name | Aliases | Description | Type | Default |
-|------|---------|-------------|------|---------|
-| `--text` | `-t` | The docstring to parse | str | `` |
-| `--file` | `-f` | The file to parse | Path(str) | `` |
-| `--indent` | `-i` | The indentation for the JSON result | int | 4 |
-| `--noself` | `` | Ignoring the "self" parameter from signatures. (useful for class methods) | (flag) | False |
+options:
+  -h, --help            show this help message and exit
+  --indent INDENT, -i INDENT
+                        The indentation level for the result
+  --noself              Ignoring the "self" parameter from signatures. (useful for class methods)
+  --flag-prefix FLAG_PREFIX
+                        The prefix for the docstring flags. (default: "!")
+  --safe-annotations    If the annotations should be loaded safely
+  --output OUTPUT, -o OUTPUT
+                        The file to output the result to. If not provided, `miko` will use STDOUT.
+  --raw                 If the input should be treated as a docstring and not source code. (default: False)
+```
 
-It will return information about the given docstring (if `--text` is given) or a list of information about the different docstrings found in the given file (if `--file` is given).
+#### `info`
 
-It prints a JSON string.
+The `miko info` command provides information on the different elements in the input.
 
-#### `miko clean`
+It statically analyzes the source code, gathers information on all elements (classes, functions, modules, variables, etc.), parses their docstrings and outputs a JSON encoded output with all the information.
 
-You can clean a docstring using `miko clean`.
+If the `--raw` flag is provided, the input will be treated as only being the docstring and not source code, thus only parsing it as a docstring.
 
-##### Arguments
+> **Warning**  
+> Beware that the output structure is different using `--raw`
 
-| Name | Aliases | Description | Type | Default |
-|------|---------|-------------|------|---------|
-| `--text` | `-t` | The docstring to clean | str | `` |
-| `--file` | `-f` | The file to clean | Path(str) | `` |
-| `--indent` | `-i` | The indentation for the cleaned result | int | 4 |
-| `--noself` | `` | Ignoring the "self" parameter from signatures. (useful for class methods) | (flag) | False |
-| `--output` | `-o` | The file to output the cleaned result to | Path(str) | None |
+#### `clean`
 
-It will clean the given docstring (if `--text` is given) or it will return the file with the docstrings cleaned (if `--file` is given).
+The `miko clean` command cleans the given input.
 
-It prints the cleaned output.
+It cleans the different docstrings, formats the code using `autopep8` and sorts the imports using `isort`.
+
+If the `--raw` flag is provided, the input will be treated as only being the docstring and not source code, thus only cleaning it.
 
 ### Using the VS Code Extension
 
@@ -658,4 +707,4 @@ Please make sure to update the tests as appropriate.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.

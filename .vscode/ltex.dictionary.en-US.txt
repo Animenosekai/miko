@@ -2,3 +2,5 @@ docstrings
 docstring
 PyPI
 Miko
+Changelog
+subclassing

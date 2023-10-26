@@ -4,7 +4,7 @@ import json
 import pathlib
 
 import miko
-from miko.utils import static
+from miko import static
 
 NO_ACTION = """\
 usage: miko [-h] [--version] {info,clean} ...
@@ -29,10 +29,16 @@ def main(args: argparse.Namespace):
         source_code = str(args.input)
 
     if args.action == "info":
-        info_results = static.info(source_code,
-                                   indent=args.indent,
-                                   noself=args.noself,
-                                   flag_prefix=args.flag_prefix)
+        if args.raw:
+            info_results = miko.Documentation(source_code,
+                                              flag_prefix=args.flag_prefix,
+                                              noself=args.noself).exported
+        else:
+            info_results = static.info(source_code,
+                                       indent=args.indent,
+                                       noself=args.noself,
+                                       flag_prefix=args.flag_prefix,
+                                       safe_annotations=args.safe_annotations)
 
         stringified = json.dumps(
             info_results,
@@ -48,10 +54,16 @@ def main(args: argparse.Namespace):
 
         return info_results
 
-    clean_results = static.clean(source_code,
-                                 indent=args.indent,
-                                 noself=args.noself,
-                                 flag_prefix=args.flag_prefix)
+    if args.raw:
+        clean_results = miko.Documentation(source_code,
+                                           flag_prefix=args.flag_prefix,
+                                           noself=args.noself).dumps(indent=args.indent)
+    else:
+        clean_results = static.clean(source_code,
+                                     indent=args.indent,
+                                     noself=args.noself,
+                                     flag_prefix=args.flag_prefix,
+                                     safe_annotations=args.safe_annotations)
 
     if args.output and pathlib.Path(args.output).is_file():
         with open(args.output, "w", encoding="utf-8") as f:
@@ -78,10 +90,14 @@ def entry():
                             help='Ignoring the "self" parameter from signatures. (useful for class methods)')
         parser.add_argument("--flag-prefix", action='store', required=False,
                             default="!", help='The prefix for the docstring flags. (default: "!")')
+        parser.add_argument("--safe-annotations", action='store_true', required=False,
+                            help='If the annotations should be loaded safely')
         parser.add_argument("--output", "-o", action='store', type=str,
                             required=False, default=None, help='The file to output the result to. If not provided, `miko` will use STDOUT.')
         parser.add_argument("input", action='store', type=str, default=None,
                             help='The snippet of code or file to get the docstrings from.')
+        parser.add_argument("--raw", action='store_true', required=False,
+                            help='If the input should be treated as a docstring and not source code. (default: False)')
 
     parser_info = subparser.add_parser('info',
                                        help='Gathers information on the different elements in the input')

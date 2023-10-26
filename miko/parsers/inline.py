@@ -1,23 +1,27 @@
-"""
+'''
 Defines the base class for inline parsers
 
 Inline sections can be used inline when there
 is no need to have more than a line to describe the section.
 
+If it requires multiple lines, you can use a syntax similar to the
+map parser one, and start the section with at least 3 hyphens
+and add the lines.
+
 Example
 -------
->>> from miko.parsers import InlineParser
->>> parser = InlineParser("Test")
->>> parser.append("This is a test")
->>> parser.dumps()
-Test: This is a test
->>> parser.append("This is another test")
->>> parser.dumps()
-Test
-----
-This is a test
-This is another test
-"""
+def func():
+    """
+    This is a function
+
+    Inline: This is an inline section
+
+    Inline
+    ------
+    This is a multi line inline section
+    Wow I can write multiple lines here
+    """
+'''
 import typing
 
 from miko.parsers.parser import Parser

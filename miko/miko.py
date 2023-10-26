@@ -133,6 +133,7 @@ class Documentation:
 
     # Flags
     deprecated: parsers.deprecated.Deprecated
+    """A flag to indicate if the element is deprecated"""
 
     # Inline Parsers
     notes: parsers.notes.Notes

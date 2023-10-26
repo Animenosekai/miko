@@ -9,3 +9,4 @@ Animenosekai
 
 from miko.miko import Callable, Documentation
 from .__info__ import __version__, __license__, __author__, __copyright__  # isort:skip
+from . import static

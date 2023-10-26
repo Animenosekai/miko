@@ -166,7 +166,7 @@ def get_value(expr: typing.Optional[ast.expr], builtin: bool = False) -> typing.
     return None
 
 
-def signature_from_ast(node: ast.AsyncFunctionDef | ast.FunctionDef) -> inspect.Signature:
+def signature_from_ast(node: ast.AsyncFunctionDef | ast.FunctionDef, builtin: bool = False) -> inspect.Signature:
     """
     Computes the signature of a function from its AST
 
@@ -174,6 +174,11 @@ def signature_from_ast(node: ast.AsyncFunctionDef | ast.FunctionDef) -> inspect.
     ----------
     node: ast.AsyncFunctionDef | ast.FunctionDef
         The node to get the signature from
+    builtin: bool, default = False
+        If annotations should be already loaded or
+        coming from a builtin module to be fully loaded.
+        Otherwise a dot path will be returned.
+        See get_element for more information on loading arbitrary elements.
 
     Returns
     -------
@@ -190,8 +195,8 @@ def signature_from_ast(node: ast.AsyncFunctionDef | ast.FunctionDef) -> inspect.
     #           ↑  ↑
     for arg in node.args.posonlyargs:
         parameters.append(inspect.Parameter(name=arg.arg,
-                          annotation=get_value(
-                              arg.annotation) or inspect.Parameter.empty,
+                          annotation=(get_value(arg.annotation, builtin=builtin)
+                                      or inspect.Parameter.empty),
                           kind=inspect.Parameter.POSITIONAL_ONLY,
                           default=inspect.Parameter.empty))
 
@@ -213,8 +218,8 @@ def signature_from_ast(node: ast.AsyncFunctionDef | ast.FunctionDef) -> inspect.
                 default = default_wrapper.value
 
         parameters.append(inspect.Parameter(name=arg.arg,
-                                            annotation=get_value(
-                                                arg.annotation) or inspect.Parameter.empty,
+                                            annotation=(get_value(arg.annotation, builtin=builtin)
+                                                        or inspect.Parameter.empty),
                                             kind=inspect.Parameter.POSITIONAL_OR_KEYWORD,
                                             default=default))
 
@@ -237,8 +242,8 @@ def signature_from_ast(node: ast.AsyncFunctionDef | ast.FunctionDef) -> inspect.
                 default = default_wrapper.value
 
         parameters.append(inspect.Parameter(name=arg.arg,
-                                            annotation=get_value(
-                                                arg.annotation) or inspect.Parameter.empty,
+                                            annotation=(get_value(arg.annotation, builtin=builtin)
+                                                        or inspect.Parameter.empty),
                                             kind=inspect.Parameter.KEYWORD_ONLY,
                                             default=default))
 
@@ -249,7 +254,8 @@ def signature_from_ast(node: ast.AsyncFunctionDef | ast.FunctionDef) -> inspect.
                                             kind=inspect.Parameter.VAR_KEYWORD))
 
     # Handling the Return Annotation
-    returned = get_value(node.returns) or inspect.Signature.empty
+    returned = get_value(node.returns,
+                         builtin=builtin) or inspect.Signature.empty
 
     return inspect.Signature(parameters=parameters, return_annotation=returned)
 
@@ -279,11 +285,14 @@ class Element:
     docstring: typing.Optional[ast.Constant] = None
     """The docstring element"""
 
+    safe_annotations: bool = False
+    """If the annotations should be safely loaded"""
+
     @property
     def signature(self) -> typing.Optional[inspect.Signature]:
         """If available, the signature of the node"""
         try:
-            return signature_from_ast(self.node)
+            return signature_from_ast(self.node, builtin=self.safe_annotations)
         except Exception:
             return None
 
@@ -318,7 +327,8 @@ class Element:
 
 
 def get_elements(node: ast.AST,
-                 parents: typing.Optional[typing.List[ast.AST]] = None):
+                 parents: typing.Optional[typing.List[ast.AST]] = None,
+                 safe_annotations: bool = False):
     """
     Gets all of the elements which could be documented inside the AST
 
@@ -326,6 +336,10 @@ def get_elements(node: ast.AST,
     ----------
     node: ast.AST
         The Abstract Syntax Tree element to search into
+    parents: typing.Optional[typing.List[ast.AST]], default = None
+        The parents of the current element
+    safe_annotations: bool, default = False
+        If the annotations should be safely loaded
     """
     parents = parents or []
 
@@ -343,7 +357,8 @@ def get_elements(node: ast.AST,
                     # `element` is added to the parents to conform with
                     # the `ast.AnnAssign` case
                     targets.append(Element(target,
-                                           parents=parents + [node, element]))
+                                           parents=parents + [node, element],
+                                           safe_annotations=safe_annotations))
 
         # If we have an annotated assignement
         # Example: some_var: some_type = some_value
@@ -351,7 +366,8 @@ def get_elements(node: ast.AST,
             # We are adding `element` to get to retrieve the
             # annotation when looking into the variable
             targets = [Element(element.target,
-                               parents=parents + [node, element])]
+                               parents=parents + [node, element],
+                               safe_annotations=safe_annotations)]
 
         # Constants are inside ast.Expr
         if isinstance(element, ast.Expr):
@@ -386,7 +402,8 @@ def get_elements(node: ast.AST,
 
             # We are adding the callable element
             adding = [Element(element, parents=parents +
-                              [node], docstring=docstring)]
+                              [node], docstring=docstring,
+                              safe_annotations=safe_annotations)]
         else:
             # Might be another type of element,
             # which should be documented if and only if
@@ -396,7 +413,8 @@ def get_elements(node: ast.AST,
         # We recursively add the other child elements
         # and the current element
         results.extend(adding
-                       + get_elements(element, parents=parents + [node]))
+                       + get_elements(element, parents=parents + [node],
+                                      safe_annotations=safe_annotations))
 
     return results
 
@@ -445,10 +463,10 @@ def clean_elements(elements: typing.List[Element], indent: int = 4, **kwargs):
     return elements
 
 
-def clean(source: str, indent: int = 4, **kwargs) -> str:
+def clean(source: str, indent: int = 4, safe_annotations: bool = False, **kwargs) -> str:
     """Cleans up the source code"""
     tree = ast.parse(str(source))
-    elements = get_elements(tree)
+    elements = get_elements(tree, safe_annotations=safe_annotations)
     clean_elements(elements, indent=indent, **kwargs)
     ast.fix_missing_locations(tree)
     result = ast.unparse(tree)
@@ -456,10 +474,10 @@ def clean(source: str, indent: int = 4, **kwargs) -> str:
     return isort.code(result)
 
 
-def info(source: str, indent: int = 4, **kwargs) -> typing.List[typing.Dict[str, typing.Any]]:
+def info(source: str, indent: int = 4, safe_annotations: bool = False, **kwargs) -> typing.List[typing.Dict[str, typing.Any]]:
     """Gathers information on the different elements of the source code"""
     tree = ast.parse(str(source))
-    elements = get_elements(tree)
+    elements = get_elements(tree, safe_annotations=safe_annotations)
     return [
         element.export(indent=indent, **kwargs)
         for element in elements
