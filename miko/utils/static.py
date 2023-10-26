@@ -1,4 +1,9 @@
-"""Testing AST parsing"""
+"""
+Implementation of miko's static code analysis tools
+
+This is used to retrieve information on the different elements of the code
+without having to run it.
+"""
 import builtins
 import dataclasses
 import importlib
@@ -9,7 +14,6 @@ import typing
 import ast_comments as ast
 import autopep8
 import isort
-from rich.console import Console
 
 import miko
 
@@ -283,25 +287,34 @@ class Element:
         except Exception:
             return None
 
+    def document(self, **kwargs):
+        """Documents the element"""
+        return miko.Documentation(self.docstring.value if self.docstring else "",
+                                  signature=self.signature,
+                                  **kwargs)
+
     @property
     def documentation(self) -> miko.Documentation:
         """Returns the documentation for the node"""
-        return miko.Documentation(self.docstring.value if self.docstring else "",
-                                  signature=self.signature,
-                                  noself=True)
+        return self.document()
 
-    @property
-    def exported(self):
-        """Exported data"""
+    def export(self, indent: int = 4, **kwargs):
+        """Exports the data"""
+        docs = self.document(**kwargs)
         return {
             "node": export_node(self.node),
             "parents": [
                 export_node(parent)
                 for parent in self.parents
             ],
-            "documentation": self.documentation.exported,
-            "docstring": self.documentation.dumps()
+            "documentation": docs.exported,
+            "docstring": docs.dumps(indent=indent)
         }
+
+    @property
+    def exported(self):
+        """Exported data"""
+        return self.export()
 
 
 def get_elements(node: ast.AST,
@@ -388,7 +401,7 @@ def get_elements(node: ast.AST,
     return results
 
 
-def clean_elements(elements: typing.List[Element], indent: int = 4):
+def clean_elements(elements: typing.List[Element], indent: int = 4, **kwargs):
     """Cleans up the given elements"""
     for element in elements:
         if (not element.docstring
@@ -404,7 +417,7 @@ def clean_elements(elements: typing.List[Element], indent: int = 4):
         if not element.docstring:
             continue
 
-        result = element.documentation.dumps(indent=indent)
+        result = element.document(**kwargs).dumps(indent=indent)
 
         padding = " " * element.docstring.col_offset
 
@@ -432,34 +445,34 @@ def clean_elements(elements: typing.List[Element], indent: int = 4):
     return elements
 
 
-def clean(source: str) -> str:
+def clean(source: str, indent: int = 4, **kwargs) -> str:
     """Cleans up the source code"""
     tree = ast.parse(str(source))
     elements = get_elements(tree)
-    clean_elements(elements)
+    clean_elements(elements, indent=indent, **kwargs)
     ast.fix_missing_locations(tree)
     result = ast.unparse(tree)
     result = autopep8.fix_code(result)
     return isort.code(result)
 
 
-def info(source: str) -> typing.List[typing.Dict[str, typing.Any]]:
+def info(source: str, indent: int = 4, **kwargs) -> typing.List[typing.Dict[str, typing.Any]]:
     """Gathers information on the different elements of the source code"""
     tree = ast.parse(str(source))
     elements = get_elements(tree)
     return [
-        element.exported
+        element.export(indent=indent, **kwargs)
         for element in elements
     ]
 
 
-if __name__ == "__main__":
-    c = Console()
+# if __name__ == "__main__":
+#     c = Console()
 
-    with open("test.py", "r", encoding="utf-8") as f:
-        source = f.read()
+#     with open("test.py", "r", encoding="utf-8") as f:
+#         source = f.read()
 
-    c.print(info(source))
+#     c.print(info(source))
 
-    with open("test_clean.py", "w", encoding="utf-8") as f:
-        f.write(clean(source))
+#     with open("test_clean.py", "w", encoding="utf-8") as f:
+#         f.write(clean(source))
