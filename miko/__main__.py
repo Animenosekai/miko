@@ -31,7 +31,8 @@ def main(args: argparse.Namespace):
     if args.action == "info":
         info_results = static.info(source_code,
                                    indent=args.indent,
-                                   noself=args.noself)
+                                   noself=args.noself,
+                                   flag_prefix=args.flag_prefix)
 
         stringified = json.dumps(
             info_results,
@@ -49,7 +50,8 @@ def main(args: argparse.Namespace):
 
     clean_results = static.clean(source_code,
                                  indent=args.indent,
-                                 noself=args.noself)
+                                 noself=args.noself,
+                                 flag_prefix=args.flag_prefix)
 
     if args.output and pathlib.Path(args.output).is_file():
         with open(args.output, "w", encoding="utf-8") as f:
@@ -74,6 +76,8 @@ def entry():
                             required=False, default=4, help='The indentation level for the result')
         parser.add_argument("--noself", action='store_true', required=False,
                             help='Ignoring the "self" parameter from signatures. (useful for class methods)')
+        parser.add_argument("--flag-prefix", action='store', required=False,
+                            default="!", help='The prefix for the docstring flags. (default: "!")')
         parser.add_argument("--output", "-o", action='store', type=str,
                             required=False, default=None, help='The file to output the result to. If not provided, `miko` will use STDOUT.')
         parser.add_argument("input", action='store', type=str, default=None,

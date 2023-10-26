@@ -86,13 +86,38 @@ The *Miko* way of documenting stuff is by using Markdown in your docstrings and 
 
 When documenting a callable, you need to start the docstring right after the callable definition.
 
-> Example: we are using a function, but it works the same for classes, methods, etc.
+> Example 1: *Documenting a callable*
 
 ```python
-def func():
-    """It needs to start here"""
-    pass
+def test(a: int, b: int, /, c: int = 4, d=5, e: int = 6, *args, f: str, **kwargs) -> int:
+    """
+    Documenting a function
+
+    Parameters
+    ----------
+    a: int, deprecated
+        Hey
+
+    Returns
+    -------
+    int
+    """
+
+    def inner():
+        """
+        Documenting an inner function
+
+        Note: This is a cool function
+        """
+
+class Test:
+    """Documenting a class"""
+
+    def __init__(self) -> None:
+        """Documenting a method"""
 ```
+
+> Example 2: *Documenting a variable or constant*
 
 When documenting any other variable, you need to add a string right **after** the variable definition.
 
@@ -104,11 +129,7 @@ b: int
 '! DEPRECATED'
 ```
 
-When you want to document the object, you need to start the docstring with 3 quotation marks, preferably double quotation marks.
-
-You also need to add a line break and pad the whole documentation to line up with the start of the object name.
-
-> Example: we are using 3 double quotation marks, and we start where the object name starts after a line break.
+Keep in mind that you need to keep the indentation level of the docstring the same as the definition.
 
 ```python
 def func():
@@ -121,10 +142,6 @@ def func():
     """
     pass
 ```
-
-#### End
-
-The documentation string ends when 3 quotation marks (the same as the beginning ones) are added after the padding.
 
 ### Description
 
@@ -148,7 +165,38 @@ def func():
     """
 ```
 
-### Parameters
+### Sections
+
+There are 3 types of docstring sections to be aware of:
+
+1. [Map Sections](#map-sections)
+2. [Inline Sections](#inline-sections)
+3. [Flag Sections](#flag-sections)
+
+#### Map Sections
+
+> **Note**  
+> Sometimes also called *Block Sections*
+
+These are sections which contains a list of named elements :
+
+```python
+def func():
+    """
+    Paragraph
+    ---------
+    element1: options1, options2
+        element1 description
+    element2: options1, options2
+        element2 description
+    """
+```
+
+Each element has its name, followed by its options and a description.
+
+Here are the built-in sections you can use:
+
+##### Parameters
 
 You can define what are the different parameters/arguments the callable object is taking.
 
@@ -175,7 +223,7 @@ def func(a, b: int, c = ""):
 
 > Aliases: `Parameters`, `Parameter`, `Params`, `Parm`, `Arguments`, `Argument`, `Args`, `Arg`
 
-#### The options
+##### Options
 
 You can specify options for each parameter.
 
@@ -188,7 +236,7 @@ Each option is separated by a comma.
 - `default` : defines a parameter as being optional, by giving it a default value.
 - `deprecated` : when a parameter is deprecated.
 
-##### Types
+***Types***
 
 Types can be defined by giving the element class name or *dot notation* path.
 
@@ -198,13 +246,13 @@ You can specify multiple types using the vertical bar separator.
 
 > Example: `int | float`
 
-##### Default
+***Default***
 
 You can define a default value using an equal sign.
 
 > Example: `default = 1`, `default=True`
 
-### Returned Value
+##### Returned Value
 
 You can define what are the values returned by a callable object using the `Returns` section.
 
@@ -230,7 +278,7 @@ def func():
 
 > Aliases: `Returns`, `Return`, `Returning`
 
-### Example
+##### Example
 
 You can give examples of your code, writing them as you would in a Python REPL.
 
@@ -253,7 +301,7 @@ You can use `# comments` to explain your example.
 
 > Aliases: `Examples`, `Example`
 
-### Exceptions
+##### Exceptions
 
 You can inform the users about any exception/error your callable might be raising using the `Raising` section.
 
@@ -273,59 +321,7 @@ def func():
 
 > Aliases: `Raises`, `Raise`, `Raising`, `Exceptions`, `Exception`, `Errors`, `Error`
 
-### Warnings
-
-You can give warnings to the user using the `Warning` tag.
-
-You just need to put `Warning`, followed by a colon, a space and the warning itself.
-
-> Example
-
-```python
-def func():
-    """
-    Warning: This is a serious warning
-
-    ...description...
-
-    Warning: Another warning
-    """
-```
-
-> Aliases: `Warnings`, `Warning`
-
-<br>
-
-> **Note**  
-> Warnings are part of the description
-
-### Notes
-
-If you only want to notify the user about something, you can use the `Note` tag.
-
-You just need to put `Note`, followed by a colon, a space and the note itself.
-
-> Example
-
-```python
-def func():
-    """
-    Note: Yup, that's true
-
-    ...description...
-
-    Note: Another note
-    """
-```
-
-> Aliases: `Notes`, `Note`, `See Also`, `Information`
-
-<br>
-
-> **Note**  
-> Notes are part of the description
-
-### Change log
+##### Changelog
 
 You can inform the users about how the object got modified over time using the `Changelog` section.
 
@@ -347,7 +343,71 @@ def func():
 
 > Aliases: `Changelog`, `Changes`
 
-### Deprecation Notice
+##### Copyright
+
+You can add copyright/authors of the code using the `Copyright` section.
+
+Like the `Returns` section, you need to give the name of the author and then a description of what they did on a new line, left-padded. The description could include stuff like the year they worked on the code, what they did, etc.
+
+> Example
+
+```python
+def func():
+    """
+    Copyright
+    ---------
+    Animenosekai
+        The initial author
+    Some other dev
+        A very cool collaborator
+    """
+```
+
+> Aliases: `Copyrights`, `Copyright`, `Authors`, `Author`
+
+#### Inline Sections
+
+##### Notes
+
+If you only want to notify the user about something, you can use the `Note` tag.
+
+> Example
+
+```python
+def func():
+    """
+    Note: Yup, that's true
+
+    ...description...
+
+    Note: Another note
+    """
+```
+
+> Aliases: `Notes`, `Note`, `See Also`, `Information`
+
+##### Warnings
+
+You can give warnings to the user using the `Warning` tag.
+
+> Example
+
+```python
+def func():
+    """
+    Warning: This is a serious warning
+
+    ...description...
+
+    Warning: Another warning
+    """
+```
+
+> Aliases: `Warnings`, `Warning`
+
+#### Flag Sections
+
+##### Deprecation Notice
 
 To add a deprecation notice to your object, you can add `! DEPRECATED !` at the beginning of the docstring.
 
@@ -379,28 +439,6 @@ def func():
 ```
 
 > Aliases: `Deprecated`, `Deprecation`, `Deprecate`, `Deprecation Notice`
-
-### Copyright
-
-You can add copyright/authors of the code using the `Copyright` section.
-
-Like the `Returns` section, you need to give the name of the author and then a description of what they did on a new line, left-padded. The description could include stuff like the year they worked on the code, what they did, etc.
-
-> Example
-
-```python
-def func():
-    """
-    Copyright
-    ---------
-    Animenosekai
-        The initial author
-    Some other dev
-        A very cool collaborator
-    """
-```
-
-> Aliases: `Copyrights`, `Copyright`, `Authors`, `Author`
 
 ## Usage
 

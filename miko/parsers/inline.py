@@ -1,4 +1,23 @@
-"""Defines the base class for inline parsers"""
+"""
+Defines the base class for inline parsers
+
+Inline sections can be used inline when there
+is no need to have more than a line to describe the section.
+
+Example
+-------
+>>> from miko.parsers import InlineParser
+>>> parser = InlineParser("Test")
+>>> parser.append("This is a test")
+>>> parser.dumps()
+Test: This is a test
+>>> parser.append("This is another test")
+>>> parser.dumps()
+Test
+----
+This is a test
+This is another test
+"""
 import typing
 
 from miko.parsers.parser import Parser

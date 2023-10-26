@@ -58,9 +58,10 @@ class Parser:
     extra_arguments: typing.Dict[str, typing.Any]
     """The extra arguments passed in with the parser"""
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         self.elements = []
         self.extra_arguments = kwargs
+        self.names.extend(args)
 
     @property
     def name(self):
