@@ -34,7 +34,7 @@ You will need Python 3 to use this module
 
 ```bash
 # vermin output
-Minimum required versions: 3.6
+Minimum required versions: 3.8
 Incompatible versions:     2
 ```
 
@@ -57,13 +57,13 @@ You can check if you successfully installed it by printing out its version:
 ```bash
 $ python -c "import miko; print(miko.__version__)"
 # output:
-miko v1.1
+2.0
 ```
 
 ```bash
 $ miko --version
 # output:
-miko v1.1
+2.0
 ```
 
 ## Purpose
@@ -80,9 +80,29 @@ You will here learn the different sections of your documentation string.
 
 ### Outline
 
-The *Miko* way of documenting stuff is by using Markdown in your documentation and following the rules below.
+The *Miko* way of documenting stuff is by using Markdown in your docstrings and following the rules below.
 
 #### Start
+
+When documenting a callable, you need to start the docstring right after the callable definition.
+
+> Example: we are using a function, but it works the same for classes, methods, etc.
+
+```python
+def func():
+    """It needs to start here"""
+    pass
+```
+
+When documenting any other variable, you need to add a string right **after** the variable definition.
+
+```python
+CONSTANT = 1
+'Documenting a constant'
+
+b: int
+'! DEPRECATED'
+```
 
 When you want to document the object, you need to start the docstring with 3 quotation marks, preferably double quotation marks.
 
@@ -120,7 +140,7 @@ def func():
     Hello, this is a description.
 
     Returns
-    ----------
+    -------
     bool
         The result of the function.
 
@@ -357,6 +377,7 @@ def func():
     This is a cool function.
     """
 ```
+
 > Aliases: `Deprecated`, `Deprecation`, `Deprecate`, `Deprecation Notice`
 
 ### Copyright

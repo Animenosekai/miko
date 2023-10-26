@@ -4,6 +4,7 @@ miko.py
 Contains the main code for the Miko documentation style
 """
 
+import dataclasses
 import inspect
 import types
 import typing
@@ -11,24 +12,60 @@ import typing
 from miko import parsers
 
 
-class Function:
+class Callable:
     """Retrieves information on a given function"""
 
+    @dataclasses.dataclass
+    class Source:
+        """Stores information on the source of a callable"""
+        filename: str
+        """The filename where the callable was defined"""
+        line: int
+        """The line where the callable was defined"""
+        name: str
+        """The original name of the callable"""
+
     def __init__(self, func: typing.Callable) -> None:
-        self.original = func
-        self.name = self.original.__name__
+        self.callable = func
+        """The callable object"""
+        self.name = self.callable.__name__
+        """The name of the callable"""
         self.signature = inspect.signature(func)
+        """The signature of the callable"""
+
         self.docs = Documentation(
-            docstring=self.original.__doc__ if self.original.__doc__ is not None else "No description",
-            signature=self.signature
+            docstring=(self.callable.__doc__
+                       if self.callable.__doc__
+                       else ""),
+            signature=self.signature,
+            noself=inspect.ismethod(self.callable)
         )
-        self.code = Function.get_code(self.original)
-        self.source_filename = self.code.co_filename
-        self.source_linenumber = self.code.co_firstlineno
-        self.source_name = self.code.co_name
-        self.local_variables = self.code.co_names
-        self.parameters = self.signature.parameters
-        self.return_annotation = self.signature.return_annotation
+        """The documentation of the callable"""
+
+        self.code = Callable.get_code(self.callable)
+        """The code object of the callable"""
+
+        self.source = self.Source(
+            filename=self.code.co_filename,
+            line=self.code.co_firstlineno,
+            name=self.code.co_name
+        )
+        """The source of the callable"""
+
+    @property
+    def local_variables(self) -> typing.Tuple[str, ...]:
+        """Returns the local variables of the function"""
+        return self.code.co_names
+
+    @property
+    def parameters(self) -> typing.Dict[str, inspect.Parameter]:
+        """Returns the parameters of the function"""
+        return self.signature.parameters
+
+    @property
+    def return_annotation(self) -> typing.Any:
+        """Returns the return annotation of the function"""
+        return self.signature.return_annotation
 
     @staticmethod
     def get_code(obj: typing.Any) -> types.CodeType:
@@ -58,8 +95,33 @@ class Function:
                 or code object was expected, got {type(obj).__name__}''')
         return obj
 
+    # Exposing some of the inspect module functions
+    @property
+    def is_method(self):
+        """Returns whether the callable is a method of an instantiated object or not"""
+        return inspect.ismethod(self.callable)
+
+    @property
+    def is_function(self):
+        """Returns whether the callable is a function or not"""
+        return inspect.isfunction(self.callable)
+
+    @property
+    def is_class(self):
+        """Returns whether the callable is a class or not"""
+        return inspect.isclass(self.callable)
+
+    @property
+    def source_code(self):
+        """Returns the source code for the callable"""
+        return inspect.getsource(self.callable)
+
     def __repr__(self) -> str:
-        return "<Function '{name}'>".format(name=self.name)
+        return f"{self.__class__.__name__}({self.name})"
+
+
+# Backward compatibility
+Function = Callable
 
 
 class Documentation:

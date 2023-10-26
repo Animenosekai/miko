@@ -16,4 +16,4 @@ __license__ = 'MIT License'
 __copyright__ = f'Copyright {__year__}, {__module__}'
 
 # PEP 440 Compilant
-__version__ = "1.1"
+__version__ = "2.0"
