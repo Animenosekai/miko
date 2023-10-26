@@ -3,7 +3,7 @@
 	"displayName": "Miko Docs",
 	"publisher": "Animenosekai",
 	"description": "A formatter for the Miko documentation style",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"repository": {
 		"url": "https://github.com/Animenosekai/miko"
 	},
@@ -11,13 +11,16 @@
 	"engines": {
 		"vscode": "^1.69.0"
 	},
-	"categories": ["Formatters"],
-	"activationEvents": [
-		"onCommand:miko.format",
-		"onCommand:miko.formatAll"
+	"categories": [
+		"Formatters"
 	],
 	"icon": "miko_icon_rounded.png",
 	"main": "./out/extension.js",
+	"activationEvents": [
+		"onLanguage:python",
+		"onCommand:miko.format",
+		"onCommand:miko.formatAll"
+	],
 	"contributes": {
 		"commands": [
 			{
@@ -32,10 +35,20 @@
 		"configuration": {
 			"title": "Miko Docs",
 			"properties": {
-				"miko-docs.noself": {
+				"miko-docs.noSelf": {
 					"type": "boolean",
 					"default": true,
 					"description": "Ignoring the 'self' parameter from signatures. (useful for class methods)"
+				},
+				"miko-docs.flagPrefix": {
+					"type": "string",
+					"default": "!",
+					"description": "The prefix for the docstring flags. (default: \"!\")"
+				},
+				"miko-docs.safeAnnotations": {
+					"type": "boolean",
+					"default": true,
+					"description": "If the annotations should be loaded safely"
 				}
 			}
 		}
