@@ -563,7 +563,7 @@ class Import:
     """The locations of the import"""
 
 
-CACHE: typing.Dict[str, pathlib.Path] = {}
+IMPORTS_CACHE: typing.Dict[str, pathlib.Path] = {}
 
 
 def resolve_import(name: str, module: typing.Optional[str] = None, level: int = 0,
@@ -599,7 +599,7 @@ def resolve_import(name: str, module: typing.Optional[str] = None, level: int = 
     else:
         context = None
 
-    result = CACHE.get(cache_key)
+    result = IMPORTS_CACHE.get(cache_key)
     if result:
         return result
 
@@ -645,7 +645,7 @@ def resolve_import(name: str, module: typing.Optional[str] = None, level: int = 
 
             raise ImportError("The module is from a non-file source")
 
-        CACHE[cache_key] = result
+        IMPORTS_CACHE[cache_key] = result
         return result
 
     if context:
@@ -680,18 +680,18 @@ def resolve_import(name: str, module: typing.Optional[str] = None, level: int = 
             # => and some_module/some_submodule/subsubmodule/__init__.py* might be a file
             for ext in PYTHON_EXTENSIONS:
                 if (current / last / "__init__").with_suffix(ext).is_file():
-                    CACHE[cache_key] = (
+                    IMPORTS_CACHE[cache_key] = (
                         current / last / "__init__").with_suffix(ext)
                     return (current / last / "__init__").with_suffix(ext)
             else:
                 for ext in PYTHON_EXTENSIONS:
                     if (current / last).with_suffix(ext).is_file():
-                        CACHE[cache_key] = (current / last).with_suffix(ext)
+                        IMPORTS_CACHE[cache_key] = (current / last).with_suffix(ext)
                         return (current / last).with_suffix(ext)
                 else:
                     for ext in PYTHON_EXTENSIONS:
                         if (current / "__init__").with_suffix(ext).is_file():
-                            CACHE[cache_key] = (
+                            IMPORTS_CACHE[cache_key] = (
                                 current / "__init__").with_suffix(ext)
                             return (current / last).with_suffix(ext)
         else:
@@ -699,7 +699,7 @@ def resolve_import(name: str, module: typing.Optional[str] = None, level: int = 
             # => Here some_module/some_submodule.py* might be a file
             for ext in PYTHON_EXTENSIONS:
                 if (current.with_suffix(ext)).is_file():
-                    CACHE[cache_key] = current.with_suffix(ext)
+                    IMPORTS_CACHE[cache_key] = current.with_suffix(ext)
                     return current.with_suffix(ext)
     else:
         raise ImportError(f"Couldn't find module '{full_name}'")
@@ -731,7 +731,7 @@ def get_imports(file: pathlib.Path,
     parents = parents or set()
     if file in parents:
         raise ImportError("Circular import: "
-                          "It is not possible to have an the same import in a file later imported.")
+                          "It is not possible to have the same import in a file later imported.")
 
     parents.add(file)
 
@@ -848,7 +848,7 @@ def get_imports(file: pathlib.Path,
                         if loc.file == file:
                             # Might be in a circular import
                             raise ImportError("Circular import: "
-                                              "It is not possible to have an the same import in a file later imported.")
+                                              "It is not possible to have the same import in a file later imported.")
                         else:
                             files[child.file].locations.append(loc)
                 else:
