@@ -8,8 +8,41 @@ import miko.parsers as p
 from miko.parsers import important
 from miko.parsers.important import Important
 
-CONSTANT = 1
-'Documenting a constant'
+MY_NEW_CONSTANT = 1
+"""
+! DEPRECATED
+
+Documenting a constant
+
+Warning: This is a warning
+
+This is a very important task
+
+Important: This is important
+
+Example: print(MY_NEW_CONSTANT)
+
+Example
+-------
+>>> from test import MY_NEW_CONSTANT
+>>> print(MY_NEW_CONSTANT)
+
+Copyright
+---------
+Animenosekai: MIT License, year = 2021
+    Worked on it
+Hey: from = 2021, to = 2023
+    Worked again on it
+
+Changelog
+---------
+2.0
+    Became deprecated, use `new_func` instead
+1.4
+    New default string
+0.6
+    Raises ImportError instead of RuntimeError
+"""
 
 
 def test(a: int, b: int, /, c: int = 4, d=5, e: int = 6, *args, f: str, **kwargs) -> int:

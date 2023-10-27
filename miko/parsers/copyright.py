@@ -72,6 +72,7 @@ class License(MapElement):
         }
 
 
-class Copyright(MapParser):
+class Copyright(MapParser[License]):
     """Parser for the `Copyright` paragraph"""
     names = ["Copyright", "Copyrights", "Authors", "Author"]
+    element = License

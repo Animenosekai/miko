@@ -124,41 +124,13 @@ class Callable:
 Function = Callable
 
 
-class Documentation:
-    """Parses a docstring"""
+class BaseDocumentation:
+    """The base docstring parser"""
+
     original: str
     """Original text"""
     description: str
     """The description"""
-
-    # Flags
-    deprecated: parsers.deprecated.Deprecated
-    """A flag to indicate if the element is deprecated"""
-
-    # Inline Parsers
-    notes: parsers.notes.Notes
-    """Notes about the element"""
-    warnings: parsers.warnings.Warnings
-    """Warnings about the element"""
-    important: parsers.important.Important
-    """Important notes about the element"""
-
-    example: parsers.example.Example
-    """Examples of usage"""
-
-    # Map Parsers
-    parameters: parsers.parameters.Parameters
-    """Parameters for the callable"""
-    returns: parsers.returns.Returns
-    """Return value for the callable"""
-    yields: parsers.yields.Yields
-    """Return value for the callable"""
-    raises: parsers.raises.Raises
-    """Raisable exception by the callable"""
-    changelog: parsers.changelog.Changelog
-    """Changelog of the element"""
-    copyright: parsers.copyright.Copyright
-    """Copyright notes for the element"""
 
     def __init__(self,
                  docstring: str,
@@ -340,6 +312,64 @@ class Documentation:
                 results[attr] = result
 
         return results
+
+
+class ConstantDocumentation(BaseDocumentation):
+    """The documentation for a constant"""
+
+    # Flags
+    deprecated: parsers.deprecated.Deprecated
+    """A flag to indicate if the element is deprecated"""
+
+    # Inline Parsers
+    notes: parsers.notes.Notes
+    """Notes about the element"""
+    warnings: parsers.warnings.Warnings
+    """Warnings about the element"""
+    important: parsers.important.Important
+    """Important notes about the element"""
+
+    examples: parsers.example.Example
+    """Examples of usage"""
+
+    # Map Parsers
+    changelog: parsers.changelog.Changelog
+    """Changelog of the element"""
+    copyright: parsers.copyright.Copyright
+    """Copyright notes for the element"""
+
+
+class Documentation(BaseDocumentation):
+    """The full built-in documentation"""
+
+    # Flags
+    deprecated: parsers.deprecated.Deprecated
+    """A flag to indicate if the element is deprecated"""
+
+    # Inline Parsers
+    notes: parsers.notes.Notes
+    """Notes about the element"""
+    warnings: parsers.warnings.Warnings
+    """Warnings about the element"""
+    important: parsers.important.Important
+    """Important notes about the element"""
+
+    examples: parsers.example.Example
+    """Examples of usage"""
+
+    # Map Parsers
+    parameters: parsers.parameters.Parameters
+    """Parameters for the callable"""
+    returns: parsers.returns.Returns
+    """Return value for the callable"""
+    yields: parsers.yields.Yields
+    """Return value for the callable"""
+    raises: parsers.raises.Raises
+    """Raisable exception by the callable"""
+    changelog: parsers.changelog.Changelog
+    """Changelog of the element"""
+    copyright: parsers.copyright.Copyright
+    """Copyright notes for the element"""
 
 
 # Backward compatibility

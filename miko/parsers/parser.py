@@ -47,13 +47,16 @@ class Element:
         }
 
 
-class Parser:
+T = typing.TypeVar("T")
+
+
+class Parser(typing.Generic[T]):
     """The base class for a parser"""
     names: typing.List[str]
     """The names of the section (will be normalized)"""
-    element: typing.Type
+    element: typing.Type[T]
     """The element type"""
-    elements: typing.List[typing.Type]
+    elements: typing.List[T]
     """Elements parsed in the docstring paragraph"""
     extra_arguments: typing.Dict[str, typing.Any]
     """The extra arguments passed in with the parser"""

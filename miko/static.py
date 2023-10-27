@@ -16,6 +16,8 @@ import typing
 from importlib.machinery import PathFinder
 
 import ast_comments as ast
+if typing.TYPE_CHECKING:
+    import ast
 import autopep8
 import isort
 
@@ -310,7 +312,7 @@ class Element(typing.Generic[NodeType]):
                                   **kwargs)
 
     @property
-    def documentation(self) -> miko.Documentation:
+    def documentation(self):
         """Returns the documentation for the node"""
         return self.document()
 
@@ -331,6 +333,21 @@ class Element(typing.Generic[NodeType]):
     def exported(self):
         """Exported data"""
         return self.export()
+
+
+@dataclasses.dataclass
+class ConstantElement(Element[ast.Name]):
+    """A constant element"""
+    # node: ast.Name | ast.Attribute | ast.Subscript
+
+    def document(self, **kwargs):
+        """Documents the element"""
+        return miko.ConstantDocumentation(self.docstring.value
+                                          if self.docstring else "", **kwargs)
+
+    @property
+    def documentation(self):
+        return self.document()
 
 
 def get_elements(node: ast.AST,
@@ -379,9 +396,9 @@ def get_elements(node: ast.AST,
                         adding_parents = parents + [node, element]
                     else:
                         adding_parents = parents + [element]
-                    targets.append(Element(target,
-                                           parents=adding_parents,
-                                           safe_annotations=safe_annotations))
+                    targets.append(ConstantElement(target,
+                                                   parents=adding_parents,
+                                                   safe_annotations=safe_annotations))
 
         # If we have an annotated assignement
         # Example: some_var: some_type = some_value
@@ -392,9 +409,9 @@ def get_elements(node: ast.AST,
                 adding_parents = parents + [node, element]
             else:
                 adding_parents = parents + [element]
-            targets = [Element(element.target,
-                               parents=adding_parents,
-                               safe_annotations=safe_annotations)]
+            targets = [ConstantElement(element.target,
+                                       parents=adding_parents,
+                                       safe_annotations=safe_annotations)]
 
         # Constants are inside ast.Expr
         if isinstance(element, ast.Expr):
@@ -686,7 +703,8 @@ def resolve_import(name: str, module: typing.Optional[str] = None, level: int = 
             else:
                 for ext in PYTHON_EXTENSIONS:
                     if (current / last).with_suffix(ext).is_file():
-                        IMPORTS_CACHE[cache_key] = (current / last).with_suffix(ext)
+                        IMPORTS_CACHE[cache_key] = (
+                            current / last).with_suffix(ext)
                         return (current / last).with_suffix(ext)
                 else:
                     for ext in PYTHON_EXTENSIONS:

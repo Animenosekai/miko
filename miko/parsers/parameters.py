@@ -130,10 +130,11 @@ class Parameter(MapElement):
         }
 
 
-class Parameters(MapParser):
+class Parameters(MapParser[Parameter]):
     """Parser for the `Parameters` paragraph"""
-    element: typing.Type[Parameter] = Parameter
-    elements: typing.List[Parameter]
+    element = Parameter
+    # element: typing.Type[Parameter] = Parameter
+    # elements: typing.List[Parameter]
     names = ["Parameters", "Parameter", "Params",
              "Param", "Arguments", "Argument", "Args", "Arg"]
 

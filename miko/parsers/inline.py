@@ -22,15 +22,13 @@ def func():
     Wow I can write multiple lines here
     """
 '''
-import typing
-
 from miko.parsers.parser import Parser
 
 
-class InlineParser(Parser):
+class InlineParser(Parser[str]):
     """An inline section parser"""
-    element: typing.Type[str] = str
-    elements: typing.List[str]
+    element = str
+    # elements: typing.List[str]
 
     def append(self, content: str):
         """Extends the current """

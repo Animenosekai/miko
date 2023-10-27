@@ -91,10 +91,14 @@ class MapElement(Element):
         }
 
 
-class MapParser(Parser):
+T = typing.TypeVar("T", bound=MapElement)
+
+
+class MapParser(Parser[T]):
     """A parser for map paragraphs"""
-    element: typing.Type[MapElement] = MapElement
-    elements: typing.List[MapElement]
+    element = MapElement
+    # element: typing.Type[T] = MapElement
+    # elements: typing.List[T]
 
     def extend(self, content: str) -> None:
         """
