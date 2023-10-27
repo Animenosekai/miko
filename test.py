@@ -4,7 +4,9 @@ Documenting at the top of the module
 # Commenting the imports
 import pathlib
 
-import miko.parsers
+import miko.parsers as p
+from miko.parsers import important
+from miko.parsers.important import Important
 
 CONSTANT = 1
 'Documenting a constant'

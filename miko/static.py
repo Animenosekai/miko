@@ -7,9 +7,13 @@ without having to run it.
 import builtins
 import dataclasses
 import importlib
+import importlib.util
 import inspect
+import pathlib
 import sys
 import typing
+
+from importlib.machinery import PathFinder
 
 import ast_comments as ast
 import autopep8
@@ -275,10 +279,13 @@ def export_node(node: ast.AST) -> typing.Dict[str, typing.Any]:
     }
 
 
+NodeType = typing.TypeVar("NodeType", bound=ast.AST)
+
+
 @dataclasses.dataclass
-class Element:
+class Element(typing.Generic[NodeType]):
     """A documented element"""
-    node: ast.AST
+    node: NodeType
     """The node"""
     parents: typing.List[ast.AST] = dataclasses.field(default_factory=list)
     """The nesting where the element was defined"""
@@ -516,6 +523,339 @@ def info(source: str, indent: int = 4, safe_annotations: bool = False, **kwargs)
         element.export(indent=indent, **kwargs)
         for element in elements
     ]
+
+
+@dataclasses.dataclass
+class ImportLocation:
+    """The location of an import"""
+    file: pathlib.Path
+    """The file where the import is located"""
+    name: str
+    """
+    The name of the import.
+    This is the name of the variable where the import is stored.
+
+    Example
+    -------
+    >>> import x
+    # name == "x"
+    >>> import x.y
+    # name == "x.y"
+    >>> from x import y
+    # name == "y"
+    >>> from w.x import y as z
+    # name == "z"
+    """
+    node: ast.Import | ast.ImportFrom
+    """The node of the import, used to retrieve the location within the file"""
+
+
+PYTHON_EXTENSIONS = (".py", ".pyw", ".pyc", ".pyo")
+
+
+@dataclasses.dataclass
+class Import:
+    """An import"""
+    file: pathlib.Path
+    """The file which is imported"""
+    locations: typing.List[ImportLocation] = dataclasses.field(
+        default_factory=list)
+    """The locations of the import"""
+
+
+CACHE: typing.Dict[str, pathlib.Path] = {}
+
+
+def resolve_import(name: str, module: typing.Optional[str] = None, level: int = 0,
+                   safe: bool = True, context: typing.Optional[pathlib.Path] = None) -> pathlib.Path:
+    """
+    Resolves an import
+
+    Parameters
+    ----------
+    name: str
+        The name of the import
+    module: Optional[str], default = None
+        The module of the import
+    level: int, default = 0
+        The level of the import
+    safe: bool, default = True
+        Whether to use the safe method of resolving imports
+        or the unsafe method of resolving imports
+    """
+    full_name = ".".join(str(element)
+                         for element in [module, name]
+                         if element)
+
+    cache_key = full_name + str(level) + str(context) + str(safe)
+
+    if level:
+        if not context:
+            raise ValueError("Cannot resolve relative import without context")
+
+        context = pathlib.Path(context).resolve()
+        for _ in range(level - 1):
+            context = context.parent
+    else:
+        context = None
+
+    result = CACHE.get(cache_key)
+    if result:
+        return result
+
+    modules = full_name.split(".")
+    last = modules.pop()
+
+    # We now have two choice of how to resolve the import:
+    # 1. Use importlib.util.find_spec
+    # 2. Try to find the module ourselves
+
+    # If the first option is chosen (i.e. safe is False),
+    # and we are trying to find a submodule, importlib will
+    # run the parent modules.
+
+    # If the second option is chosen (i.e. safe is True),
+    # we will try to find the module ourselves, but this
+    # might not be as reliable, because we are not Python.
+    # (actually it might work better in some cases, because
+    # I still don't know how to fully use importlib.util.find_spec)
+
+    if not safe:
+        # Not even sure if that's the correct way of importlib
+        # I suspect there is a problem with relative imports since
+        # this gives back less results than the "safer" method
+
+        # Might remove later
+        try:
+            spec = importlib.util.find_spec(("." * level)
+                                            + ".".join(modules + [last]))
+        except ModuleNotFoundError:
+            # The last part might not be a module
+            spec = importlib.util.find_spec(("." * level) + ".".join(modules))
+
+        if not spec or not spec.origin:
+            raise ImportError(f"Could not find module {full_name}")
+
+        result = pathlib.Path(spec.origin)
+
+        if not result.is_file():
+            if spec.origin == "frozen":
+                raise ImportError(
+                    "Cannot import from frozen module (Most likely a built-in module)")
+
+            raise ImportError("The module is from a non-file source")
+
+        CACHE[cache_key] = result
+        return result
+
+    if context:
+        locations = [context]
+    else:
+        if not modules:
+            root_spec = PathFinder.find_spec(last)
+            if not root_spec:
+                raise ImportError(f"Couldn't find module '{last}'")
+
+            if not root_spec.origin or not pathlib.Path(root_spec.origin).is_file():
+                raise ImportError(f"Couldn't find module '{last}'")
+            return pathlib.Path(root_spec.origin)
+        else:
+            root = modules.pop(0)
+            root_spec = PathFinder.find_spec(root)
+
+            if not root_spec:
+                raise ImportError(f"Couldn't find module '{root}'")
+
+            locations = root_spec.submodule_search_locations
+
+    for parent in locations:
+        current = pathlib.Path(parent) / pathlib.Path(*modules)
+        # print(full_name, current)
+        if current.is_dir():
+            # some_module.some_submodule.some_subsubmodule
+            # => Here some_module/some_submodule might be a directory
+            # => with some_module/some_submodule/__init__.py* being a file
+            # => and some_module/some_submodule/subsubmodule.py* being a file
+            # => but some_module/some_submodule/subsubmodule might be a directory
+            # => and some_module/some_submodule/subsubmodule/__init__.py* might be a file
+            for ext in PYTHON_EXTENSIONS:
+                if (current / last / "__init__").with_suffix(ext).is_file():
+                    CACHE[cache_key] = (
+                        current / last / "__init__").with_suffix(ext)
+                    return (current / last / "__init__").with_suffix(ext)
+            else:
+                for ext in PYTHON_EXTENSIONS:
+                    if (current / last).with_suffix(ext).is_file():
+                        CACHE[cache_key] = (current / last).with_suffix(ext)
+                        return (current / last).with_suffix(ext)
+                else:
+                    for ext in PYTHON_EXTENSIONS:
+                        if (current / "__init__").with_suffix(ext).is_file():
+                            CACHE[cache_key] = (
+                                current / "__init__").with_suffix(ext)
+                            return (current / last).with_suffix(ext)
+        else:
+            # some_module.some_submodule.some_variable
+            # => Here some_module/some_submodule.py* might be a file
+            for ext in PYTHON_EXTENSIONS:
+                if (current.with_suffix(ext)).is_file():
+                    CACHE[cache_key] = current.with_suffix(ext)
+                    return current.with_suffix(ext)
+    else:
+        raise ImportError(f"Couldn't find module '{full_name}'")
+
+
+def get_imports(file: pathlib.Path,
+                boundary: typing.Optional[pathlib.Path] = None,
+                recursive: bool = True, no_fail: bool = True, safe: bool = True,
+                parents: typing.Optional[typing.Set[pathlib.Path]] = None) -> typing.List[Import]:
+    """
+    Gets all imported files
+
+    Parameters
+    ----------
+    file: pathlib.Path
+        The file to get imports from
+    boundary: Optional[pathlib.Path], default = None
+        The boundary of the imports.
+        This is used to bound the search to only a certain directory.
+        If an import is made from outside the boundary, it is ignored.
+    recursive: bool, default = True
+        Whether to get imports recursively
+    no_fail: bool, default = False
+        Whether to raise an error if an import cannot be resolved
+    safe: bool, default = True
+        Whether to use the safe method of resolving imports
+        or the unsafe method of resolving imports
+    """
+    parents = parents or set()
+    if file in parents:
+        raise ImportError("Circular import: "
+                          "It is not possible to have an the same import in a file later imported.")
+
+    parents.add(file)
+
+    if boundary:
+        boundary = pathlib.Path(boundary).resolve()
+
+    imports: typing.List[Import] = []
+    files: typing.Dict[pathlib.Path, Import] = {}
+
+    file = pathlib.Path(file).resolve()
+
+    with open(file, encoding="utf-8") as f:
+        source = f.read()
+
+    module = ast.parse(source)
+    for element in ast.walk(module):
+        if isinstance(element, ast.Import):
+            # => import x,y,z
+            # Import.names = [
+            #     alias(name='x'),
+            #     alias(name='y'),
+            #     alias(name='z')]
+            for name in element.names:
+                location = ImportLocation(
+                    file=file,
+                    name=name.asname or name.name,
+                    node=element
+                )
+
+                try:
+                    resolved = resolve_import(
+                        name.name, safe=safe, context=file.parent)
+                except Exception:
+                    if no_fail:
+                        continue
+                    raise
+
+                if resolved in files:
+                    for loc in files[resolved].locations:
+                        if loc.node == element:
+                            break
+                    else:
+                        files[resolved].locations.append(location)
+                else:
+                    res = Import(
+                        file=resolved,
+                        locations=[location]
+                    )
+                    files[resolved] = res
+                    imports.append(res)
+
+        if isinstance(element, ast.ImportFrom):
+            # => from ..y import x,y,z
+            # ImportFrom.module = 'y'
+            # ImportFrom.names = [
+            #     alias(name='x'),
+            #     alias(name='y'),
+            #     alias(name='z')]
+            # ImportFrom.level = 2
+            for name in element.names:
+                location = ImportLocation(
+                    file=file,
+                    name=name.asname or name.name,
+                    node=element
+                )
+
+                try:
+                    resolved = resolve_import(name.name,
+                                              module=element.module,
+                                              level=element.level,
+                                              safe=safe, context=file.parent)
+                except Exception:
+                    if no_fail:
+                        continue
+                    raise
+
+                if resolved in files:
+                    for loc in files[resolved].locations:
+                        if loc.node == element:
+                            break
+                    else:
+                        files[resolved].locations.append(location)
+                else:
+                    res = Import(
+                        file=resolved,
+                        locations=[location]
+                    )
+                    files[resolved] = res
+                    imports.append(res)
+
+    # Removing out of bound imports
+    if boundary:
+        imports = [imp for imp in imports if boundary in imp.file.parents]
+
+    files = {imp.file: imp for imp in imports}
+
+    if recursive:
+        for imp in imports.copy():
+            try:
+                children = get_imports(imp.file,
+                                       boundary=boundary,
+                                       recursive=recursive,
+                                       no_fail=no_fail, safe=safe,
+                                       parents=parents)
+            except Exception:
+                if no_fail:
+                    continue
+                raise
+
+            for child in children:
+                if child.file in files:
+                    for loc in child.locations:
+                        # if loc.node in nodes:
+                        if loc.file == file:
+                            # Might be in a circular import
+                            raise ImportError("Circular import: "
+                                              "It is not possible to have an the same import in a file later imported.")
+                        else:
+                            files[child.file].locations.append(loc)
+                else:
+                    files[child.file] = child
+                    imports.append(child)
+
+    return imports
 
 
 # if __name__ == "__main__":
