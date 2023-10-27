@@ -183,13 +183,6 @@ def make_constant_docs(element: static.ConstantElement, source_file: pathlib.Pat
     if documentation.deprecated:
         results.append(render_deprecated())
 
-    if documentation.examples:
-        results.append(render_heading("Examples", 2, level))
-
-        for index, example in enumerate(documentation.examples, start=1):
-            results.append(render_heading(f"Example {index}", 3, level))
-            results.append(render_example(example))
-
     for note in documentation.notes:
         results.append(render_note(note))
 
@@ -199,10 +192,17 @@ def make_constant_docs(element: static.ConstantElement, source_file: pathlib.Pat
     for warning in documentation.warnings:
         results.append(render_warning(warning))
 
-    if documentation.changelog:
-        results.append(render_changelog(documentation.changelog))
+    if documentation.examples:
+        results.append(render_heading("Examples", 2, level))
+
+        for index, example in enumerate(documentation.examples, start=1):
+            results.append(render_heading(f"Example {index}", 3, level))
+            results.append(render_example(example))
 
     if documentation.copyright:
         results.append(render_copyright(documentation.copyright, level=level))
+
+    if documentation.changelog:
+        results.append(render_changelog(documentation.changelog))
 
     return "\n".join(results)

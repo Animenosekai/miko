@@ -34,6 +34,8 @@ Animenosekai: MIT License, year = 2021
 Hey: from = 2021, to = 2023
     Worked again on it
 
+Note: Hey!
+
 Changelog
 ---------
 2.0

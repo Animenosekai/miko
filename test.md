@@ -10,6 +10,15 @@ This is a very important task
 > **Warning**
 > This value is deprecated
 
+> **Note**
+> Hey!
+
+> **Important**
+> This is important
+
+> **Warning**
+> This is a warning
+
 ### Examples
 
 #### Example 1
@@ -23,11 +32,12 @@ This is a very important task
 
 `print(MY_NEW_CONSTANT)`
 
-> **Important**
-> This is important
+### Copyright
 
-> **Warning**
-> This is a warning
+- **Copyright Animenosekai**, *2021* (mit license)
+Worked on it
+- **Copyright Hey**, *2021 - 2023*
+Worked again on it
 
 <details>
     <summary><b>Changelog</b></summary>
@@ -38,34 +48,27 @@ This is a very important task
     </ul>
 </details>
 
-### Copyright
-
-- **Copyright Animenosekai**, *2021* (mit license)
-Worked on it
-- **Copyright Hey**, *2021 - 2023*
-Worked again on it
-
 ## miko.test.**local_variable**
 
-> [Source: test.py](test.py#L89-L89)
+> [Source: test.py](test.py#L91-L91)
 
 Documenting a local variable
 
 ## miko.test.**local_declaration**
 
-> [Source: test.py](test.py#L91-L91)
+> [Source: test.py](test.py#L93-L93)
 
 Documenting a local declaration
 
 ## miko.test.**local_declaration**
 
-> [Source: test.py](test.py#L93-L93)
+> [Source: test.py](test.py#L95-L95)
 
 Redeclaration of a variable
 
 ## miko.test.**b**
 
-> [Source: test.py](test.py#L105-L105)
+> [Source: test.py](test.py#L107-L107)
 
 > **Warning**
 > This value is deprecated
