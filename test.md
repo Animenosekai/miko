@@ -1,4 +1,6 @@
-# MY_NEW_CONSTANT
+# Constants
+
+## miko.test.**MY_NEW_CONSTANT**
 
 > [Source: test.py](test.py#L11-L11)
 
@@ -8,17 +10,16 @@ This is a very important task
 > **Warning**
 > This value is deprecated
 
+### Examples
 
-## Examples
-
-### Example 1
+#### Example 1
 
 ```python
 >>> from test import MY_NEW_CONSTANT
 >>> print(MY_NEW_CONSTANT)
 ```
 
-### Example 2
+#### Example 2
 
 `print(MY_NEW_CONSTANT)`
 
@@ -43,3 +44,28 @@ This is a very important task
 Worked on it
 - **Copyright Hey**, *2021 - 2023*
 Worked again on it
+
+## miko.test.**local_variable**
+
+> [Source: test.py](test.py#L89-L89)
+
+Documenting a local variable
+
+## miko.test.**local_declaration**
+
+> [Source: test.py](test.py#L91-L91)
+
+Documenting a local declaration
+
+## miko.test.**local_declaration**
+
+> [Source: test.py](test.py#L93-L93)
+
+Redeclaration of a variable
+
+## miko.test.**b**
+
+> [Source: test.py](test.py#L105-L105)
+
+> **Warning**
+> This value is deprecated

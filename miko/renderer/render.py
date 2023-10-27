@@ -159,21 +159,29 @@ def render_copyright(elements: parsers.copyright.Copyright, level: int = 0):
 """
 
 
-def make_constant_docs(element: static.ConstantElement, source_file: pathlib.Path, level: int = 0, base_dir: typing.Optional[pathlib.Path] = None):
+def render_description(description: str):
+    return "  \n".join(description.splitlines()) + "\n"
+
+
+def make_constant_docs(element: static.ConstantElement, source_file: pathlib.Path, parent_path: str = "", level: int = 0, base_dir: typing.Optional[pathlib.Path] = None):
     """Makes the documentation for a constant"""
     documentation = element.documentation
 
     results = []
-    results.append(render_heading(element.node.id, 1, level))
+    if parent_path:
+        results.append(render_heading(f"{parent_path}.**{element.node.id}**",
+                                      1, level))
+    else:
+        results.append(render_heading(f"**{element.node.id}**", 1, level))
+
     results.append(render_source_link(source_file, element.node.lineno, (element.node.end_lineno
                                                                          or element.node.lineno), base_dir))
 
-    results.append("  \n".join(documentation.description.splitlines()))
-    results.append("")
+    if documentation.description:
+        results.append(render_description(documentation.description))
 
     if documentation.deprecated:
         results.append(render_deprecated())
-        results.append("")
 
     if documentation.examples:
         results.append(render_heading("Examples", 2, level))
