@@ -38,7 +38,7 @@ This is a very important task
     </ul>
 </details>
 
-## Copyright
+### Copyright
 
 - **Copyright Animenosekai**, *2021* (mit license)
 Worked on it

@@ -203,6 +203,6 @@ def make_constant_docs(element: static.ConstantElement, source_file: pathlib.Pat
         results.append(render_changelog(documentation.changelog))
 
     if documentation.copyright:
-        results.append(render_copyright(documentation.copyright))
+        results.append(render_copyright(documentation.copyright, level=level))
 
     return "\n".join(results)
