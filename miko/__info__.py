@@ -17,4 +17,17 @@ import typing
 
 
 def test(a: typing.Callable[[str, int], bool]):
-    pass
+    """
+    Parameters
+    ----------
+    a: () -> Any | (str, int) -> bool
+
+    Raises
+    ------
+    ValueError
+    """
+    try:
+        raise SyntaxError('Hello world')
+    except SyntaxError:
+        pass
+    raise ValueError('Hello world')

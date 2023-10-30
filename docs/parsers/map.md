@@ -33,15 +33,17 @@ An item in the map
 
 ### *attr* MapElement.**name**
 
-> Type: `str`
 > [Source: ../../miko/parsers/map.py @ line 25](../../miko/parsers/map.py#L25)
+
+> Type: `str`
 
 The name for the map item
 
 ### *attr* MapElement.**options**
 
-> Type: `Set`
 > [Source: ../../miko/parsers/map.py @ line 28](../../miko/parsers/map.py#L28)
+
+> Type: `Set`
 
 The options for the element
 
@@ -122,6 +124,10 @@ Retrieves the different options for an element
 > [Source: ../../miko/parsers/map.py @ line 131-204](../../miko/parsers/map.py#L131-L204)
 
 A parser for map paragraphs
+
+### Raises
+
+- `KeyError`
 
 ### *attr* MapParser.**element**
 

@@ -934,13 +934,26 @@ def get_raised(node: ast.AST, safe: bool = True, ignored: typing.Optional[typing
     results = []
     for element in node.body:
         if isinstance(element, ast.Raise):
-            if isinstance(element.exc, ast.Name):
-                results.append(element.exc.id)
-            continue
+            try:
+                if isinstance(element.exc, ast.Call):
+                    exc = get_value(element.exc.func, builtin=safe)
+                else:
+                    exc = get_value(element.exc, builtin=safe)
+                if exc and exc not in ignored:
+                    results.append(exc)
+            except Exception:
+                pass
+            # continue
+            # If we have an exception,
+            # the function should stop there
+            return results
+
+        if isinstance(element, ast.Return):
+            return results
 
         locally_ignored = ignored.copy()
 
-        # With `try...except` blocks we need to ignore what'
+        # With `try...except` blocks we need to ignore what's excepted
         if isinstance(element, ast.Try):
             for handler in element.handlers:
                 # The handlers don't have the try block's ignored
@@ -953,7 +966,7 @@ def get_raised(node: ast.AST, safe: bool = True, ignored: typing.Optional[typing
                 else:
                     locally_ignored.append(get_value(handler.type,
                                                      builtin=safe))
-
-        results.extend(get_raised(element, ignored=locally_ignored, safe=safe))
+        results.extend(get_raised(element,
+                                  ignored=locally_ignored, safe=safe))
 
     return results

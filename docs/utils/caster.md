@@ -27,15 +27,17 @@ Represents a callable type
 
 ### *attr* Callable.**arg_types**
 
-> Type: `Tuple`
 > [Source: ../../miko/utils/caster.py @ line 28](../../miko/utils/caster.py#L28)
+
+> Type: `Tuple`
 
 The types for the arguments
 
 ### *attr* Callable.**return_type**
 
-> Type: `Tuple`
 > [Source: ../../miko/utils/caster.py @ line 30](../../miko/utils/caster.py#L30)
+
+> Type: `Tuple`
 
 The type for the return value
 
@@ -61,6 +63,10 @@ Tries to retrieve the types from a string
 ### Returns
 
 - `list`
+
+### Raises
+
+- `SyntaxError`
 
 ## *func* **try_cast**
 

@@ -34,13 +34,15 @@ A flag parser
 
 ### *attr* FlagParser.**element**
 
-> Type: `Type`
 > [Source: ../../miko/parsers/flag.py @ line 27](../../miko/parsers/flag.py#L27)
+
+> Type: `Type`
 
 ### *attr* FlagParser.**elements**
 
-> Type: `List`
 > [Source: ../../miko/parsers/flag.py @ line 28](../../miko/parsers/flag.py#L28)
+
+> Type: `List`
 
 ### *func* FlagParser.**set_flag**
 

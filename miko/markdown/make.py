@@ -233,16 +233,16 @@ def render_constant_docs(element: static.ConstantElement,
         results.append(render.heading(f"*{constant_type}* **{element.node.id}**",
                                       1, level))
 
+    results.append(render.source_link(source_file, element.node.lineno, (element.node.end_lineno
+                                                                         or element.node.lineno), base_dir))
+
     if element.parents and isinstance(element.parents[-1], ast.AnnAssign):
         annotation = element.parents[-1].annotation
         name = render.stringify_type(static.get_value(annotation,
                                                       builtin=True))
 
         if name:
-            results.append(f"> Type: {name}")
-
-    results.append(render.source_link(source_file, element.node.lineno, (element.node.end_lineno
-                                                                         or element.node.lineno), base_dir))
+            results.append(f"> Type: {name}\n")
 
     if documentation.description:
         results.append(render.description(documentation.description))

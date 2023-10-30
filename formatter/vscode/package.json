@@ -45,10 +45,10 @@
 					"default": "!",
 					"description": "The prefix for the docstring flags. (default: \"!\")"
 				},
-				"miko-docs.safeAnnotations": {
+				"miko-docs.safe": {
 					"type": "boolean",
 					"default": true,
-					"description": "If the annotations should be loaded safely"
+					"description": "If the annotations and exceptions should be loaded safely (wihout loading the modules)"
 				}
 			}
 		}

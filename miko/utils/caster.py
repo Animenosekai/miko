@@ -3,13 +3,13 @@ Casts element to the right type
 """
 import ast
 import builtins
+import collections.abc
 import dataclasses
 import json
 import pathlib
 import subprocess
 import types
 import typing
-import collections.abc
 
 from miko import static
 from miko.utils.empty import is_empty
@@ -55,7 +55,7 @@ def try_retrieve_type(value: typing.Union[str, type], filename: typing.Optional[
             results: typing.List[Type] = []
             type_args = typing.get_args(value)
             if not type_args:
-                results.append(Callable(arg_types=(("...",),),
+                results.append(Callable(arg_types=tuple(),
                                return_type=("Any",)))
                 return results
             try:
@@ -119,9 +119,9 @@ def try_retrieve_type(value: typing.Union[str, type], filename: typing.Optional[
         parsed = ast.parse(processing, mode="func_type", filename=filename)
         results = []
         results.append(Callable(
-            arg_types=tuple([tuple(try_retrieve_type(static.get_dot_path(arg), filename=filename))
+            arg_types=tuple([tuple(try_retrieve_type(static.get_value(arg), filename=filename))
                        for arg in parsed.argtypes]),
-            return_type=tuple(try_retrieve_type(static.get_dot_path(parsed.returns),
+            return_type=tuple(try_retrieve_type(static.get_value(parsed.returns),
                                                 filename=filename))
         ))
         return results

@@ -18,10 +18,10 @@ const getPythonPath = () => {
  * @param indent - The number of spaces to use for indentation.
  * @param noself - Whether to exclude the "self" parameter in method signatures.
  * @param flagPrefix - The prefix to use for flag arguments.
- * @param safeAnnotations - Whether to use safe type annotations.
+ * @param safe - Whether to use safe type annotations and exceptions.
  * @returns A Promise that resolves to the output of the formatter.
  */
-const execMiko = (file, indent, noself, flagPrefix, safeAnnotations) => {
+const execMiko = (file, indent, noself, flagPrefix, safe) => {
     const pythonPath = getPythonPath();
     if (!pythonPath) {
         return Promise.reject(new Error("🕊️ Could not find a Python interpreter. Please set the \"python.defaultInterpreterPath\" setting to the path of your Python interpreter."));
@@ -30,8 +30,8 @@ const execMiko = (file, indent, noself, flagPrefix, safeAnnotations) => {
     if (noself) {
         args.push("--noself");
     }
-    if (safeAnnotations) {
-        args.push("--safe-annotations");
+    if (safe) {
+        args.push("--safe");
     }
     mikoOutputChannel.appendLine(`Calling python with arguments: ${args.join(" ")}`);
     return new Promise((resolve, reject) => {
@@ -97,7 +97,7 @@ function activate(context) {
     const config = vscode.workspace.getConfiguration("miko-docs");
     const noself = config.get("noSelf") || true;
     const flagPrefix = config.get("flagPrefix") || "!";
-    const safeAnnotations = config.get("safeAnnotations") || true;
+    const safe = config.get("safe") || true;
     const disposableFormat = vscode.commands.registerCommand('miko.format', () => {
         if (!vscode.window.activeTextEditor) {
             mikoOutputChannel.appendLine("No active text editor.");
@@ -116,7 +116,7 @@ function activate(context) {
         }
         mikoOutputChannel.appendLine(`Indentation level: ${indent}`);
         // Format the current file
-        execMiko(document.fileName, indent, noself, flagPrefix, safeAnnotations)
+        execMiko(document.fileName, indent, noself, flagPrefix, safe)
             .then(() => {
             vscode.window.showInformationMessage('🍡 Successfully formatted the current file using Miko!');
         })
@@ -137,7 +137,7 @@ function activate(context) {
                 indent = Math.floor(indent);
             }
             mikoOutputChannel.appendLine(`Indentation level for "${editor.document.fileName}": ${indent} `);
-            execMiko(editor.document.fileName, indent, noself, flagPrefix, safeAnnotations)
+            execMiko(editor.document.fileName, indent, noself, flagPrefix, safe)
                 .then(() => {
                 // editor.document.save();
                 let splitted = editor.document.fileName.split("/");

@@ -38,7 +38,7 @@ def main(args: argparse.Namespace):
                                        indent=args.indent,
                                        noself=args.noself,
                                        flag_prefix=args.flag_prefix,
-                                       safe_annotations=args.safe_annotations)
+                                       safe=args.safe)
 
         if args.minify:
             stringified = json.dumps(
@@ -70,7 +70,7 @@ def main(args: argparse.Namespace):
                                      indent=args.indent,
                                      noself=args.noself,
                                      flag_prefix=args.flag_prefix,
-                                     safe_annotations=args.safe_annotations)
+                                     safe=args.safe)
 
     if args.output and pathlib.Path(args.output).is_file():
         with open(args.output, "w", encoding="utf-8") as f:
@@ -97,8 +97,8 @@ def entry():
                             help='Ignoring the "self" parameter from signatures. (useful for class methods)')
         parser.add_argument("--flag-prefix", action='store', required=False,
                             default="!", help='The prefix for the docstring flags. (default: "!")')
-        parser.add_argument("--safe-annotations", action='store_true', required=False,
-                            help='If the annotations should be loaded safely')
+        parser.add_argument("--safe", action='store_true', required=False,
+                            help='If the annotations and exceptions should be loaded safely (without loading the modules) (default: False))')
         parser.add_argument("--output", "-o", action='store', type=str,
                             required=False, default=None, help='The file to output the result to. If not provided, `miko` will use STDOUT.')
         parser.add_argument("input", action='store', type=str, default=None,

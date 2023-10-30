@@ -12,8 +12,9 @@ Represents an element in a docstring paragraph
 
 ### *attr* Element.**body**
 
-> Type: `str`
 > [Source: ../../miko/parsers/parser.py @ line 9](../../miko/parsers/parser.py#L9)
+
+> Type: `str`
 
 The body of the element
 
@@ -29,8 +30,9 @@ element1: option1, option2
 
 ### *attr* Element.**extra_arguments**
 
-> Type: `Dict`
 > [Source: ../../miko/parsers/parser.py @ line 20](../../miko/parsers/parser.py#L20)
+
+> Type: `Dict`
 
 The extra arguments passed in with the parser
 
@@ -62,31 +64,39 @@ The exported data
 
 The base class for a parser
 
+### Raises
+
+- `NotImplementedError`
+
 ### *attr* Parser.**names**
 
-> Type: `List`
 > [Source: ../../miko/parsers/parser.py @ line 55](../../miko/parsers/parser.py#L55)
+
+> Type: `List`
 
 The names of the section (will be normalized)
 
 ### *attr* Parser.**element**
 
-> Type: `Type`
 > [Source: ../../miko/parsers/parser.py @ line 57](../../miko/parsers/parser.py#L57)
+
+> Type: `Type`
 
 The element type
 
 ### *attr* Parser.**elements**
 
-> Type: `List`
 > [Source: ../../miko/parsers/parser.py @ line 59](../../miko/parsers/parser.py#L59)
+
+> Type: `List`
 
 Elements parsed in the docstring paragraph
 
 ### *attr* Parser.**extra_arguments**
 
-> Type: `Dict`
 > [Source: ../../miko/parsers/parser.py @ line 61](../../miko/parsers/parser.py#L61)
+
+> Type: `Dict`
 
 The extra arguments passed in with the parser
 
@@ -111,6 +121,10 @@ Renders the docstring back
 #### Returns
 
 - `str`
+
+#### Raises
+
+- `NotImplementedError`
 
 ### *func* Parser.**exported**
 

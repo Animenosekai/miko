@@ -33,6 +33,10 @@ This avoids loading unknown code, which could lead to unexpected results.
 - `Any`
     - Any element pointed by the dot path
 
+### Raises
+
+- `ValueError`
+
 > **Warning**
 > Keep in mind that the full dot path needs to be provided
 
@@ -44,7 +48,7 @@ Returns the dot path for a given attribute
 
 ### Parameters
 
-- **attr**: `expr`, `ast.Attribute`
+- **attr**: `ast.Attribute`, `expr`
   - The attribute to get the whole dot path from
 
 
@@ -52,6 +56,10 @@ Returns the dot path for a given attribute
 
 - `str`
     - The dot path
+
+### Raises
+
+- `ValueError`
 
 ## *func* **get_value**
 
@@ -99,7 +107,7 @@ Otherwise a dot path will be returned.
 See get_element for more information on loading arbitrary elements.
 
 
-- **node**: ` ast.FunctionDef`, `ast.AsyncFunctionDef `
+- **node**: `ast.AsyncFunctionDef `, ` ast.FunctionDef`
   - The node to get the signature from
 
 
@@ -138,36 +146,41 @@ A documented element
 
 ### *attr* Element.**node**
 
-> Type: `NodeType`
 > [Source: ../miko/static.py @ line 295](../miko/static.py#L295)
+
+> Type: `NodeType`
 
 The node
 
 ### *attr* Element.**parents**
 
-> Type: `List`
 > [Source: ../miko/static.py @ line 297](../miko/static.py#L297)
+
+> Type: `List`
 
 The nesting where the element was defined
 
 ### *attr* Element.**docstring**
 
-> Type: `Optional`
 > [Source: ../miko/static.py @ line 299](../miko/static.py#L299)
+
+> Type: `Optional`
 
 The docstring element
 
 ### *attr* Element.**filename**
 
-> Type: `Optional`
 > [Source: ../miko/static.py @ line 302](../miko/static.py#L302)
+
+> Type: `Optional`
 
 The filename where the element was defined, for easier debugging
 
 ### *attr* Element.**safe**
 
-> Type: `bool`
 > [Source: ../miko/static.py @ line 304](../miko/static.py#L304)
+
+> Type: `bool`
 
 If the annotations and exceptions should be safely loaded
 
@@ -262,11 +275,11 @@ Gets all of the elements which could be documented inside the AST
   - This value is **optional**
 
 
-- **node**: `AST`, `ast.AST`
+- **node**: `ast.AST`, `AST`
   - The Abstract Syntax Tree element to search into
 
 
-- **parents**: `t`, `Optional`, `]`, `.`, `y`, `n`, `g`, `a`, `L`, `p`, `None`, `S`, `i`, `s`, `T`, `[`, `A`
+- **parents**: `p`, `[`, `Optional`, `t`, `s`, `S`, `]`, `g`, `T`, `y`, `.`, `L`, `None`, `n`, `a`, `i`, `A`
   - This value is **optional**
   - The parents of the current element
 
@@ -362,15 +375,17 @@ The location of an import
 
 ### *attr* ImportLocation.**file**
 
-> Type: `Path`
 > [Source: ../miko/static.py @ line 593](../miko/static.py#L593)
+
+> Type: `Path`
 
 The file where the import is located
 
 ### *attr* ImportLocation.**name**
 
-> Type: `str`
 > [Source: ../miko/static.py @ line 595](../miko/static.py#L595)
+
+> Type: `str`
 
 The name of the import.  
 This is the name of the variable where the import is stored.
@@ -392,8 +407,9 @@ This is the name of the variable where the import is stored.
 
 ### *attr* ImportLocation.**node**
 
-> Type: `None`
 > [Source: ../miko/static.py @ line 611](../miko/static.py#L611)
+
+> Type: `None`
 
 The node of the import, used to retrieve the location within the file
 
@@ -409,22 +425,25 @@ An import
 
 ### *attr* Import.**file**
 
-> Type: `Path`
 > [Source: ../miko/static.py @ line 621](../miko/static.py#L621)
+
+> Type: `Path`
 
 The file which is imported
 
 ### *attr* Import.**locations**
 
-> Type: `List`
 > [Source: ../miko/static.py @ line 623](../miko/static.py#L623)
+
+> Type: `List`
 
 The locations of the import
 
 ## *const* **IMPORTS_CACHE**
 
-> Type: `Dict`
 > [Source: ../miko/static.py @ line 628](../miko/static.py#L628)
+
+> Type: `Dict`
 
 ## *func* **resolve_import**
 
@@ -443,7 +462,7 @@ Resolves an import
   - The level of the import
 
 
-- **module**: `Optional`, `t`, `None`, `r`, `s`
+- **module**: `Optional`, `t`, `s`, `r`, `None`
   - This value is **optional**
   - The module of the import
 
@@ -462,6 +481,12 @@ or the unsafe method of resolving imports
 
 - `Path`
 
+### Raises
+
+- `ImportError`
+
+- `ValueError`
+
 ## *func* **get_imports**
 
 > [Source: ../miko/static.py @ line 771-925](../miko/static.py#L771-L925)
@@ -470,7 +495,7 @@ Gets all imported files
 
 ### Parameters
 
-- **boundary**: `t`, `l`, `h`, `Optional`, `.`, `b`, `a`, `p`, `None`, `i`, `P`
+- **boundary**: `p`, `l`, `t`, `Optional`, `h`, `P`, `.`, `None`, `a`, `i`, `b`
   - This value is **optional**
   - The boundary of the imports.
 This is used to bound the search to only a certain directory.
@@ -505,9 +530,13 @@ or the unsafe method of resolving imports
 
 - `list`
 
+### Raises
+
+- `ImportError`
+
 ## *func* **get_raised**
 
-> [Source: ../miko/static.py @ line 928-959](../miko/static.py#L928-L959)
+> [Source: ../miko/static.py @ line 928-972](../miko/static.py#L928-L972)
 
 ### Parameters
 
