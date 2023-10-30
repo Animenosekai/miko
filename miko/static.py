@@ -336,7 +336,7 @@ class Element(typing.Generic[NodeType]):
 
 
 @dataclasses.dataclass
-class ConstantElement(Element[ast.Name]):
+class ConstantElement(Element[ast.Name | ast.Module]):
     """A constant element"""
     # node: ast.Name | ast.Attribute | ast.Subscript
 
@@ -450,9 +450,17 @@ def get_elements(node: ast.AST,
             else:
                 adding_parents = parents
 
-            adding = [Element(element, parents=adding_parents,
-                              docstring=docstring,
-                              safe_annotations=safe_annotations)]
+            adding: typing.List[Element]
+
+            if isinstance(element, ast.Module):
+                adding = [ConstantElement(element, parents=adding_parents,
+                                          docstring=docstring,
+                                          safe_annotations=safe_annotations)]
+            else:
+                adding = [Element(element, parents=adding_parents,
+                                  docstring=docstring,
+                                  safe_annotations=safe_annotations)]
+
         else:
             # Might be another type of element,
             # which should be documented if and only if
@@ -748,8 +756,9 @@ def get_imports(file: pathlib.Path,
     """
     parents = parents or set()
     if file in parents:
-        raise ImportError("Circular import: "
-                          "It is not possible to have the same import in a file later imported.")
+        raise ImportError("Circular import — "
+                          "It is not possible to have the same import in a file later imported. "
+                          f"(File: {file}))")
 
     parents.add(file)
 
@@ -865,8 +874,11 @@ def get_imports(file: pathlib.Path,
                         # if loc.node in nodes:
                         if loc.file == file:
                             # Might be in a circular import
-                            raise ImportError("Circular import: "
-                                              "It is not possible to have the same import in a file later imported.")
+                            if no_fail:
+                                continue
+                            raise ImportError("Circular import — "
+                                              "It is not possible to have the same import in a file later imported. "
+                                              f"(File: {file})")
                         else:
                             files[child.file].locations.append(loc)
                 else:

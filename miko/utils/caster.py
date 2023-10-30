@@ -62,7 +62,7 @@ def try_retrieve_type(value: typing.Union[str, type]) -> typing.List[typing.Unio
     try:
         # If the given element is global (list, str, int, ...) return it
         return [getattr(builtins, processing)]
-    except KeyError:
+    except AttributeError:
         pass
 
     # We failed to do anything with the type, return it as a string

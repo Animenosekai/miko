@@ -1,6 +1,10 @@
-# Constants
+## *module* **test**
 
-## miko.test.**MY_NEW_CONSTANT**
+> [Source: test.py](test.py#L0-L0)
+
+Documenting at the top of the module
+
+### *const* test.**MY_NEW_CONSTANT**
 
 > [Source: test.py](test.py#L11-L11)
 
@@ -19,26 +23,25 @@ This is a very important task
 > **Warning**
 > This is a warning
 
-### Examples
+#### Examples
 
-#### Example 1
+##### Example 1
 
 ```python
 >>> from test import MY_NEW_CONSTANT
 >>> print(MY_NEW_CONSTANT)
 ```
 
-#### Example 2
+##### Example 2
 
 `print(MY_NEW_CONSTANT)`
 
-### Copyright
+#### Copyright
 
 - **Copyright Animenosekai**, *2021* (mit license)
 Worked on it
 - **Copyright Hey**, *2021 - 2023*
 Worked again on it
-
 <details>
     <summary><b>Changelog</b></summary>
     <ul>
@@ -48,25 +51,75 @@ Worked again on it
     </ul>
 </details>
 
-## miko.test.**local_variable**
+### *func* test.**test**
 
-> [Source: test.py](test.py#L91-L91)
+> [Source: test.py](test.py#L50-L97)
 
-Documenting a local variable
+Documenting a function
 
-## miko.test.**local_declaration**
+> **Warning**
+> This value is deprecated
 
-> [Source: test.py](test.py#L93-L93)
+#### Parameters
 
-Documenting a local declaration
+- **a**: int
+  - Note: This parameter is **deprecated**
+  - Default Value: `<miko.utils.empty.Empty object at 0x1039f76d0>`
+  - Hey
 
-## miko.test.**local_declaration**
 
-> [Source: test.py](test.py#L95-L95)
+- **b**: int
+  - Default Value: `<miko.utils.empty.Empty object at 0x1039f7c10>`
 
-Redeclaration of a variable
 
-## miko.test.**b**
+- **c**: int
+  - Default Value: `4`
+
+
+- **d**
+  - Default Value: `5`
+
+
+- **e**: int
+  - Default Value: `6`
+
+
+- **args**
+  - Default Value: `<miko.utils.empty.Empty object at 0x1039f7e90>`
+
+
+- **f**: str
+  - Default Value: `<miko.utils.empty.Empty object at 0x1039f7e90>`
+
+
+- **kwargs**
+  - Default Value: `<miko.utils.empty.Empty object at 0x1039f7e90>`
+
+
+#### Returns
+
+- int
+    - 
+
+### *class* test.**Test**
+
+> [Source: test.py](test.py#L100-L104)
+
+Documenting a class
+
+#### *func* test.Test.**__init__**
+
+> [Source: test.py](test.py#L103-L104)
+
+Documenting a method
+
+##### Parameters
+
+- **self**
+  - Default Value: `<miko.utils.empty.Empty object at 0x103a004d0>`
+
+
+### *const* test.**b**
 
 > [Source: test.py](test.py#L107-L107)
 
