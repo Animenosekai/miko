@@ -34,16 +34,12 @@ A flag parser
 
 ### *attr* FlagParser.**element**
 
-> **Note**
-> This value is of type `None`
-
+> Type: `Type`
 > [Source: ../../miko/parsers/flag.py @ line 27](../../miko/parsers/flag.py#L27)
 
 ### *attr* FlagParser.**elements**
 
-> **Note**
-> This value is of type `None`
-
+> Type: `List`
 > [Source: ../../miko/parsers/flag.py @ line 28](../../miko/parsers/flag.py#L28)
 
 ### *func* FlagParser.**set_flag**

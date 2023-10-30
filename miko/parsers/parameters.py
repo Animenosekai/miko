@@ -18,7 +18,7 @@ import json
 import typing
 
 from miko.parsers.map import MapElement, MapParser
-from miko.utils.caster import try_cast, try_retrieve_type
+from miko.utils.caster import try_cast, try_retrieve_type, stringify
 from miko.utils.empty import Empty, is_empty
 
 
@@ -28,7 +28,7 @@ class Parameter(MapElement):
     def signature(self) -> typing.Optional[inspect.Signature]:
         """The signature of the callable, if provided"""
         return self.extra_arguments.get("signature", None)
-    
+
     @property
     def filename(self) -> typing.Optional[str]:
         """The filename where the parameter is defined, if provided"""
@@ -37,7 +37,7 @@ class Parameter(MapElement):
     @property
     def deprecated(self) -> bool:
         """If the parameter is considered as deprecated"""
-        return "deprecated" in self.options
+        return "deprecated" in self._options
 
     @property
     def signature_parameter(self) -> typing.Optional[inspect.Parameter]:
@@ -50,12 +50,12 @@ class Parameter(MapElement):
     @property
     def optional(self) -> bool:
         """If the parameter is optional"""
-        if self.signature:
-            param = self.signature_parameter
-            if param and not is_empty(param.default):
-                return True  # it has a default value, thus is optional
-        return ("optional" in self.options
-                or any(val.startswith("default") for val in self.options))
+        # if self.signature:
+        #     param = self.signature_parameter
+        #     if param and not is_empty(param.default):
+        #         return True  # it has a default value, thus is optional
+        return ("optional" in self._options
+                or any(val.startswith("default") for val in self._options))
 
     @property
     def default(self) -> typing.Union[str, Empty, typing.Any]:
@@ -65,14 +65,14 @@ class Parameter(MapElement):
         Note: This can be something other than a string if the `signature` of the callable is provided
         """
         for opt in self.options:
-            if opt.startswith("default"):
+            if self._normalize_option(opt).startswith("default"):
                 _, _, content = opt.partition("=")
                 element = content.strip()
                 return try_cast(element, self.types)
 
-        parameter = self.signature_parameter
-        if parameter and not is_empty(parameter.default):
-            return parameter.default
+        # parameter = self.signature_parameter
+        # if parameter and not is_empty(parameter.default):
+        #     return parameter.default
 
         return Empty()
 
@@ -82,21 +82,21 @@ class Parameter(MapElement):
         results = set()
 
         for option in self.options:
-            if option.startswith("default") or option in {"optional", "required", "deprecated"}:
+            opt = self._normalize_option(option)
+            if opt.startswith("default") or opt in {"optional", "required", "deprecated"}:
                 continue
             results.update(try_retrieve_type(option, filename=self.filename))
 
-        parameter = self.signature_parameter
-        if parameter:
-            results.update(try_retrieve_type(parameter.annotation, filename=self.filename))
+        # parameter = self.signature_parameter
+        # if parameter:
+        #     results.update(try_retrieve_type(
+        #         parameter.annotation, filename=self.filename))
 
         return results
 
     def render_options(self) -> str:
         results = []
-        types = [element.__name__
-                 if hasattr(element, "__name__")
-                 else str(element)
+        types = [stringify(element)
                  for element in self.types]
         if types:
             results.append(" | ".join(sorted(types)))
@@ -129,8 +129,7 @@ class Parameter(MapElement):
             "deprecated": self.deprecated,
             "optional": self.optional,
             "default": default_value,
-            "types": [t.__name__
-                      if hasattr(t, "__name__") else str(t)
+            "types": [stringify(t)
                       for t in self.types]
         }
 
@@ -146,13 +145,32 @@ class Parameters(MapParser[Parameter]):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         if self.signature:
-            for parameter in self.signature.parameters:
-                parameter = str(parameter)
-                if parameter == "self" and self.noself:
+            for name, parameter in self.signature.parameters.items():
+                if name == "self" and self.noself:
                     continue
-                if parameter not in self.elements:
-                    self[parameter] = self.element(name=parameter,
-                                                   **self.extra_arguments)
+
+                if name not in self:
+                    options = []
+                    if not is_empty(parameter.annotation):
+                        options.append(parameter.annotation)
+                    if not is_empty(parameter.default):
+                        options.append(f"default = {str(parameter.default)}")
+                    self[name] = self.element(name=name,
+                                              options=options,
+                                              **self.extra_arguments)
+                else:
+                    adding_types = []
+                    types = self[name].types
+
+                    for incoming in try_retrieve_type(parameter.annotation, filename=self.filename):
+                        if incoming not in types and stringify(incoming) not in types:
+                            adding_types.append(incoming)
+
+                    if not is_empty(parameter.default) and is_empty(self[name].default):
+                        adding_types.append(
+                            f"default = {stringify(parameter.default)}")
+
+                    self[name].extend_options(options)
 
     @property
     def signature(self) -> typing.Optional[inspect.Signature]:

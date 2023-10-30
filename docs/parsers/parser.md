@@ -12,9 +12,7 @@ Represents an element in a docstring paragraph
 
 ### *attr* Element.**body**
 
-> **Note**
-> This value is of type `str`
-
+> Type: `str`
 > [Source: ../../miko/parsers/parser.py @ line 9](../../miko/parsers/parser.py#L9)
 
 The body of the element
@@ -31,9 +29,7 @@ element1: option1, option2
 
 ### *attr* Element.**extra_arguments**
 
-> **Note**
-> This value is of type `None`
-
+> Type: `Dict`
 > [Source: ../../miko/parsers/parser.py @ line 20](../../miko/parsers/parser.py#L20)
 
 The extra arguments passed in with the parser
@@ -68,36 +64,28 @@ The base class for a parser
 
 ### *attr* Parser.**names**
 
-> **Note**
-> This value is of type `None`
-
+> Type: `List`
 > [Source: ../../miko/parsers/parser.py @ line 55](../../miko/parsers/parser.py#L55)
 
 The names of the section (will be normalized)
 
 ### *attr* Parser.**element**
 
-> **Note**
-> This value is of type `None`
-
+> Type: `Type`
 > [Source: ../../miko/parsers/parser.py @ line 57](../../miko/parsers/parser.py#L57)
 
 The element type
 
 ### *attr* Parser.**elements**
 
-> **Note**
-> This value is of type `None`
-
+> Type: `List`
 > [Source: ../../miko/parsers/parser.py @ line 59](../../miko/parsers/parser.py#L59)
 
 Elements parsed in the docstring paragraph
 
 ### *attr* Parser.**extra_arguments**
 
-> **Note**
-> This value is of type `None`
-
+> Type: `Dict`
 > [Source: ../../miko/parsers/parser.py @ line 61](../../miko/parsers/parser.py#L61)
 
 The extra arguments passed in with the parser

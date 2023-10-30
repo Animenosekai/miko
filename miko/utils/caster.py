@@ -9,27 +9,29 @@ import pathlib
 import subprocess
 import types
 import typing
+import collections.abc
 
 from miko import static
 from miko.utils.empty import is_empty
 
 
+def stringify(t):
+    """Stringifies the given type"""
+    if hasattr(t, "__name__"):
+        return t.__name__
+    return str(t)
+
+
 @dataclasses.dataclass(frozen=True)
 class Callable:
     """Represents a callable type"""
-    arg_types: typing.Tuple[typing.Tuple["Type"]]
+    arg_types: typing.Tuple[typing.Tuple["Type"], ...]
     """The types for the arguments"""
-    return_type: typing.Tuple["Type"]
+    return_type: typing.Tuple["Type", ...]
     """The type for the return value"""
 
     def __str__(self) -> str:
         parameters = []
-
-        def stringify(t):
-            if hasattr(t, "__name__"):
-                return t.__name__
-            return str(t)
-
         for param in self.arg_types:
             parameters.append(" | ".join([stringify(p) for p in param]))
 
@@ -49,12 +51,27 @@ def try_retrieve_type(value: typing.Union[str, type], filename: typing.Optional[
         if is_empty(value):
             return []
 
-        if typing.get_origin(value) is typing.Callable:
+        if (typing.get_origin(value) or value) in (typing.Callable, collections.abc.Callable):
             results: typing.List[Type] = []
+            type_args = typing.get_args(value)
+            if not type_args:
+                results.append(Callable(arg_types=(("...",),),
+                               return_type=("Any",)))
+                return results
+            try:
+                param_args = type_args[0]
+            except IndexError:
+                raise SyntaxError(f"The callable type `{value}` on file "
+                                  f"'{filename}' is missing parameter annotations")
+            try:
+                return_args = type_args[1]
+            except IndexError:
+                raise SyntaxError(f"The callable type `{value}` on file "
+                                  f"'{filename}' is missing its return annotation")
             results.append(Callable(
                 arg_types=tuple([tuple(try_retrieve_type(val, filename=filename))
-                           for val in typing.get_args(value)[0]]),
-                return_type=tuple(try_retrieve_type(typing.get_args(value)[1],
+                                for val in param_args]),
+                return_type=tuple(try_retrieve_type(return_args,
                                                     filename=filename))
             ))
             return results
@@ -93,10 +110,8 @@ def try_retrieve_type(value: typing.Union[str, type], filename: typing.Optional[
         processing, _, _ = processing.partition("[")
         processing_lower = processing.lower()
     else:
-        if filename:
-            raise SyntaxError(f"The number of brackets don't match in: `{value}` "
-                              f"(file: {filename})")
-        raise SyntaxError(f"The number of brackets don't match in: `{value}`")
+        raise SyntaxError(f"The number of brackets don't match in: `{value}` "
+                          f"(file: {filename})")
 
     # We assume that there is only 1 type to return from now on
 

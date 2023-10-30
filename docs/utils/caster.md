@@ -8,52 +8,63 @@ Casts element to the right type
 
 - [../../miko/utils/empty.py](../../miko/utils/empty.py): As `is_empty`
 
+## *func* **stringify**
+
+> [Source: ../../miko/utils/caster.py @ line 18-22](../../miko/utils/caster.py#L18-L22)
+
+Stringifies the given type
+
+### Parameters
+
+- **t**
+
+
 ## *class* **Callable**
 
-> [Source: ../../miko/utils/caster.py @ line 18-39](../../miko/utils/caster.py#L18-L39)
+> [Source: ../../miko/utils/caster.py @ line 26-41](../../miko/utils/caster.py#L26-L41)
 
 Represents a callable type
 
 ### *attr* Callable.**arg_types**
 
-> **Note**
-> This value is of type `None`
-
-> [Source: ../../miko/utils/caster.py @ line 20](../../miko/utils/caster.py#L20)
+> Type: `Tuple`
+> [Source: ../../miko/utils/caster.py @ line 28](../../miko/utils/caster.py#L28)
 
 The types for the arguments
 
 ### *attr* Callable.**return_type**
 
-> **Note**
-> This value is of type `None`
-
-> [Source: ../../miko/utils/caster.py @ line 22](../../miko/utils/caster.py#L22)
+> Type: `Tuple`
+> [Source: ../../miko/utils/caster.py @ line 30](../../miko/utils/caster.py#L30)
 
 The type for the return value
 
 ## *const* **Type**
 
-> [Source: ../../miko/utils/caster.py @ line 42](../../miko/utils/caster.py#L42)
+> [Source: ../../miko/utils/caster.py @ line 44](../../miko/utils/caster.py#L44)
 
 ## *func* **try_retrieve_type**
 
-> [Source: ../../miko/utils/caster.py @ line 45-132](../../miko/utils/caster.py#L45-L132)
+> [Source: ../../miko/utils/caster.py @ line 47-147](../../miko/utils/caster.py#L47-L147)
 
 Tries to retrieve the types from a string
 
 ### Parameters
 
-- **filename**
+- **filename**: `Optional`
   - This value is **optional**
 
 
-- **value**
+- **value**: `Union`
 
+
+### Returns
+
+- `list`
 
 ## *func* **try_cast**
 
-> [Source: ../../miko/utils/caster.py @ line 135-168](../../miko/utils/caster.py#L135-L168)
+> [Source: ../../miko/utils/caster.py @ line 150-183](../../miko/utils/caster.py#L150-L183)
 
 Tries casting the given value
 
@@ -66,3 +77,7 @@ Tries casting the given value
 - **value**: `str`
   - The value to cast
 
+
+### Returns
+
+- `Union`

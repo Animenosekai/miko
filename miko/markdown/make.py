@@ -235,12 +235,11 @@ def render_constant_docs(element: static.ConstantElement,
 
     if element.parents and isinstance(element.parents[-1], ast.AnnAssign):
         annotation = element.parents[-1].annotation
-        name = render.stringify_type(
-            static.get_value(annotation, builtin=True))
+        name = render.stringify_type(static.get_value(annotation,
+                                                      builtin=True))
 
         if name:
-            results.append(render.note(
-                f"This value is of type {name}"))
+            results.append(f"> Type: {name}")
 
     results.append(render.source_link(source_file, element.node.lineno, (element.node.end_lineno
                                                                          or element.node.lineno), base_dir))

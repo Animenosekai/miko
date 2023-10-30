@@ -115,7 +115,7 @@ def get_dot_path(attr: ast.expr) -> str:
     if isinstance(attr, ast.Subscript):
         return get_dot_path(attr.value)
     if isinstance(attr, ast.BinOp) and isinstance(attr.op, ast.BitOr):
-        return f"{get_dot_path(attr.left)}|{get_dot_path(attr.right)}"
+        return f"{get_dot_path(attr.left)} | {get_dot_path(attr.right)}"
     if not isinstance(attr, ast.Attribute):
         raise ValueError(
             f"The attribute `{attr}` doesn't seem to be providing enough information to generate the dot path")
@@ -161,7 +161,7 @@ def get_value(expr: typing.Optional[ast.expr], builtin: bool = False) -> typing.
             return get_element(result, builtin=builtin)
         except (AttributeError, ValueError):
             return result  # should not be a builtin
-    if isinstance(expr, ast.Attribute):
+    if isinstance(expr, (ast.Attribute, ast.Subscript)):
         # This happens when the value is defined as
         # an element of something else
         # new_var: some_module.some_var = ...
@@ -173,6 +173,7 @@ def get_value(expr: typing.Optional[ast.expr], builtin: bool = False) -> typing.
             return get_element(result, builtin=builtin)
         except (AttributeError, ValueError):
             return result  # should not be a builtin
+    # print(type(expr), expr)
     return None
 
 

@@ -17,9 +17,4 @@ import typing
 
 
 def test(a: typing.Callable[[str, int], bool]):
-    """
-    Parameters
-    ----------
-    a
-    """
     pass

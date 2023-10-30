@@ -40,11 +40,16 @@ class MapElement(Element):
                  options: typing.Optional[typing.Iterable[str]] = None, **kwargs) -> None:
         super().__init__(**kwargs)
         self.name = str(name)
-        options = (self._normalize_option(opt) for opt in (options or []))
-        self.options = set(opt for opt in options if opt)
+        self.options = set(options or [])
 
     def _normalize_option(self, option: str):
         return str(option).strip().lower()
+
+    @property
+    def _options(self) -> typing.Set[str]:
+        """An internal set of processed options"""
+        results = {self._normalize_option(opt) for opt in self.options}
+        return {res for res in results if res}
 
     def extend_options(self, options: typing.Iterable[str]):
         """
@@ -55,8 +60,7 @@ class MapElement(Element):
         options: Iterable[str]
             Options to add to the options
         """
-        options = (self._normalize_option(opt) for opt in options)
-        self.options.update(opt for opt in options if opt)
+        self.options.update([opt for opt in options if opt])
 
     def render_options(self) -> str:
         """Renders the options"""

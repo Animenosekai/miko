@@ -23,27 +23,21 @@ Stores information on the source of a callable
 
 #### *attr* Callable.Source.**filename**
 
-> **Note**
-> This value is of type `str`
-
+> Type: `str`
 > [Source: ../miko/miko.py @ line 21](../miko/miko.py#L21)
 
 The filename where the callable was defined
 
 #### *attr* Callable.Source.**line**
 
-> **Note**
-> This value is of type `int`
-
+> Type: `int`
 > [Source: ../miko/miko.py @ line 23](../miko/miko.py#L23)
 
 The line where the callable was defined
 
 #### *attr* Callable.Source.**name**
 
-> **Note**
-> This value is of type `str`
-
+> Type: `str`
 > [Source: ../miko/miko.py @ line 25](../miko/miko.py#L25)
 
 The original name of the callable
@@ -54,11 +48,19 @@ The original name of the callable
 
 Returns the local variables of the function
 
+#### Returns
+
+- `tuple`
+
 ### *func* Callable.**parameters**
 
 > [Source: ../miko/miko.py @ line 61-63](../miko/miko.py#L61-L63)
 
 Returns the parameters of the function
+
+#### Returns
+
+- `dict`
 
 ### *func* Callable.**return_annotation**
 
@@ -78,7 +80,7 @@ Returns the __code__ object of a given callable object.
 
 #### Parameters
 
-- **obj**: `Any`, `callable`
+- **obj**: `Any`, `Callable`
   - The object to get the __code__ from
 
 
@@ -125,18 +127,14 @@ The base docstring parser
 
 ### *attr* BaseDocumentation.**original**
 
-> **Note**
-> This value is of type `str`
-
+> Type: `str`
 > [Source: ../miko/miko.py @ line 130](../miko/miko.py#L130)
 
 Original text
 
 ### *attr* BaseDocumentation.**description**
 
-> **Note**
-> This value is of type `str`
-
+> Type: `str`
 > [Source: ../miko/miko.py @ line 132](../miko/miko.py#L132)
 
 The description
@@ -167,63 +165,49 @@ The documentation for a constant
 
 ### *attr* ConstantDocumentation.**deprecated**
 
-> **Note**
-> This value is of type `parsers.deprecated.Deprecated`
-
+> Type: `parsers.deprecated.Deprecated`
 > [Source: ../miko/miko.py @ line 321](../miko/miko.py#L321)
 
 A flag to indicate if the element is deprecated
 
 ### *attr* ConstantDocumentation.**notes**
 
-> **Note**
-> This value is of type `parsers.notes.Notes`
-
+> Type: `parsers.notes.Notes`
 > [Source: ../miko/miko.py @ line 325](../miko/miko.py#L325)
 
 Notes about the element
 
 ### *attr* ConstantDocumentation.**warnings**
 
-> **Note**
-> This value is of type `parsers.warnings.Warnings`
-
+> Type: `parsers.warnings.Warnings`
 > [Source: ../miko/miko.py @ line 327](../miko/miko.py#L327)
 
 Warnings about the element
 
 ### *attr* ConstantDocumentation.**important**
 
-> **Note**
-> This value is of type `parsers.important.Important`
-
+> Type: `parsers.important.Important`
 > [Source: ../miko/miko.py @ line 329](../miko/miko.py#L329)
 
 Important notes about the element
 
 ### *attr* ConstantDocumentation.**examples**
 
-> **Note**
-> This value is of type `parsers.example.Example`
-
+> Type: `parsers.example.Example`
 > [Source: ../miko/miko.py @ line 332](../miko/miko.py#L332)
 
 Examples of usage
 
 ### *attr* ConstantDocumentation.**changelog**
 
-> **Note**
-> This value is of type `parsers.changelog.Changelog`
-
+> Type: `parsers.changelog.Changelog`
 > [Source: ../miko/miko.py @ line 336](../miko/miko.py#L336)
 
 Changelog of the element
 
 ### *attr* ConstantDocumentation.**copyright**
 
-> **Note**
-> This value is of type `parsers.copyright.Copyright`
-
+> Type: `parsers.copyright.Copyright`
 > [Source: ../miko/miko.py @ line 338](../miko/miko.py#L338)
 
 Copyright notes for the element
@@ -236,99 +220,77 @@ The full built-in documentation
 
 ### *attr* Documentation.**deprecated**
 
-> **Note**
-> This value is of type `parsers.deprecated.Deprecated`
-
+> Type: `parsers.deprecated.Deprecated`
 > [Source: ../miko/miko.py @ line 346](../miko/miko.py#L346)
 
 A flag to indicate if the element is deprecated
 
 ### *attr* Documentation.**notes**
 
-> **Note**
-> This value is of type `parsers.notes.Notes`
-
+> Type: `parsers.notes.Notes`
 > [Source: ../miko/miko.py @ line 350](../miko/miko.py#L350)
 
 Notes about the element
 
 ### *attr* Documentation.**warnings**
 
-> **Note**
-> This value is of type `parsers.warnings.Warnings`
-
+> Type: `parsers.warnings.Warnings`
 > [Source: ../miko/miko.py @ line 352](../miko/miko.py#L352)
 
 Warnings about the element
 
 ### *attr* Documentation.**important**
 
-> **Note**
-> This value is of type `parsers.important.Important`
-
+> Type: `parsers.important.Important`
 > [Source: ../miko/miko.py @ line 354](../miko/miko.py#L354)
 
 Important notes about the element
 
 ### *attr* Documentation.**examples**
 
-> **Note**
-> This value is of type `parsers.example.Example`
-
+> Type: `parsers.example.Example`
 > [Source: ../miko/miko.py @ line 357](../miko/miko.py#L357)
 
 Examples of usage
 
 ### *attr* Documentation.**parameters**
 
-> **Note**
-> This value is of type `parsers.parameters.Parameters`
-
+> Type: `parsers.parameters.Parameters`
 > [Source: ../miko/miko.py @ line 361](../miko/miko.py#L361)
 
 Parameters for the callable
 
 ### *attr* Documentation.**returns**
 
-> **Note**
-> This value is of type `parsers.returns.Returns`
-
+> Type: `parsers.returns.Returns`
 > [Source: ../miko/miko.py @ line 363](../miko/miko.py#L363)
 
 Return value for the callable
 
 ### *attr* Documentation.**yields**
 
-> **Note**
-> This value is of type `parsers.yields.Yields`
-
+> Type: `parsers.yields.Yields`
 > [Source: ../miko/miko.py @ line 365](../miko/miko.py#L365)
 
 Return value for the callable
 
 ### *attr* Documentation.**raises**
 
-> **Note**
-> This value is of type `parsers.raises.Raises`
-
+> Type: `parsers.raises.Raises`
 > [Source: ../miko/miko.py @ line 367](../miko/miko.py#L367)
 
 Raisable exception by the callable
 
 ### *attr* Documentation.**changelog**
 
-> **Note**
-> This value is of type `parsers.changelog.Changelog`
-
+> Type: `parsers.changelog.Changelog`
 > [Source: ../miko/miko.py @ line 369](../miko/miko.py#L369)
 
 Changelog of the element
 
 ### *attr* Documentation.**copyright**
 
-> **Note**
-> This value is of type `parsers.copyright.Copyright`
-
+> Type: `parsers.copyright.Copyright`
 > [Source: ../miko/miko.py @ line 371](../miko/miko.py#L371)
 
 Copyright notes for the element
