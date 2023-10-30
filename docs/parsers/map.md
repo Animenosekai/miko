@@ -49,31 +49,6 @@ element1: option1, option2
     (content)
 ```
 
-### *func* MapElement.**__init__**
-
-> [Source: ../../miko/parsers/map.py @ line 39-44](../../miko/parsers/map.py#L39-L44)
-
-#### Parameters
-
-- **name**: `str`
-
-
-- **options**
-  - This value is **optional**
-
-
-- **kwargs**
-
-
-### *func* MapElement.**_normalize_option**
-
-> [Source: ../../miko/parsers/map.py @ line 46-47](../../miko/parsers/map.py#L46-L47)
-
-#### Parameters
-
-- **option**: `str`
-
-
 ### *func* MapElement.**extend_options**
 
 > [Source: ../../miko/parsers/map.py @ line 49-59](../../miko/parsers/map.py#L49-L59)
@@ -152,48 +127,6 @@ Parses and adds new content to the paragraph
 - **indent**: `int`
   - Default Value: `4`
 
-
-#### Returns
-
-- `str`
-
-### *func* MapParser.**__getitem__**
-
-> [Source: ../../miko/parsers/map.py @ line 143-149](../../miko/parsers/map.py#L143-L149)
-
-#### Parameters
-
-- **key**: `str`
-
-
-### *func* MapParser.**__setitem__**
-
-> [Source: ../../miko/parsers/map.py @ line 151-158](../../miko/parsers/map.py#L151-L158)
-
-#### Parameters
-
-- **key**: `str`
-
-
-- **value**: `MapElement`
-
-
-### *func* MapParser.**__delitem__**
-
-> [Source: ../../miko/parsers/map.py @ line 160-164](../../miko/parsers/map.py#L160-L164)
-
-#### Parameters
-
-- **key**: `str`
-
-
-### *func* MapParser.**__iter__**
-
-> [Source: ../../miko/parsers/map.py @ line 166-167](../../miko/parsers/map.py#L166-L167)
-
-### *func* MapParser.**__repr__**
-
-> [Source: ../../miko/parsers/map.py @ line 169-170](../../miko/parsers/map.py#L169-L170)
 
 #### Returns
 

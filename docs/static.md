@@ -122,7 +122,7 @@ Exports the data of an AST node
 
 ## *class* **Element**
 
-> [Source: ../miko/static.py @ line 288-349](../miko/static.py#L288-L349)
+> [Source: ../miko/static.py @ line 288-362](../miko/static.py#L288-L362)
 
 A documented element
 
@@ -198,15 +198,21 @@ Exports the data
 
 Exported data
 
+### *func* Element.**is_private**
+
+> [Source: ../miko/static.py @ line 352-362](../miko/static.py#L352-L362)
+
+If the element is private
+
 ## *class* **ConstantElement**
 
-> [Source: ../miko/static.py @ line 353-364](../miko/static.py#L353-L364)
+> [Source: ../miko/static.py @ line 366-377](../miko/static.py#L366-L377)
 
 A constant element
 
 ### *func* ConstantElement.**document**
 
-> [Source: ../miko/static.py @ line 357-360](../miko/static.py#L357-L360)
+> [Source: ../miko/static.py @ line 370-373](../miko/static.py#L370-L373)
 
 Documents the element
 
@@ -217,21 +223,21 @@ Documents the element
 
 ### *func* ConstantElement.**documentation**
 
-> [Source: ../miko/static.py @ line 363-364](../miko/static.py#L363-L364)
+> [Source: ../miko/static.py @ line 376-377](../miko/static.py#L376-L377)
 
 ## *func* **get_elements**
 
-> [Source: ../miko/static.py @ line 367-499](../miko/static.py#L367-L499)
+> [Source: ../miko/static.py @ line 380-512](../miko/static.py#L380-L512)
 
 Gets all of the elements which could be documented inside the AST
 
 ### Parameters
 
-- **node**: `ast.ast`, `AST`
+- **node**: `AST`, `ast.ast`
   - The Abstract Syntax Tree element to search into
 
 
-- **parents**: `[`, `s`, `t`, `n`, `y`, `p`, `]`, `None`, `l`, `.`, `a`, `g`, `i`
+- **parents**: `g`, `i`, `[`, `s`, `a`, `n`, `t`, `.`, `y`, `l`, `]`, `None`, `p`
   - Default Value: `none`
   - The parents of the current element
 
@@ -243,7 +249,7 @@ Gets all of the elements which could be documented inside the AST
 
 ## *func* **clean_elements**
 
-> [Source: ../miko/static.py @ line 502-543](../miko/static.py#L502-L543)
+> [Source: ../miko/static.py @ line 515-556](../miko/static.py#L515-L556)
 
 Cleans up the given elements
 
@@ -261,7 +267,7 @@ Cleans up the given elements
 
 ## *func* **clean**
 
-> [Source: ../miko/static.py @ line 546-554](../miko/static.py#L546-L554)
+> [Source: ../miko/static.py @ line 559-567](../miko/static.py#L559-L567)
 
 Cleans up the source code
 
@@ -287,7 +293,7 @@ Cleans up the source code
 
 ## *func* **info**
 
-> [Source: ../miko/static.py @ line 557-564](../miko/static.py#L557-L564)
+> [Source: ../miko/static.py @ line 570-577](../miko/static.py#L570-L577)
 
 Gathers information on the different elements of the source code
 
@@ -309,19 +315,19 @@ Gathers information on the different elements of the source code
 
 ## *class* **ImportLocation**
 
-> [Source: ../miko/static.py @ line 568-589](../miko/static.py#L568-L589)
+> [Source: ../miko/static.py @ line 581-602](../miko/static.py#L581-L602)
 
 The location of an import
 
 ### *const* ImportLocation.**file**
 
-> [Source: ../miko/static.py @ line 570](../miko/static.py#L570)
+> [Source: ../miko/static.py @ line 583](../miko/static.py#L583)
 
 The file where the import is located
 
 ### *const* ImportLocation.**name**
 
-> [Source: ../miko/static.py @ line 572](../miko/static.py#L572)
+> [Source: ../miko/static.py @ line 585](../miko/static.py#L585)
 
 The name of the import.  
 This is the name of the variable where the import is stored.
@@ -343,39 +349,39 @@ This is the name of the variable where the import is stored.
 
 ### *const* ImportLocation.**node**
 
-> [Source: ../miko/static.py @ line 588](../miko/static.py#L588)
+> [Source: ../miko/static.py @ line 601](../miko/static.py#L601)
 
 The node of the import, used to retrieve the location within the file
 
 ## *const* **PYTHON_EXTENSIONS**
 
-> [Source: ../miko/static.py @ line 592](../miko/static.py#L592)
+> [Source: ../miko/static.py @ line 605](../miko/static.py#L605)
 
 ## *class* **Import**
 
-> [Source: ../miko/static.py @ line 596-602](../miko/static.py#L596-L602)
+> [Source: ../miko/static.py @ line 609-615](../miko/static.py#L609-L615)
 
 An import
 
 ### *const* Import.**file**
 
-> [Source: ../miko/static.py @ line 598](../miko/static.py#L598)
+> [Source: ../miko/static.py @ line 611](../miko/static.py#L611)
 
 The file which is imported
 
 ### *const* Import.**locations**
 
-> [Source: ../miko/static.py @ line 600](../miko/static.py#L600)
+> [Source: ../miko/static.py @ line 613](../miko/static.py#L613)
 
 The locations of the import
 
 ## *const* **IMPORTS_CACHE**
 
-> [Source: ../miko/static.py @ line 605](../miko/static.py#L605)
+> [Source: ../miko/static.py @ line 618](../miko/static.py#L618)
 
 ## *func* **resolve_import**
 
-> [Source: ../miko/static.py @ line 608-745](../miko/static.py#L608-L745)
+> [Source: ../miko/static.py @ line 621-758](../miko/static.py#L621-L758)
 
 Resolves an import
 
@@ -385,7 +391,7 @@ Resolves an import
   - The name of the import
 
 
-- **module**: `r`, `None`, `s`, `t`
+- **module**: `None`, `s`, `t`, `r`
   - Default Value: `none`
   - The module of the import
 
@@ -411,7 +417,7 @@ or the unsafe method of resolving imports
 
 ## *func* **get_imports**
 
-> [Source: ../miko/static.py @ line 748-902](../miko/static.py#L748-L902)
+> [Source: ../miko/static.py @ line 761-915](../miko/static.py#L761-L915)
 
 Gets all imported files
 
@@ -421,7 +427,7 @@ Gets all imported files
   - The file to get imports from
 
 
-- **boundary**: `b`, `.`, `p`, `h`, `i`, `None`, `l`, `a`, `t`
+- **boundary**: `h`, `i`, `a`, `b`, `t`, `.`, `l`, `None`, `p`
   - Default Value: `none`
   - The boundary of the imports.
 This is used to bound the search to only a certain directory.
@@ -450,7 +456,7 @@ or the unsafe method of resolving imports
 
 ## *func* **get_raised**
 
-> [Source: ../miko/static.py @ line 905-936](../miko/static.py#L905-L936)
+> [Source: ../miko/static.py @ line 918-949](../miko/static.py#L918-L949)
 
 ### Parameters
 

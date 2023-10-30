@@ -9,7 +9,16 @@ from miko import static
 from miko.markdown import render, tree
 
 
-def make_docs(entry_point: pathlib.Path, output_dir: pathlib.Path):
+def PrivateElement(element: static.Element):
+    """Returns True if the given element is private"""
+    return element.is_private
+
+
+def make_docs(entry_point: pathlib.Path,
+              output_dir: pathlib.Path,
+              file_filter: typing.Callable[[pathlib.Path],
+                                           bool] = lambda x: False,
+              element_filter: typing.Callable[[static.Element], bool] = PrivateElement):
     """
     Makes the documentation for the every file loaded by the entry point
 
@@ -22,16 +31,18 @@ def make_docs(entry_point: pathlib.Path, output_dir: pathlib.Path):
     make_module_docs(entry_point, output_dir / entry_point.with_suffix(".md"))
 
     for imp in imports:
+        if file_filter(imp.file):
+            continue
         if imp.file.stem == "__init__":
             output_file = output_dir / \
                 imp.file.relative_to(entry_point.parent).with_name("README.md")
         else:
             output_file = output_dir / \
                 imp.file.relative_to(entry_point.parent).with_suffix(".md")
-        make_module_docs(imp.file, output_file)
+        make_module_docs(imp.file, output_file, element_filter=element_filter)
 
 
-def make_module_docs(source_file: pathlib.Path, output_file: pathlib.Path):
+def make_module_docs(source_file: pathlib.Path, output_file: pathlib.Path, element_filter: typing.Callable[[static.Element], bool] = PrivateElement):
     """Makes the documentation for a module"""
     source_file = pathlib.Path(source_file).resolve()
     output_file = pathlib.Path(output_file).resolve()
@@ -51,7 +62,8 @@ def render_module_docs(element: static.ConstantElement,
                        source_file: pathlib.Path,
                        level: int = 0,
                        parent_path: str = "",
-                       base_dir: typing.Optional[pathlib.Path] = None):
+                       base_dir: typing.Optional[pathlib.Path] = None,
+                       element_filter: typing.Callable[[static.Element], bool] = PrivateElement):
     """Makes the documentation for a module"""
     documentation = element.documentation
 
@@ -97,6 +109,9 @@ def render_module_docs(element: static.ConstantElement,
         results.append(render.changelog(documentation.changelog))
 
     for child in tree.get_direct_children(element, elements=elements):
+        if element_filter(child):
+            continue
+
         if isinstance(child.node, ast.Name):
             results.append(render_constant_docs(child, source_file, level + 1,
                                                 parent_path=parent_path, base_dir=base_dir))
@@ -105,7 +120,7 @@ def render_module_docs(element: static.ConstantElement,
                                                 parent_path=parent_path, base_dir=base_dir))
         elif isinstance(child.node, ast.ClassDef):
             results.append(render_class_docs(child, elements, source_file, level + 1,
-                                             parent_path=parent_path, base_dir=base_dir))
+                                             parent_path=parent_path, base_dir=base_dir, element_filter=element_filter))
     return "\n".join(results)
 
 
@@ -114,7 +129,8 @@ def render_class_docs(element: static.Element[ast.ClassDef],
                       source_file: pathlib.Path,
                       level: int = 0,
                       parent_path: str = "",
-                      base_dir: typing.Optional[pathlib.Path] = None):
+                      base_dir: typing.Optional[pathlib.Path] = None,
+                      element_filter: typing.Callable[[static.Element], bool] = PrivateElement):
     # Recursively make docs for all elements in the class
     documentation = element.documentation
 
@@ -178,6 +194,9 @@ def render_class_docs(element: static.Element[ast.ClassDef],
         results.append(render.changelog(documentation.changelog))
 
     for child in tree.get_direct_children(element, elements=elements):
+        if element_filter(child):
+            continue
+
         if isinstance(child.node, ast.Name):
             results.append(render_constant_docs(child, source_file, level + 1,
                                                 parent_path=parent_path, base_dir=base_dir))
@@ -186,7 +205,7 @@ def render_class_docs(element: static.Element[ast.ClassDef],
                                                 parent_path=parent_path, base_dir=base_dir))
         elif isinstance(child.node, ast.ClassDef):
             results.append(render_class_docs(child, elements, source_file, level + 1,
-                                             parent_path=parent_path, base_dir=base_dir))
+                                             parent_path=parent_path, base_dir=base_dir, element_filter=element_filter))
 
     return "\n".join(results)
 

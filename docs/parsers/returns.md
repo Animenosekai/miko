@@ -30,15 +30,6 @@ Parser for the `Returns` paragraph
 
 > [Source: ../../miko/parsers/returns.py @ line 25](../../miko/parsers/returns.py#L25)
 
-### *func* Returns.**__init__**
-
-> [Source: ../../miko/parsers/returns.py @ line 27-39](../../miko/parsers/returns.py#L27-L39)
-
-#### Parameters
-
-- **kwargs**
-
-
 ### *func* Returns.**signature**
 
 > [Source: ../../miko/parsers/returns.py @ line 43-45](../../miko/parsers/returns.py#L43-L45)

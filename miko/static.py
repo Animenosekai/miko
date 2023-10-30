@@ -348,6 +348,19 @@ class Element(typing.Generic[NodeType]):
         """Exported data"""
         return self.export()
 
+    @property
+    def is_private(self):
+        """If the element is private"""
+        if isinstance(self.node, ast.ClassDef):
+            return self.node.name.startswith("_")
+        elif isinstance(self.node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            return self.node.name.startswith("_")
+        elif isinstance(self.node, ast.Name):
+            return self.node.id.startswith("_")
+        elif isinstance(self.node, ast.Attribute):
+            return self.node.attr.startswith("_")
+        return False
+
 
 @dataclasses.dataclass
 class ConstantElement(Element[ast.Name | ast.Module]):

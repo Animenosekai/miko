@@ -35,15 +35,6 @@ The line where the callable was defined
 
 The original name of the callable
 
-### *func* Callable.**__init__**
-
-> [Source: ../miko/miko.py @ line 28-53](../miko/miko.py#L28-L53)
-
-#### Parameters
-
-- **func**: `Callable`
-
-
 ### *func* Callable.**local_variables**
 
 > [Source: ../miko/miko.py @ line 56-58](../miko/miko.py#L56-L58)
@@ -109,14 +100,6 @@ Returns whether the callable is a class or not
 
 Returns the source code for the callable
 
-### *func* Callable.**__repr__**
-
-> [Source: ../miko/miko.py @ line 119-120](../miko/miko.py#L119-L120)
-
-#### Returns
-
-- `str`
-
 ## *const* **Function**
 
 > [Source: ../miko/miko.py @ line 124](../miko/miko.py#L124)
@@ -139,37 +122,6 @@ Original text
 
 The description
 
-### *func* BaseDocumentation.**__init__**
-
-> [Source: ../miko/miko.py @ line 135-252](../miko/miko.py#L135-L252)
-
-#### Parameters
-
-- **docstring**: `str`
-
-
-- **flag_prefix**: `str`
-  - Default Value: `!`
-
-
-- **kwargs**
-
-
-### *func* BaseDocumentation.**_normalize_name**
-
-> [Source: ../miko/miko.py @ line 255-257](../miko/miko.py#L255-L257)
-
-Cleans the name to normalize it
-
-#### Parameters
-
-- **name**: `str`
-
-
-#### Returns
-
-- `str`
-
 ### *func* BaseDocumentation.**dumps**
 
 > [Source: ../miko/miko.py @ line 259-295](../miko/miko.py#L259-L295)
@@ -181,14 +133,6 @@ Returns a clean docstring
 - **indent**: `int`
   - Default Value: `4`
 
-
-### *func* BaseDocumentation.**__repr__**
-
-> [Source: ../miko/miko.py @ line 297-301](../miko/miko.py#L297-L301)
-
-#### Returns
-
-- `str`
 
 ### *func* BaseDocumentation.**exported**
 

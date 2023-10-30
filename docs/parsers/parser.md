@@ -32,15 +32,6 @@ element1: option1, option2
 
 The extra arguments passed in with the parser
 
-### *func* Element.**__init__**
-
-> [Source: ../../miko/parsers/parser.py @ line 23-25](../../miko/parsers/parser.py#L23-L25)
-
-#### Parameters
-
-- **kwargs**
-
-
 ### *func* Element.**append_body**
 
 > [Source: ../../miko/parsers/parser.py @ line 27-40](../../miko/parsers/parser.py#L27-L40)
@@ -93,18 +84,6 @@ Elements parsed in the docstring paragraph
 
 The extra arguments passed in with the parser
 
-### *func* Parser.**__init__**
-
-> [Source: ../../miko/parsers/parser.py @ line 64-67](../../miko/parsers/parser.py#L64-L67)
-
-#### Parameters
-
-- **args**
-
-
-- **kwargs**
-
-
 ### *func* Parser.**name**
 
 > [Source: ../../miko/parsers/parser.py @ line 70-74](../../miko/parsers/parser.py#L70-L74)
@@ -126,41 +105,6 @@ Renders the docstring back
 #### Returns
 
 - `str`
-
-### *func* Parser.**__getattr__**
-
-> [Source: ../../miko/parsers/parser.py @ line 81-86](../../miko/parsers/parser.py#L81-L86)
-
-#### Parameters
-
-- **attr**: `str`
-
-
-### *func* Parser.**__getitem__**
-
-> [Source: ../../miko/parsers/parser.py @ line 88-89](../../miko/parsers/parser.py#L88-L89)
-
-#### Parameters
-
-- **key**
-
-
-### *func* Parser.**__iter__**
-
-> [Source: ../../miko/parsers/parser.py @ line 91-92](../../miko/parsers/parser.py#L91-L92)
-
-### *func* Parser.**__len__**
-
-> [Source: ../../miko/parsers/parser.py @ line 94-95](../../miko/parsers/parser.py#L94-L95)
-
-### *func* Parser.**__contains__**
-
-> [Source: ../../miko/parsers/parser.py @ line 97-102](../../miko/parsers/parser.py#L97-L102)
-
-#### Parameters
-
-- **element**: `str`
-
 
 ### *func* Parser.**exported**
 

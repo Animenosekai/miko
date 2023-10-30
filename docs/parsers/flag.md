@@ -65,11 +65,3 @@ Sets the flag
 > [Source: ../../miko/parsers/flag.py @ line 44-46](../../miko/parsers/flag.py#L44-L46)
 
 The exported data
-
-### *func* FlagParser.**__repr__**
-
-> [Source: ../../miko/parsers/flag.py @ line 48-49](../../miko/parsers/flag.py#L48-L49)
-
-#### Returns
-
-- `str`

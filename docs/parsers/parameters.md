@@ -99,15 +99,6 @@ Parser for the `Parameters` paragraph
 
 > [Source: ../../miko/parsers/parameters.py @ line 138](../../miko/parsers/parameters.py#L138)
 
-### *func* Parameters.**__init__**
-
-> [Source: ../../miko/parsers/parameters.py @ line 141-150](../../miko/parsers/parameters.py#L141-L150)
-
-#### Parameters
-
-- **kwargs**
-
-
 ### *func* Parameters.**signature**
 
 > [Source: ../../miko/parsers/parameters.py @ line 153-155](../../miko/parsers/parameters.py#L153-L155)
@@ -123,20 +114,3 @@ If the first `self` parameter should be parsed
 #### Returns
 
 - `bool`
-
-### *func* Parameters.**__getitem__**
-
-> [Source: ../../miko/parsers/parameters.py @ line 162-163](../../miko/parsers/parameters.py#L162-L163)
-
-#### Parameters
-
-- **key**: `str`
-
-
-#### Returns
-
-- `Parameter`
-
-### *func* Parameters.**__iter__**
-
-> [Source: ../../miko/parsers/parameters.py @ line 165-166](../../miko/parsers/parameters.py#L165-L166)

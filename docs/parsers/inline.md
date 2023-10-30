@@ -55,11 +55,3 @@ Extends the current
 - **indent**: `int`
   - Default Value: `4`
 
-
-### *func* InlineParser.**__repr__**
-
-> [Source: ../../miko/parsers/inline.py @ line 59-60](../../miko/parsers/inline.py#L59-L60)
-
-#### Returns
-
-- `str`
