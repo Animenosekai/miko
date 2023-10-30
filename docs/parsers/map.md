@@ -7,7 +7,7 @@ This defines the listed element parsers
 
 ## Imports
 
-- [../../miko/parsers/parser.py](../../miko/parsers/parser.py): As `Parser`
+- [../../miko/parsers/parser.py](../../miko/parsers/parser.py): As `Parser`, `Element`
 
 ## Examples
 

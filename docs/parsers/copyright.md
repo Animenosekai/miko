@@ -6,7 +6,7 @@ Parser for the `Copyright` paragraph
 
 ## Imports
 
-- [../../miko/parsers/map.py](../../miko/parsers/map.py): As `MapParser`
+- [../../miko/parsers/map.py](../../miko/parsers/map.py): As `MapParser`, `MapElement`
 
 ## Examples
 

@@ -874,7 +874,7 @@ def get_imports(file: pathlib.Path,
 
                 if resolved in files:
                     for loc in files[resolved].locations:
-                        if loc.node == element:
+                        if loc.node == element and loc.name == location.name:
                             break
                     else:
                         files[resolved].locations.append(location)

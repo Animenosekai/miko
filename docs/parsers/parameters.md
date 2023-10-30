@@ -6,7 +6,7 @@ Parser for the `Parameters` paragraph
 
 ## Imports
 
-- [../../miko/parsers/map.py](../../miko/parsers/map.py): As `MapElement`
+- [../../miko/parsers/map.py](../../miko/parsers/map.py): As `MapElement`, `MapParser`
 
 ## Examples
 
