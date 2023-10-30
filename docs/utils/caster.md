@@ -23,10 +23,10 @@ Tries casting the given value
 
 ### Parameters
 
-- **value**: str
+- **value**: `str`
   - The value to cast
 
 
-- **types**: set[str, (str) -> any]
+- **types**: `set[str`, `(str) -> any]`
   - The types to try casting to
 

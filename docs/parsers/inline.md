@@ -43,7 +43,7 @@ Extends the current
 
 #### Parameters
 
-- **content**: str
+- **content**: `str`
 
 
 ### *func* InlineParser.**dumps**
@@ -52,7 +52,7 @@ Extends the current
 
 #### Parameters
 
-- **indent**: int
+- **indent**: `int`
   - Default Value: `4`
 
 
@@ -62,4 +62,4 @@ Extends the current
 
 #### Returns
 
-- str
+- `str`

@@ -14,11 +14,11 @@ Get a element from its dot path
 
 ### Parameters
 
-- **dot_path**: str
+- **dot_path**: `str`
   - The dot path of the element to get
 
 
-- **builtin**: bool
+- **builtin**: `bool`
   - This value is **optional**
   - If the element should be already loaded or coming from a builtin module.
 This avoids loading unknown code, which could lead to unexpected results.
@@ -26,7 +26,7 @@ This avoids loading unknown code, which could lead to unexpected results.
 
 ### Returns
 
-- Any
+- `Any`
     - Any element pointed by the dot path
 
 > **Warning**
@@ -40,13 +40,13 @@ Returns the dot path for a given attribute
 
 ### Parameters
 
-- **attr**: ast.attribute
+- **attr**: `ast.attribute`
   - The attribute to get the whole dot path from
 
 
 ### Returns
 
-- str
+- `str`
     - The dot path
 
 ## *func* **get_value**
@@ -57,12 +57,12 @@ Returns the correct value from the given expression
 
 ### Parameters
 
-- **expr**: ast.expr
+- **expr**: `ast.expr`
   - This value is **optional**
   - The expression to get the value from
 
 
-- **builtin**: bool
+- **builtin**: `bool`
   - This value is **optional**
   - If the element should be already loaded or coming from a builtin module
 to be fully loaded. Otherwise a dot path will be returned.
@@ -71,10 +71,10 @@ See `get_element` for more information on loading arbitrary elements.
 
 ### Returns
 
-- str
+- `str`
     - The value for the expression
 
-- None
+- `None`
     - If it couldn't get the value
 
 ## *func* **signature_from_ast**
@@ -85,11 +85,11 @@ Computes the signature of a function from its AST
 
 ### Parameters
 
-- **node**:  ast.functiondef, ast.asyncfunctiondef 
+- **node**: `ast.asyncfunctiondef `, ` ast.functiondef`
   - The node to get the signature from
 
 
-- **builtin**: bool
+- **builtin**: `bool`
   - This value is **optional**
   - If annotations should be already loaded or
 coming from a builtin module to be fully loaded.
@@ -99,9 +99,9 @@ See get_element for more information on loading arbitrary elements.
 
 ### Returns
 
-- Signature
+- `Signature`
 
-- inspect.Signature
+- `inspect.Signature`
     - This the signature of the function,
 retrieved without ever running the code
 
@@ -113,7 +113,7 @@ Exports the data of an AST node
 
 ### Parameters
 
-- **node**: AST
+- **node**: `AST`
 
 
 ## *const* **NodeType**
@@ -181,7 +181,7 @@ Exports the data
 
 #### Parameters
 
-- **indent**: int
+- **indent**: `int`
   - Default Value: `4`
 
 
@@ -223,16 +223,16 @@ Gets all of the elements which could be documented inside the AST
 
 ### Parameters
 
-- **node**: ast.ast, AST
+- **node**: `AST`, `ast.ast`
   - The Abstract Syntax Tree element to search into
 
 
-- **parents**: a, y, l, [, s, i, ], p, g, None, t, ., n
+- **parents**: `i`, `n`, `p`, `y`, `l`, `]`, `.`, `[`, `t`, `None`, `a`, `g`, `s`
   - Default Value: `none`
   - The parents of the current element
 
 
-- **safe_annotations**: bool
+- **safe_annotations**: `bool`
   - This value is **optional**
   - If the annotations should be safely loaded
 
@@ -248,7 +248,7 @@ Cleans up the given elements
 - **elements**
 
 
-- **indent**: int
+- **indent**: `int`
   - Default Value: `4`
 
 
@@ -263,14 +263,14 @@ Cleans up the source code
 
 ### Parameters
 
-- **source**: str
+- **source**: `str`
 
 
-- **indent**: int
+- **indent**: `int`
   - Default Value: `4`
 
 
-- **safe_annotations**: bool
+- **safe_annotations**: `bool`
   - This value is **optional**
 
 
@@ -279,7 +279,7 @@ Cleans up the source code
 
 ### Returns
 
-- str
+- `str`
 
 ## *func* **info**
 
@@ -289,14 +289,14 @@ Gathers information on the different elements of the source code
 
 ### Parameters
 
-- **source**: str
+- **source**: `str`
 
 
-- **indent**: int
+- **indent**: `int`
   - Default Value: `4`
 
 
-- **safe_annotations**: bool
+- **safe_annotations**: `bool`
   - This value is **optional**
 
 
@@ -377,21 +377,21 @@ Resolves an import
 
 ### Parameters
 
-- **name**: str
+- **name**: `str`
   - The name of the import
 
 
-- **module**: None, s, r, t
+- **module**: `t`, `None`, `s`, `r`
   - Default Value: `none`
   - The module of the import
 
 
-- **level**: int
+- **level**: `int`
   - This value is **optional**
   - The level of the import
 
 
-- **safe**: bool
+- **safe**: `bool`
   - Default Value: `True`
   - Whether to use the safe method of resolving imports
 or the unsafe method of resolving imports
@@ -403,7 +403,7 @@ or the unsafe method of resolving imports
 
 ### Returns
 
-- Path
+- `Path`
 
 ## *func* **get_imports**
 
@@ -413,28 +413,28 @@ Gets all imported files
 
 ### Parameters
 
-- **file**: Path
+- **file**: `Path`
   - The file to get imports from
 
 
-- **boundary**: a, h, l, i, b, p, None, t, .
+- **boundary**: `p`, `i`, `l`, `.`, `h`, `t`, `None`, `a`, `b`
   - Default Value: `none`
   - The boundary of the imports.
 This is used to bound the search to only a certain directory.
 If an import is made from outside the boundary, it is ignored.
 
 
-- **recursive**: bool
+- **recursive**: `bool`
   - Default Value: `True`
   - Whether to get imports recursively
 
 
-- **no_fail**: bool
+- **no_fail**: `bool`
   - This value is **optional**
   - Whether to raise an error if an import cannot be resolved
 
 
-- **safe**: bool
+- **safe**: `bool`
   - Default Value: `True`
   - Whether to use the safe method of resolving imports
 or the unsafe method of resolving imports

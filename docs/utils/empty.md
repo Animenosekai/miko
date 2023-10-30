@@ -19,5 +19,5 @@ is considered as 'Empty' by the inspect module
 
 ### Parameters
 
-- **value**: Any
+- **value**: `Any`
 

@@ -44,7 +44,7 @@ A license in the `Copyright` section
 
 #### Returns
 
-- str
+- `str`
 
 ### *func* License.**exported**
 

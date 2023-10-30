@@ -55,7 +55,7 @@ element1: option1, option2
 
 #### Parameters
 
-- **name**: str
+- **name**: `str`
 
 
 - **options**
@@ -71,7 +71,7 @@ element1: option1, option2
 
 #### Parameters
 
-- **option**: str
+- **option**: `str`
 
 
 ### *func* MapElement.**extend_options**
@@ -82,7 +82,7 @@ Extends the options with the provided values
 
 #### Parameters
 
-- **options**: iterable[str]
+- **options**: `iterable[str]`
   - Options to add to the options
 
 
@@ -94,7 +94,7 @@ Renders the options
 
 #### Returns
 
-- str
+- `str`
 
 ### *func* MapElement.**dumps**
 
@@ -104,14 +104,14 @@ Renders the element
 
 #### Parameters
 
-- **indent**: int
+- **indent**: `int`
   - Default Value: `4`
   - The indentation level
 
 
 #### Returns
 
-- str
+- `str`
 
 ### *func* MapElement.**exported**
 
@@ -139,7 +139,7 @@ Parses and adds new content to the paragraph
 
 #### Parameters
 
-- **content**: str
+- **content**: `str`
   - The content to add to the paragraph
 
 
@@ -149,13 +149,13 @@ Parses and adds new content to the paragraph
 
 #### Parameters
 
-- **indent**: int
+- **indent**: `int`
   - Default Value: `4`
 
 
 #### Returns
 
-- str
+- `str`
 
 ### *func* MapParser.**__getitem__**
 
@@ -163,7 +163,7 @@ Parses and adds new content to the paragraph
 
 #### Parameters
 
-- **key**: str
+- **key**: `str`
 
 
 ### *func* MapParser.**__setitem__**
@@ -172,10 +172,10 @@ Parses and adds new content to the paragraph
 
 #### Parameters
 
-- **key**: str
+- **key**: `str`
 
 
-- **value**: MapElement
+- **value**: `MapElement`
 
 
 ### *func* MapParser.**__delitem__**
@@ -184,7 +184,7 @@ Parses and adds new content to the paragraph
 
 #### Parameters
 
-- **key**: str
+- **key**: `str`
 
 
 ### *func* MapParser.**__iter__**
@@ -197,4 +197,4 @@ Parses and adds new content to the paragraph
 
 #### Returns
 
-- str
+- `str`

@@ -49,7 +49,7 @@ Appends the given value to the body of the element
 
 #### Parameters
 
-- **value**: str
+- **value**: `str`
   - The string to append to the body
 
 
@@ -119,13 +119,13 @@ Renders the docstring back
 
 #### Parameters
 
-- **indent**: int
+- **indent**: `int`
   - Default Value: `4`
 
 
 #### Returns
 
-- str
+- `str`
 
 ### *func* Parser.**__getattr__**
 
@@ -133,7 +133,7 @@ Renders the docstring back
 
 #### Parameters
 
-- **attr**: str
+- **attr**: `str`
 
 
 ### *func* Parser.**__getitem__**
@@ -159,7 +159,7 @@ Renders the docstring back
 
 #### Parameters
 
-- **element**: str
+- **element**: `str`
 
 
 ### *func* Parser.**exported**

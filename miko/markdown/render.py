@@ -142,8 +142,8 @@ def copyright(elements: parsers.copyright.Copyright):
 def stringify_type(t: typing.Any):
     """Stringifies a type"""
     if hasattr(t, "__name__"):
-        return t.__name__
-    return str(t)
+        return f"`{t.__name__}`"
+    return f"`{t}`"
 
 
 def parameters(paremeters: parsers.parameters.Parameters):

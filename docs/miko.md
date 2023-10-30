@@ -41,7 +41,7 @@ The original name of the callable
 
 #### Parameters
 
-- **func**: Callable
+- **func**: `Callable`
 
 
 ### *func* Callable.**local_variables**
@@ -64,7 +64,7 @@ Returns the return annotation of the function
 
 #### Returns
 
-- Any
+- `Any`
 
 ### *func* Callable.**get_code**
 
@@ -74,15 +74,15 @@ Returns the __code__ object of a given callable object.
 
 #### Parameters
 
-- **obj**: Any, callable
+- **obj**: `Any`, `callable`
   - The object to get the __code__ from
 
 
 #### Returns
 
-- code
+- `code`
 
-- CodeType
+- `CodeType`
     - The __code__ object
 
 ### *func* Callable.**is_method**
@@ -115,7 +115,7 @@ Returns the source code for the callable
 
 #### Returns
 
-- str
+- `str`
 
 ## *const* **Function**
 
@@ -145,10 +145,10 @@ The description
 
 #### Parameters
 
-- **docstring**: str
+- **docstring**: `str`
 
 
-- **flag_prefix**: str
+- **flag_prefix**: `str`
   - Default Value: `!`
 
 
@@ -163,12 +163,12 @@ Cleans the name to normalize it
 
 #### Parameters
 
-- **name**: str
+- **name**: `str`
 
 
 #### Returns
 
-- str
+- `str`
 
 ### *func* BaseDocumentation.**dumps**
 
@@ -178,7 +178,7 @@ Returns a clean docstring
 
 #### Parameters
 
-- **indent**: int
+- **indent**: `int`
   - Default Value: `4`
 
 
@@ -188,7 +188,7 @@ Returns a clean docstring
 
 #### Returns
 
-- str
+- `str`
 
 ### *func* BaseDocumentation.**exported**
 

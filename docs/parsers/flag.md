@@ -48,11 +48,11 @@ Sets the flag
 
 #### Parameters
 
-- **indent**: int
+- **indent**: `int`
   - Default Value: `4`
 
 
-- **prefix**: str
+- **prefix**: `str`
   - Default Value: `!`
 
 
@@ -72,4 +72,4 @@ The exported data
 
 #### Returns
 
-- str
+- `str`
