@@ -15,6 +15,10 @@ and add the lines.
     Wow I can write multiple lines here  
     """
 
+## Imports
+
+- [../../miko/parsers/parser.py](../../miko/parsers/parser.py): As `Parser`
+
 ## Examples
 
 ### Example 1
@@ -31,7 +35,7 @@ def func():
 
 An inline section parser
 
-### *const* InlineParser.**element**
+### *attr* InlineParser.**element**
 
 > [Source: ../../miko/parsers/inline.py @ line 30](../../miko/parsers/inline.py#L30)
 

@@ -94,6 +94,12 @@ def render_module_docs(element: static.ConstantElement,
     for warning in documentation.warnings:
         results.append(render.warning(warning))
 
+    imports = static.get_imports(source_file, source_file.parent,
+                                 recursive=False)
+    if imports:
+        results.append(render.heading("Imports", 2, level))
+        results.append(render.imports(imports, base_dir=base_dir))
+
     if documentation.examples:
         results.append(render.heading("Examples", 2, level))
 
@@ -199,7 +205,7 @@ def render_class_docs(element: static.Element[ast.ClassDef],
 
         if isinstance(child.node, ast.Name):
             results.append(render_constant_docs(child, source_file, level + 1,
-                                                parent_path=parent_path, base_dir=base_dir))
+                                                parent_path=parent_path, base_dir=base_dir, constant_type="attr"))
         elif isinstance(child.node, (ast.FunctionDef, ast.AsyncFunctionDef)):
             results.append(render_function_docs(child, source_file, level + 1,
                                                 parent_path=parent_path, base_dir=base_dir))
@@ -214,17 +220,18 @@ def render_constant_docs(element: static.ConstantElement,
                          source_file: pathlib.Path,
                          level: int = 0,
                          parent_path: str = "",
-                         base_dir: typing.Optional[pathlib.Path] = None):
+                         base_dir: typing.Optional[pathlib.Path] = None,
+                         constant_type: str = "const"):
     """Makes the documentation for a constant"""
     documentation = element.documentation
 
     results = []
     if parent_path:
-        results.append(render.heading(f"*const* {parent_path}.**{element.node.id}**",
+        results.append(render.heading(f"*{constant_type}* {parent_path}.**{element.node.id}**",
                                       1, level))
     else:
         results.append(render.heading(
-            f"*const* **{element.node.id}**", 1, level))
+            f"*{constant_type}* **{element.node.id}**", 1, level))
 
     results.append(render.source_link(source_file, element.node.lineno, (element.node.end_lineno
                                                                          or element.node.lineno), base_dir))

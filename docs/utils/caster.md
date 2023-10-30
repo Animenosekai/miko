@@ -4,6 +4,10 @@
 
 Casts element to the right type
 
+## Imports
+
+- [../../miko/utils/empty.py](../../miko/utils/empty.py): As `is_empty`
+
 ## *func* **try_retrieve_type**
 
 > [Source: ../../miko/utils/caster.py @ line 14-70](../../miko/utils/caster.py#L14-L70)
@@ -23,10 +27,10 @@ Tries casting the given value
 
 ### Parameters
 
-- **value**: `str`
-  - The value to cast
-
-
 - **types**: `(str) -> any]`, `set[str`
   - The types to try casting to
+
+
+- **value**: `str`
+  - The value to cast
 

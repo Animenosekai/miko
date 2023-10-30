@@ -4,6 +4,10 @@
 
 Parser for the `Important` paragraph
 
+## Imports
+
+- [../../miko/parsers/inline.py](../../miko/parsers/inline.py): As `InlineParser`
+
 ## Examples
 
 ### Example 1
@@ -25,6 +29,6 @@ Parser for the `Important` paragraph
 
 The `Important` paragraph parser
 
-### *const* Important.**names**
+### *attr* Important.**names**
 
 > [Source: ../../miko/parsers/important.py @ line 23](../../miko/parsers/important.py#L23)

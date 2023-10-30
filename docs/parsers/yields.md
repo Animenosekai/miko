@@ -4,6 +4,10 @@
 
 Parser for the `Yields` paragraph
 
+## Imports
+
+- [../../miko/parsers/map.py](../../miko/parsers/map.py): As `MapParser`
+
 ## Examples
 
 ### Example 1
@@ -26,6 +30,6 @@ Parser for the `Yields` paragraph
 
 Parser for the `Yields` paragraph
 
-### *const* Yields.**names**
+### *attr* Yields.**names**
 
 > [Source: ../../miko/parsers/yields.py @ line 21](../../miko/parsers/yields.py#L21)

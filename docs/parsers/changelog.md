@@ -4,6 +4,10 @@
 
 Parser for the `Changelog` paragraph
 
+## Imports
+
+- [../../miko/parsers/map.py](../../miko/parsers/map.py): As `MapParser`
+
 ## Examples
 
 ### Example 1
@@ -26,6 +30,6 @@ Parser for the `Changelog` paragraph
 
 Parser for the `Changelog` paragraph
 
-### *const* Changelog.**names**
+### *attr* Changelog.**names**
 
 > [Source: ../../miko/parsers/changelog.py @ line 21](../../miko/parsers/changelog.py#L21)

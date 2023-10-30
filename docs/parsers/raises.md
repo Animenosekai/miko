@@ -4,6 +4,10 @@
 
 Parser for the `Raises` paragraph
 
+## Imports
+
+- [../../miko/parsers/map.py](../../miko/parsers/map.py): As `MapParser`
+
 ## Examples
 
 ### Example 1
@@ -26,7 +30,7 @@ Parser for the `Raises` paragraph
 
 Parser for the `Raises` paragraph
 
-### *const* Raises.**names**
+### *attr* Raises.**names**
 
 > [Source: ../../miko/parsers/raises.py @ line 21](../../miko/parsers/raises.py#L21)
 

@@ -7,7 +7,7 @@ import os.path
 import pathlib
 import typing
 
-from miko import parsers
+from miko import parsers, static
 from miko.utils.empty import is_empty
 
 
@@ -60,6 +60,25 @@ def deprecated(element_type: str = "value"):
     return warning(f"This {element_type} is deprecated")
 
 
+def relative_link(source_file: pathlib.Path,
+                  base_dir: typing.Optional[pathlib.Path] = None):
+    try:
+        base = pathlib.Path(base_dir or pathlib.Path() / "docs").absolute()
+        source_file = pathlib.Path(source_file).absolute()
+        common = pathlib.Path(os.path.commonpath([str(source_file),
+                                                  str(base)])).resolve()
+        # Getting the relative path
+        path = pathlib.Path(source_file).resolve().relative_to(common)
+        # Distance between the docs and the most deep common path
+        # distance = str(base).count("/") - str(common).count("/") + 1
+        distance = str(base).count("/") - str(common).count("/")
+        path = pathlib.Path("../" * distance + str(path))
+    except Exception:
+        path = pathlib.Path(source_file)
+
+    return path
+
+
 def source_link(source_file: pathlib.Path,
                 start: int, end: int, base_dir: typing.Optional[pathlib.Path] = None):
     """
@@ -81,23 +100,23 @@ def source_link(source_file: pathlib.Path,
     str
         The markdown source link
     """
-    try:
-        base = pathlib.Path(base_dir or pathlib.Path() / "docs").absolute()
-        source_file = pathlib.Path(source_file).absolute()
-        common = pathlib.Path(os.path.commonpath([str(source_file),
-                                                  str(base)])).resolve()
-        # Getting the relative path
-        path = pathlib.Path(source_file).resolve().relative_to(common)
-        # Distance between the docs and the most deep common path
-        # distance = str(base).count("/") - str(common).count("/") + 1
-        distance = str(base).count("/") - str(common).count("/")
-        path = pathlib.Path("../" * distance + str(path))
-    except Exception:
-        path = pathlib.Path(source_file)
+    path = relative_link(source_file, base_dir)
 
     if start == end:
         return f"> [Source: {path} @ line {start}]({path}#L{start})\n"
     return f"> [Source: {path} @ line {start}-{end}]({path}#L{start}-L{end})\n"
+
+
+def imports(imports: typing.List[static.Import], base_dir: pathlib.Path):
+    """Renders a markdown imports"""
+    def render_import(value: static.Import):
+        path = relative_link(value.file, base_dir)
+        locations = ", ".join(f"`{loc.name}`" for loc in value.locations)
+        return f"""\
+- [{path}]({path}): As {locations}
+"""
+
+    return "\n".join(render_import(val) for val in imports)
 
 
 def changelog(elements: parsers.changelog.Changelog):
@@ -146,7 +165,7 @@ def stringify_type(t: typing.Any):
     return f"`{t}`"
 
 
-def parameters(paremeters: parsers.parameters.Parameters):
+def parameters(parameters: parsers.parameters.Parameters):
     """Renders a markdown parameters"""
     def render_parameter(parameter: parsers.parameters.Parameter):
         additions = []
@@ -170,7 +189,7 @@ def parameters(paremeters: parsers.parameters.Parameters):
 - **{parameter.name}**{rendered_types}
 {rendered_body}
 """
-    return "\n".join(render_parameter(parameter) for parameter in paremeters)
+    return "\n".join(render_parameter(parameter) for parameter in sorted(parameters, key=lambda x: x.name))
 
 
 def returns(returns: parsers.returns.Returns):
@@ -182,7 +201,7 @@ def returns(returns: parsers.returns.Returns):
 - {stringify_type(value.name)}
     - {value.body}
 """
-    return "\n".join(render_return(val) for val in returns)
+    return "\n".join(render_return(val) for val in sorted(returns, key=lambda x: x.name))
 
 
 def yields(yields: parsers.yields.Yields):
@@ -194,7 +213,7 @@ def yields(yields: parsers.yields.Yields):
 - {stringify_type(value.name)}
     - {value.body}
 """
-    return "\n".join(render_yield(val) for val in yields)
+    return "\n".join(render_yield(val) for val in sorted(yields, key=lambda x: x.name))
 
 
 def raises(raises: parsers.raises.Raises):
@@ -206,7 +225,7 @@ def raises(raises: parsers.raises.Raises):
 - {stringify_type(value.name)}
     - {value.body}
 """
-    return "\n".join(render_raise(val) for val in raises)
+    return "\n".join(render_raise(val) for val in sorted(raises, key=lambda x: x.name))
 
 
 def description(description: str):

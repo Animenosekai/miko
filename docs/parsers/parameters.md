@@ -4,6 +4,10 @@
 
 Parser for the `Parameters` paragraph
 
+## Imports
+
+- [../../miko/parsers/map.py](../../miko/parsers/map.py): As `MapElement`
+
 ## Examples
 
 ### Example 1
@@ -91,11 +95,11 @@ Returns the parameter's possible types
 
 Parser for the `Parameters` paragraph
 
-### *const* Parameters.**element**
+### *attr* Parameters.**element**
 
 > [Source: ../../miko/parsers/parameters.py @ line 135](../../miko/parsers/parameters.py#L135)
 
-### *const* Parameters.**names**
+### *attr* Parameters.**names**
 
 > [Source: ../../miko/parsers/parameters.py @ line 138](../../miko/parsers/parameters.py#L138)
 

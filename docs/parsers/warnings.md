@@ -4,6 +4,10 @@
 
 Parser for the `Warning` paragraph
 
+## Imports
+
+- [../../miko/parsers/inline.py](../../miko/parsers/inline.py): As `InlineParser`
+
 ## Examples
 
 ### Example 1
@@ -25,6 +29,6 @@ Parser for the `Warning` paragraph
 
 The `Warning` paragraph parser
 
-### *const* Warnings.**names**
+### *attr* Warnings.**names**
 
 > [Source: ../../miko/parsers/warnings.py @ line 23](../../miko/parsers/warnings.py#L23)

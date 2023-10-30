@@ -4,6 +4,10 @@
 
 Parser for the `Returns` paragraph
 
+## Imports
+
+- [../../miko/parsers/map.py](../../miko/parsers/map.py): As `MapParser`
+
 ## Examples
 
 ### Example 1
@@ -26,7 +30,7 @@ Parser for the `Returns` paragraph
 
 Parser for the `Returns` paragraph
 
-### *const* Returns.**names**
+### *attr* Returns.**names**
 
 > [Source: ../../miko/parsers/returns.py @ line 25](../../miko/parsers/returns.py#L25)
 

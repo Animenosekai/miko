@@ -4,6 +4,10 @@
 
 Parser for the `Copyright` paragraph
 
+## Imports
+
+- [../../miko/parsers/map.py](../../miko/parsers/map.py): As `MapParser`
+
 ## Examples
 
 ### Example 1
@@ -56,10 +60,10 @@ A license in the `Copyright` section
 
 Parser for the `Copyright` paragraph
 
-### *const* Copyright.**names**
+### *attr* Copyright.**names**
 
 > [Source: ../../miko/parsers/copyright.py @ line 77](../../miko/parsers/copyright.py#L77)
 
-### *const* Copyright.**element**
+### *attr* Copyright.**element**
 
 > [Source: ../../miko/parsers/copyright.py @ line 78](../../miko/parsers/copyright.py#L78)

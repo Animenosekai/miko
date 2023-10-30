@@ -6,6 +6,10 @@ Implementation of miko's static code analysis tools
 This is used to retrieve information on the different elements of the code  
 without having to run it.
 
+## Imports
+
+- [../miko/__init__.py](../miko/__init__.py): As `miko`
+
 ## *func* **get_element**
 
 > [Source: ../miko/static.py @ line 27-96](../miko/static.py#L27-L96)
@@ -14,14 +18,14 @@ Get a element from its dot path
 
 ### Parameters
 
-- **dot_path**: `str`
-  - The dot path of the element to get
-
-
 - **builtin**: `bool`
   - This value is **optional**
   - If the element should be already loaded or coming from a builtin module.
 This avoids loading unknown code, which could lead to unexpected results.
+
+
+- **dot_path**: `str`
+  - The dot path of the element to get
 
 
 ### Returns
@@ -57,11 +61,6 @@ Returns the correct value from the given expression
 
 ### Parameters
 
-- **expr**: `ast.expr`
-  - This value is **optional**
-  - The expression to get the value from
-
-
 - **builtin**: `bool`
   - This value is **optional**
   - If the element should be already loaded or coming from a builtin module
@@ -69,13 +68,18 @@ to be fully loaded. Otherwise a dot path will be returned.
 See `get_element` for more information on loading arbitrary elements.
 
 
-### Returns
+- **expr**: `ast.expr`
+  - This value is **optional**
+  - The expression to get the value from
 
-- `str`
-    - The value for the expression
+
+### Returns
 
 - `None`
     - If it couldn't get the value
+
+- `str`
+    - The value for the expression
 
 ## *func* **signature_from_ast**
 
@@ -85,16 +89,16 @@ Computes the signature of a function from its AST
 
 ### Parameters
 
-- **node**: `ast.asyncfunctiondef `, ` ast.functiondef`
-  - The node to get the signature from
-
-
 - **builtin**: `bool`
   - This value is **optional**
   - If annotations should be already loaded or
 coming from a builtin module to be fully loaded.
 Otherwise a dot path will be returned.
 See get_element for more information on loading arbitrary elements.
+
+
+- **node**: ` ast.functiondef`, `ast.asyncfunctiondef `
+  - The node to get the signature from
 
 
 ### Returns
@@ -126,25 +130,25 @@ Exports the data of an AST node
 
 A documented element
 
-### *const* Element.**node**
+### *attr* Element.**node**
 
 > [Source: ../miko/static.py @ line 290](../miko/static.py#L290)
 
 The node
 
-### *const* Element.**parents**
+### *attr* Element.**parents**
 
 > [Source: ../miko/static.py @ line 292](../miko/static.py#L292)
 
 The nesting where the element was defined
 
-### *const* Element.**docstring**
+### *attr* Element.**docstring**
 
 > [Source: ../miko/static.py @ line 294](../miko/static.py#L294)
 
 The docstring element
 
-### *const* Element.**safe**
+### *attr* Element.**safe**
 
 > [Source: ../miko/static.py @ line 297](../miko/static.py#L297)
 
@@ -237,7 +241,7 @@ Gets all of the elements which could be documented inside the AST
   - The Abstract Syntax Tree element to search into
 
 
-- **parents**: `g`, `i`, `[`, `s`, `a`, `n`, `t`, `.`, `y`, `l`, `]`, `None`, `p`
+- **parents**: `t`, `p`, `i`, `y`, `l`, `a`, `[`, `g`, `None`, `]`, `.`, `s`, `n`
   - Default Value: `none`
   - The parents of the current element
 
@@ -273,18 +277,18 @@ Cleans up the source code
 
 ### Parameters
 
-- **source**: `str`
-
-
 - **indent**: `int`
   - Default Value: `4`
+
+
+- **kwargs**
 
 
 - **safe**: `bool`
   - This value is **optional**
 
 
-- **kwargs**
+- **source**: `str`
 
 
 ### Returns
@@ -299,18 +303,18 @@ Gathers information on the different elements of the source code
 
 ### Parameters
 
-- **source**: `str`
-
-
 - **indent**: `int`
   - Default Value: `4`
+
+
+- **kwargs**
 
 
 - **safe**: `bool`
   - This value is **optional**
 
 
-- **kwargs**
+- **source**: `str`
 
 
 ## *class* **ImportLocation**
@@ -319,13 +323,13 @@ Gathers information on the different elements of the source code
 
 The location of an import
 
-### *const* ImportLocation.**file**
+### *attr* ImportLocation.**file**
 
 > [Source: ../miko/static.py @ line 583](../miko/static.py#L583)
 
 The file where the import is located
 
-### *const* ImportLocation.**name**
+### *attr* ImportLocation.**name**
 
 > [Source: ../miko/static.py @ line 585](../miko/static.py#L585)
 
@@ -347,7 +351,7 @@ This is the name of the variable where the import is stored.
 # name == "z"
 ```
 
-### *const* ImportLocation.**node**
+### *attr* ImportLocation.**node**
 
 > [Source: ../miko/static.py @ line 601](../miko/static.py#L601)
 
@@ -363,13 +367,13 @@ The node of the import, used to retrieve the location within the file
 
 An import
 
-### *const* Import.**file**
+### *attr* Import.**file**
 
 > [Source: ../miko/static.py @ line 611](../miko/static.py#L611)
 
 The file which is imported
 
-### *const* Import.**locations**
+### *attr* Import.**locations**
 
 > [Source: ../miko/static.py @ line 613](../miko/static.py#L613)
 
@@ -387,13 +391,8 @@ Resolves an import
 
 ### Parameters
 
-- **name**: `str`
-  - The name of the import
-
-
-- **module**: `None`, `s`, `t`, `r`
-  - Default Value: `none`
-  - The module of the import
+- **context**
+  - This value is **optional**
 
 
 - **level**: `int`
@@ -401,14 +400,19 @@ Resolves an import
   - The level of the import
 
 
+- **module**: `t`, `None`, `s`, `r`
+  - Default Value: `none`
+  - The module of the import
+
+
+- **name**: `str`
+  - The name of the import
+
+
 - **safe**: `bool`
   - Default Value: `True`
   - Whether to use the safe method of resolving imports
 or the unsafe method of resolving imports
-
-
-- **context**
-  - This value is **optional**
 
 
 ### Returns
@@ -423,25 +427,29 @@ Gets all imported files
 
 ### Parameters
 
-- **file**: `Path`
-  - The file to get imports from
-
-
-- **boundary**: `h`, `i`, `a`, `b`, `t`, `.`, `l`, `None`, `p`
+- **boundary**: `p`, `t`, `i`, `b`, `l`, `a`, `None`, `.`, `h`
   - Default Value: `none`
   - The boundary of the imports.
 This is used to bound the search to only a certain directory.
 If an import is made from outside the boundary, it is ignored.
 
 
-- **recursive**: `bool`
-  - Default Value: `True`
-  - Whether to get imports recursively
+- **file**: `Path`
+  - The file to get imports from
 
 
 - **no_fail**: `bool`
   - This value is **optional**
   - Whether to raise an error if an import cannot be resolved
+
+
+- **parents**
+  - This value is **optional**
+
+
+- **recursive**: `bool`
+  - Default Value: `True`
+  - Whether to get imports recursively
 
 
 - **safe**: `bool`
@@ -450,23 +458,19 @@ If an import is made from outside the boundary, it is ignored.
 or the unsafe method of resolving imports
 
 
-- **parents**
-  - This value is **optional**
-
-
 ## *func* **get_raised**
 
 > [Source: ../miko/static.py @ line 918-949](../miko/static.py#L918-L949)
 
 ### Parameters
 
+- **ignored**
+  - This value is **optional**
+
+
 - **node**: `AST`
 
 
 - **safe**: `bool`
   - Default Value: `True`
-
-
-- **ignored**
-  - This value is **optional**
 

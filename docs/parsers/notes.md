@@ -4,6 +4,10 @@
 
 Parser for the `Notes` paragraph
 
+## Imports
+
+- [../../miko/parsers/inline.py](../../miko/parsers/inline.py): As `InlineParser`
+
 ## Examples
 
 ### Example 1
@@ -25,6 +29,6 @@ Parser for the `Notes` paragraph
 
 The `Notes` paragraph parser
 
-### *const* Notes.**names**
+### *attr* Notes.**names**
 
 > [Source: ../../miko/parsers/notes.py @ line 23](../../miko/parsers/notes.py#L23)

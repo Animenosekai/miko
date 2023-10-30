@@ -4,6 +4,10 @@
 
 Parser for the `Example` paragraph
 
+## Imports
+
+- [../../miko/parsers/inline.py](../../miko/parsers/inline.py): As `InlineParser`
+
 ## Examples
 
 ### Example 1
@@ -23,6 +27,6 @@ Parser for the `Example` paragraph
 
 The `Example` paragraph parser
 
-### *const* Example.**names**
+### *attr* Example.**names**
 
 > [Source: ../../miko/parsers/example.py @ line 21](../../miko/parsers/example.py#L21)

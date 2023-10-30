@@ -6,6 +6,10 @@ Defines the flag parsers base class
 A flag is what describes a boolean value in a docstring  
 If the flag is present, it will be set to True, otherwise it will be set to False
 
+## Imports
+
+- [../../miko/parsers/parser.py](../../miko/parsers/parser.py): As `Parser`
+
 ## Examples
 
 ### Example 1
@@ -28,11 +32,11 @@ If the flag is present, it will be set to True, otherwise it will be set to Fals
 
 A flag parser
 
-### *const* FlagParser.**element**
+### *attr* FlagParser.**element**
 
 > [Source: ../../miko/parsers/flag.py @ line 27](../../miko/parsers/flag.py#L27)
 
-### *const* FlagParser.**elements**
+### *attr* FlagParser.**elements**
 
 > [Source: ../../miko/parsers/flag.py @ line 28](../../miko/parsers/flag.py#L28)
 

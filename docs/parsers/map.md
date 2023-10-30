@@ -5,6 +5,10 @@
 This defines the listed element parsers  
 "Mapped elements" refers to docstring paragraphs where multiple items can be mapped
 
+## Imports
+
+- [../../miko/parsers/parser.py](../../miko/parsers/parser.py): As `Parser`
+
 ## Examples
 
 ### Example 1
@@ -27,13 +31,13 @@ This defines the listed element parsers
 
 An item in the map
 
-### *const* MapElement.**name**
+### *attr* MapElement.**name**
 
 > [Source: ../../miko/parsers/map.py @ line 25](../../miko/parsers/map.py#L25)
 
 The name for the map item
 
-### *const* MapElement.**options**
+### *attr* MapElement.**options**
 
 > [Source: ../../miko/parsers/map.py @ line 28](../../miko/parsers/map.py#L28)
 
@@ -102,7 +106,7 @@ Renders the element
 
 A parser for map paragraphs
 
-### *const* MapParser.**element**
+### *attr* MapParser.**element**
 
 > [Source: ../../miko/parsers/map.py @ line 99](../../miko/parsers/map.py#L99)
 

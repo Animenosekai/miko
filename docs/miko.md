@@ -5,6 +5,10 @@
 miko.py  
 Contains the main code for the Miko documentation style
 
+## Imports
+
+- [../miko/parsers/__init__.py](../miko/parsers/__init__.py): As `parsers`
+
 ## *class* **Callable**
 
 > [Source: ../miko/miko.py @ line 15-120](../miko/miko.py#L15-L120)
@@ -17,19 +21,19 @@ Retrieves information on a given function
 
 Stores information on the source of a callable
 
-#### *const* Callable.Source.**filename**
+#### *attr* Callable.Source.**filename**
 
 > [Source: ../miko/miko.py @ line 21](../miko/miko.py#L21)
 
 The filename where the callable was defined
 
-#### *const* Callable.Source.**line**
+#### *attr* Callable.Source.**line**
 
 > [Source: ../miko/miko.py @ line 23](../miko/miko.py#L23)
 
 The line where the callable was defined
 
-#### *const* Callable.Source.**name**
+#### *attr* Callable.Source.**name**
 
 > [Source: ../miko/miko.py @ line 25](../miko/miko.py#L25)
 
@@ -71,10 +75,10 @@ Returns the __code__ object of a given callable object.
 
 #### Returns
 
-- `code`
-
 - `CodeType`
     - The __code__ object
+
+- `code`
 
 ### *func* Callable.**is_method**
 
@@ -110,13 +114,13 @@ Returns the source code for the callable
 
 The base docstring parser
 
-### *const* BaseDocumentation.**original**
+### *attr* BaseDocumentation.**original**
 
 > [Source: ../miko/miko.py @ line 130](../miko/miko.py#L130)
 
 Original text
 
-### *const* BaseDocumentation.**description**
+### *attr* BaseDocumentation.**description**
 
 > [Source: ../miko/miko.py @ line 132](../miko/miko.py#L132)
 
@@ -146,43 +150,43 @@ The exported data
 
 The documentation for a constant
 
-### *const* ConstantDocumentation.**deprecated**
+### *attr* ConstantDocumentation.**deprecated**
 
 > [Source: ../miko/miko.py @ line 321](../miko/miko.py#L321)
 
 A flag to indicate if the element is deprecated
 
-### *const* ConstantDocumentation.**notes**
+### *attr* ConstantDocumentation.**notes**
 
 > [Source: ../miko/miko.py @ line 325](../miko/miko.py#L325)
 
 Notes about the element
 
-### *const* ConstantDocumentation.**warnings**
+### *attr* ConstantDocumentation.**warnings**
 
 > [Source: ../miko/miko.py @ line 327](../miko/miko.py#L327)
 
 Warnings about the element
 
-### *const* ConstantDocumentation.**important**
+### *attr* ConstantDocumentation.**important**
 
 > [Source: ../miko/miko.py @ line 329](../miko/miko.py#L329)
 
 Important notes about the element
 
-### *const* ConstantDocumentation.**examples**
+### *attr* ConstantDocumentation.**examples**
 
 > [Source: ../miko/miko.py @ line 332](../miko/miko.py#L332)
 
 Examples of usage
 
-### *const* ConstantDocumentation.**changelog**
+### *attr* ConstantDocumentation.**changelog**
 
 > [Source: ../miko/miko.py @ line 336](../miko/miko.py#L336)
 
 Changelog of the element
 
-### *const* ConstantDocumentation.**copyright**
+### *attr* ConstantDocumentation.**copyright**
 
 > [Source: ../miko/miko.py @ line 338](../miko/miko.py#L338)
 
@@ -194,67 +198,67 @@ Copyright notes for the element
 
 The full built-in documentation
 
-### *const* Documentation.**deprecated**
+### *attr* Documentation.**deprecated**
 
 > [Source: ../miko/miko.py @ line 346](../miko/miko.py#L346)
 
 A flag to indicate if the element is deprecated
 
-### *const* Documentation.**notes**
+### *attr* Documentation.**notes**
 
 > [Source: ../miko/miko.py @ line 350](../miko/miko.py#L350)
 
 Notes about the element
 
-### *const* Documentation.**warnings**
+### *attr* Documentation.**warnings**
 
 > [Source: ../miko/miko.py @ line 352](../miko/miko.py#L352)
 
 Warnings about the element
 
-### *const* Documentation.**important**
+### *attr* Documentation.**important**
 
 > [Source: ../miko/miko.py @ line 354](../miko/miko.py#L354)
 
 Important notes about the element
 
-### *const* Documentation.**examples**
+### *attr* Documentation.**examples**
 
 > [Source: ../miko/miko.py @ line 357](../miko/miko.py#L357)
 
 Examples of usage
 
-### *const* Documentation.**parameters**
+### *attr* Documentation.**parameters**
 
 > [Source: ../miko/miko.py @ line 361](../miko/miko.py#L361)
 
 Parameters for the callable
 
-### *const* Documentation.**returns**
+### *attr* Documentation.**returns**
 
 > [Source: ../miko/miko.py @ line 363](../miko/miko.py#L363)
 
 Return value for the callable
 
-### *const* Documentation.**yields**
+### *attr* Documentation.**yields**
 
 > [Source: ../miko/miko.py @ line 365](../miko/miko.py#L365)
 
 Return value for the callable
 
-### *const* Documentation.**raises**
+### *attr* Documentation.**raises**
 
 > [Source: ../miko/miko.py @ line 367](../miko/miko.py#L367)
 
 Raisable exception by the callable
 
-### *const* Documentation.**changelog**
+### *attr* Documentation.**changelog**
 
 > [Source: ../miko/miko.py @ line 369](../miko/miko.py#L369)
 
 Changelog of the element
 
-### *const* Documentation.**copyright**
+### *attr* Documentation.**copyright**
 
 > [Source: ../miko/miko.py @ line 371](../miko/miko.py#L371)
 

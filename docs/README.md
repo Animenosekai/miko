@@ -4,6 +4,14 @@
 
 A new Python documentation style
 
+## Imports
+
+- [../miko/miko.py](../miko/miko.py): As `Callable`
+
+- [../miko/__info__.py](../miko/__info__.py): As `__version__`
+
+- [../miko/static.py](../miko/static.py): As `static`
+
 ## Copyright
 
 - **Copyright Animenosekai**, *None*

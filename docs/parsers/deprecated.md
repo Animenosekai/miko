@@ -4,6 +4,10 @@
 
 Parser for the `deprecated` flag
 
+## Imports
+
+- [../../miko/parsers/flag.py](../../miko/parsers/flag.py): As `FlagParser`
+
 ## Examples
 
 ### Example 1
@@ -23,6 +27,6 @@ Parser for the `deprecated` flag
 
 The `deprecated` flag parser
 
-### *const* Deprecated.**names**
+### *attr* Deprecated.**names**
 
 > [Source: ../../miko/parsers/deprecated.py @ line 21](../../miko/parsers/deprecated.py#L21)

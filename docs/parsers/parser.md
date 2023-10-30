@@ -10,7 +10,7 @@ Defines the base parser
 
 Represents an element in a docstring paragraph
 
-### *const* Element.**body**
+### *attr* Element.**body**
 
 > [Source: ../../miko/parsers/parser.py @ line 9](../../miko/parsers/parser.py#L9)
 
@@ -26,7 +26,7 @@ element1: option1, option2
     ^^^^^^^^^^^^^^^^^^^
 ```
 
-### *const* Element.**extra_arguments**
+### *attr* Element.**extra_arguments**
 
 > [Source: ../../miko/parsers/parser.py @ line 20](../../miko/parsers/parser.py#L20)
 
@@ -60,25 +60,25 @@ The exported data
 
 The base class for a parser
 
-### *const* Parser.**names**
+### *attr* Parser.**names**
 
 > [Source: ../../miko/parsers/parser.py @ line 55](../../miko/parsers/parser.py#L55)
 
 The names of the section (will be normalized)
 
-### *const* Parser.**element**
+### *attr* Parser.**element**
 
 > [Source: ../../miko/parsers/parser.py @ line 57](../../miko/parsers/parser.py#L57)
 
 The element type
 
-### *const* Parser.**elements**
+### *attr* Parser.**elements**
 
 > [Source: ../../miko/parsers/parser.py @ line 59](../../miko/parsers/parser.py#L59)
 
 Elements parsed in the docstring paragraph
 
-### *const* Parser.**extra_arguments**
+### *attr* Parser.**extra_arguments**
 
 > [Source: ../../miko/parsers/parser.py @ line 61](../../miko/parsers/parser.py#L61)
 
