@@ -28,7 +28,7 @@ class Returns(MapParser):
         super().__init__(**kwargs)
         if self.signature:
             annotation = self.signature.return_annotation
-            annotations = try_retrieve_type(annotation)
+            annotations = try_retrieve_type(annotation, self.filename)
             for annotation in annotations:
                 if hasattr(annotation, "__name__"):
                     name = annotation.__name__
@@ -38,8 +38,12 @@ class Returns(MapParser):
                     self[name] = self.element(name=name,
                                               **self.extra_arguments)
 
-
     @property
     def signature(self) -> typing.Optional[inspect.Signature]:
         """The signature of the callable, if provided"""
         return self.extra_arguments.get("signature", None)
+
+    @property
+    def filename(self) -> typing.Optional[str]:
+        """The filename where the return annotation is defined, if provided"""
+        return self.extra_arguments.get("filename", None)

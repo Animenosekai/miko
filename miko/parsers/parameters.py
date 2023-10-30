@@ -28,6 +28,11 @@ class Parameter(MapElement):
     def signature(self) -> typing.Optional[inspect.Signature]:
         """The signature of the callable, if provided"""
         return self.extra_arguments.get("signature", None)
+    
+    @property
+    def filename(self) -> typing.Optional[str]:
+        """The filename where the parameter is defined, if provided"""
+        return self.extra_arguments.get("filename", None)
 
     @property
     def deprecated(self) -> bool:
@@ -79,11 +84,11 @@ class Parameter(MapElement):
         for option in self.options:
             if option.startswith("default") or option in {"optional", "required", "deprecated"}:
                 continue
-            results.update(try_retrieve_type(option))
+            results.update(try_retrieve_type(option, filename=self.filename))
 
         parameter = self.signature_parameter
         if parameter:
-            results.update(try_retrieve_type(parameter.annotation))
+            results.update(try_retrieve_type(parameter.annotation, filename=self.filename))
 
         return results
 

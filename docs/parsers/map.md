@@ -33,8 +33,8 @@ An item in the map
 
 ### *attr* MapElement.**name**
 
-> **Important**
-> This attr is of type `str`
+> **Note**
+> This value is of type `str`
 
 > [Source: ../../miko/parsers/map.py @ line 25](../../miko/parsers/map.py#L25)
 
@@ -42,8 +42,8 @@ The name for the map item
 
 ### *attr* MapElement.**options**
 
-> **Important**
-> This attr is of type `None`
+> **Note**
+> This value is of type `None`
 
 > [Source: ../../miko/parsers/map.py @ line 28](../../miko/parsers/map.py#L28)
 
@@ -106,19 +106,30 @@ Renders the element
 
 > [Source: ../../miko/parsers/map.py @ line 94](../../miko/parsers/map.py#L94)
 
+## *func* **split_options**
+
+> [Source: ../../miko/parsers/map.py @ line 97-124](../../miko/parsers/map.py#L97-L124)
+
+Retrieves the different options for an element
+
+### Parameters
+
+- **value**: `str`
+
+
 ## *class* **MapParser**
 
-> [Source: ../../miko/parsers/map.py @ line 97-170](../../miko/parsers/map.py#L97-L170)
+> [Source: ../../miko/parsers/map.py @ line 127-200](../../miko/parsers/map.py#L127-L200)
 
 A parser for map paragraphs
 
 ### *attr* MapParser.**element**
 
-> [Source: ../../miko/parsers/map.py @ line 99](../../miko/parsers/map.py#L99)
+> [Source: ../../miko/parsers/map.py @ line 129](../../miko/parsers/map.py#L129)
 
 ### *func* MapParser.**extend**
 
-> [Source: ../../miko/parsers/map.py @ line 103-129](../../miko/parsers/map.py#L103-L129)
+> [Source: ../../miko/parsers/map.py @ line 133-159](../../miko/parsers/map.py#L133-L159)
 
 Parses and adds new content to the paragraph
 
@@ -130,7 +141,7 @@ Parses and adds new content to the paragraph
 
 ### *func* MapParser.**dumps**
 
-> [Source: ../../miko/parsers/map.py @ line 131-141](../../miko/parsers/map.py#L131-L141)
+> [Source: ../../miko/parsers/map.py @ line 161-171](../../miko/parsers/map.py#L161-L171)
 
 #### Parameters
 

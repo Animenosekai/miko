@@ -23,8 +23,8 @@ Stores information on the source of a callable
 
 #### *attr* Callable.Source.**filename**
 
-> **Important**
-> This attr is of type `str`
+> **Note**
+> This value is of type `str`
 
 > [Source: ../miko/miko.py @ line 21](../miko/miko.py#L21)
 
@@ -32,8 +32,8 @@ The filename where the callable was defined
 
 #### *attr* Callable.Source.**line**
 
-> **Important**
-> This attr is of type `int`
+> **Note**
+> This value is of type `int`
 
 > [Source: ../miko/miko.py @ line 23](../miko/miko.py#L23)
 
@@ -41,8 +41,8 @@ The line where the callable was defined
 
 #### *attr* Callable.Source.**name**
 
-> **Important**
-> This attr is of type `str`
+> **Note**
+> This value is of type `str`
 
 > [Source: ../miko/miko.py @ line 25](../miko/miko.py#L25)
 
@@ -125,8 +125,8 @@ The base docstring parser
 
 ### *attr* BaseDocumentation.**original**
 
-> **Important**
-> This attr is of type `str`
+> **Note**
+> This value is of type `str`
 
 > [Source: ../miko/miko.py @ line 130](../miko/miko.py#L130)
 
@@ -134,8 +134,8 @@ Original text
 
 ### *attr* BaseDocumentation.**description**
 
-> **Important**
-> This attr is of type `str`
+> **Note**
+> This value is of type `str`
 
 > [Source: ../miko/miko.py @ line 132](../miko/miko.py#L132)
 
@@ -167,8 +167,8 @@ The documentation for a constant
 
 ### *attr* ConstantDocumentation.**deprecated**
 
-> **Important**
-> This attr is of type `parsers.deprecated.Deprecated`
+> **Note**
+> This value is of type `parsers.deprecated.Deprecated`
 
 > [Source: ../miko/miko.py @ line 321](../miko/miko.py#L321)
 
@@ -176,8 +176,8 @@ A flag to indicate if the element is deprecated
 
 ### *attr* ConstantDocumentation.**notes**
 
-> **Important**
-> This attr is of type `parsers.notes.Notes`
+> **Note**
+> This value is of type `parsers.notes.Notes`
 
 > [Source: ../miko/miko.py @ line 325](../miko/miko.py#L325)
 
@@ -185,8 +185,8 @@ Notes about the element
 
 ### *attr* ConstantDocumentation.**warnings**
 
-> **Important**
-> This attr is of type `parsers.warnings.Warnings`
+> **Note**
+> This value is of type `parsers.warnings.Warnings`
 
 > [Source: ../miko/miko.py @ line 327](../miko/miko.py#L327)
 
@@ -194,8 +194,8 @@ Warnings about the element
 
 ### *attr* ConstantDocumentation.**important**
 
-> **Important**
-> This attr is of type `parsers.important.Important`
+> **Note**
+> This value is of type `parsers.important.Important`
 
 > [Source: ../miko/miko.py @ line 329](../miko/miko.py#L329)
 
@@ -203,8 +203,8 @@ Important notes about the element
 
 ### *attr* ConstantDocumentation.**examples**
 
-> **Important**
-> This attr is of type `parsers.example.Example`
+> **Note**
+> This value is of type `parsers.example.Example`
 
 > [Source: ../miko/miko.py @ line 332](../miko/miko.py#L332)
 
@@ -212,8 +212,8 @@ Examples of usage
 
 ### *attr* ConstantDocumentation.**changelog**
 
-> **Important**
-> This attr is of type `parsers.changelog.Changelog`
+> **Note**
+> This value is of type `parsers.changelog.Changelog`
 
 > [Source: ../miko/miko.py @ line 336](../miko/miko.py#L336)
 
@@ -221,8 +221,8 @@ Changelog of the element
 
 ### *attr* ConstantDocumentation.**copyright**
 
-> **Important**
-> This attr is of type `parsers.copyright.Copyright`
+> **Note**
+> This value is of type `parsers.copyright.Copyright`
 
 > [Source: ../miko/miko.py @ line 338](../miko/miko.py#L338)
 
@@ -236,8 +236,8 @@ The full built-in documentation
 
 ### *attr* Documentation.**deprecated**
 
-> **Important**
-> This attr is of type `parsers.deprecated.Deprecated`
+> **Note**
+> This value is of type `parsers.deprecated.Deprecated`
 
 > [Source: ../miko/miko.py @ line 346](../miko/miko.py#L346)
 
@@ -245,8 +245,8 @@ A flag to indicate if the element is deprecated
 
 ### *attr* Documentation.**notes**
 
-> **Important**
-> This attr is of type `parsers.notes.Notes`
+> **Note**
+> This value is of type `parsers.notes.Notes`
 
 > [Source: ../miko/miko.py @ line 350](../miko/miko.py#L350)
 
@@ -254,8 +254,8 @@ Notes about the element
 
 ### *attr* Documentation.**warnings**
 
-> **Important**
-> This attr is of type `parsers.warnings.Warnings`
+> **Note**
+> This value is of type `parsers.warnings.Warnings`
 
 > [Source: ../miko/miko.py @ line 352](../miko/miko.py#L352)
 
@@ -263,8 +263,8 @@ Warnings about the element
 
 ### *attr* Documentation.**important**
 
-> **Important**
-> This attr is of type `parsers.important.Important`
+> **Note**
+> This value is of type `parsers.important.Important`
 
 > [Source: ../miko/miko.py @ line 354](../miko/miko.py#L354)
 
@@ -272,8 +272,8 @@ Important notes about the element
 
 ### *attr* Documentation.**examples**
 
-> **Important**
-> This attr is of type `parsers.example.Example`
+> **Note**
+> This value is of type `parsers.example.Example`
 
 > [Source: ../miko/miko.py @ line 357](../miko/miko.py#L357)
 
@@ -281,8 +281,8 @@ Examples of usage
 
 ### *attr* Documentation.**parameters**
 
-> **Important**
-> This attr is of type `parsers.parameters.Parameters`
+> **Note**
+> This value is of type `parsers.parameters.Parameters`
 
 > [Source: ../miko/miko.py @ line 361](../miko/miko.py#L361)
 
@@ -290,8 +290,8 @@ Parameters for the callable
 
 ### *attr* Documentation.**returns**
 
-> **Important**
-> This attr is of type `parsers.returns.Returns`
+> **Note**
+> This value is of type `parsers.returns.Returns`
 
 > [Source: ../miko/miko.py @ line 363](../miko/miko.py#L363)
 
@@ -299,8 +299,8 @@ Return value for the callable
 
 ### *attr* Documentation.**yields**
 
-> **Important**
-> This attr is of type `parsers.yields.Yields`
+> **Note**
+> This value is of type `parsers.yields.Yields`
 
 > [Source: ../miko/miko.py @ line 365](../miko/miko.py#L365)
 
@@ -308,8 +308,8 @@ Return value for the callable
 
 ### *attr* Documentation.**raises**
 
-> **Important**
-> This attr is of type `parsers.raises.Raises`
+> **Note**
+> This value is of type `parsers.raises.Raises`
 
 > [Source: ../miko/miko.py @ line 367](../miko/miko.py#L367)
 
@@ -317,8 +317,8 @@ Raisable exception by the callable
 
 ### *attr* Documentation.**changelog**
 
-> **Important**
-> This attr is of type `parsers.changelog.Changelog`
+> **Note**
+> This value is of type `parsers.changelog.Changelog`
 
 > [Source: ../miko/miko.py @ line 369](../miko/miko.py#L369)
 
@@ -326,8 +326,8 @@ Changelog of the element
 
 ### *attr* Documentation.**copyright**
 
-> **Important**
-> This attr is of type `parsers.copyright.Copyright`
+> **Note**
+> This value is of type `parsers.copyright.Copyright`
 
 > [Source: ../miko/miko.py @ line 371](../miko/miko.py#L371)
 

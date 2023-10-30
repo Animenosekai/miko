@@ -94,6 +94,36 @@ class MapElement(Element):
 T = typing.TypeVar("T", bound=MapElement)
 
 
+def split_options(value: str) -> typing.List[str]:
+    """Retrieves the different options for an element"""
+    results = []
+    current = ""
+    # Avoid splitting on commas inside expressions
+    count_brackets = 0
+    count_parenthesis = 0
+    for letter in value:
+        if letter == "(":
+            count_parenthesis += 1
+        elif letter == ")":
+            count_parenthesis -= 1
+        elif letter == "[":
+            count_brackets += 1
+        elif letter == "]":
+            count_brackets -= 1
+        elif letter == "," and not count_brackets and not count_parenthesis:
+            current = current.strip()
+            if current:
+                # This happens when the first letter is a comma
+                results.append(current)
+            current = ""
+            continue
+        current += letter
+    current = current.strip()
+    if current:
+        results.append(current)
+    return results
+
+
 class MapParser(Parser[T]):
     """A parser for map paragraphs"""
     element = MapElement
@@ -119,7 +149,7 @@ class MapParser(Parser[T]):
             # element1: option1, option2
             current, _, options = line.partition(":")
             current = current.strip()
-            opt = options.strip().split(",")
+            opt = split_options(options)
             try:
                 self[current].extend_options(opt)
             except KeyError:

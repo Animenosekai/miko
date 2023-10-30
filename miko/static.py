@@ -298,6 +298,8 @@ class Element(typing.Generic[NodeType]):
     docstring: typing.Optional[ast.Constant] = None
     """The docstring element"""
 
+    filename: typing.Optional[str] = None
+    """The filename where the element was defined, for easier debugging"""
     safe: bool = False
     """If the annotations and exceptions should be safely loaded"""
 
@@ -321,6 +323,7 @@ class Element(typing.Generic[NodeType]):
         return miko.Documentation(self.docstring.value if self.docstring else "",
                                   signature=self.signature,
                                   raised=self.raised,
+                                  filename=self.filename,
                                   **kwargs)
 
     @property
@@ -383,7 +386,8 @@ class ConstantElement(Element[ast.Name | ast.Module]):
 
 def get_elements(node: ast.AST,
                  parents: typing.Optional[typing.List[ast.AST]] = None,
-                 safe: bool = False):
+                 safe: bool = False,
+                 filename: typing.Optional[str] = None):
     """
     Gets all of the elements which could be documented inside the AST
 
@@ -490,7 +494,8 @@ def get_elements(node: ast.AST,
             else:
                 adding = [Element(element, parents=adding_parents,
                                   docstring=docstring,
-                                  safe=safe)]
+                                  safe=safe,
+                                  filename=filename)]
 
         else:
             # Might be another type of element,
@@ -503,7 +508,7 @@ def get_elements(node: ast.AST,
         # and the current element
         results.extend(adding
                        + get_elements(element, parents=parents + [node],
-                                      safe=safe))
+                                      safe=safe, filename=filename))
 
     # Filtering out duplicates
     output = []
@@ -560,10 +565,10 @@ def clean_elements(elements: typing.List[Element], indent: int = 4, **kwargs):
     return elements
 
 
-def clean(source: str, indent: int = 4, safe: bool = False, **kwargs) -> str:
+def clean(source: str, indent: int = 4, safe: bool = False, filename: typing.Optional[str] = None, **kwargs) -> str:
     """Cleans up the source code"""
     tree = ast.parse(str(source))
-    elements = get_elements(tree, safe=safe)
+    elements = get_elements(tree, safe=safe, filename=filename)
     clean_elements(elements, indent=indent, **kwargs)
     ast.fix_missing_locations(tree)
     result = ast.unparse(tree)
@@ -571,10 +576,10 @@ def clean(source: str, indent: int = 4, safe: bool = False, **kwargs) -> str:
     return isort.code(result)
 
 
-def info(source: str, indent: int = 4, safe: bool = False, **kwargs) -> typing.List[typing.Dict[str, typing.Any]]:
+def info(source: str, indent: int = 4, safe: bool = False, filename: typing.Optional[str] = None, **kwargs) -> typing.List[typing.Dict[str, typing.Any]]:
     """Gathers information on the different elements of the source code"""
     tree = ast.parse(str(source))
-    elements = get_elements(tree, safe=safe)
+    elements = get_elements(tree, safe=safe, filename=filename)
     return [
         element.export(indent=indent, **kwargs)
         for element in elements

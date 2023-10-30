@@ -26,7 +26,7 @@ Parser for the `Returns` paragraph
 
 ## *class* **Returns**
 
-> [Source: ../../miko/parsers/returns.py @ line 23-45](../../miko/parsers/returns.py#L23-L45)
+> [Source: ../../miko/parsers/returns.py @ line 23-49](../../miko/parsers/returns.py#L23-L49)
 
 Parser for the `Returns` paragraph
 
@@ -36,6 +36,12 @@ Parser for the `Returns` paragraph
 
 ### *func* Returns.**signature**
 
-> [Source: ../../miko/parsers/returns.py @ line 43-45](../../miko/parsers/returns.py#L43-L45)
+> [Source: ../../miko/parsers/returns.py @ line 42-44](../../miko/parsers/returns.py#L42-L44)
 
 The signature of the callable, if provided
+
+### *func* Returns.**filename**
+
+> [Source: ../../miko/parsers/returns.py @ line 47-49](../../miko/parsers/returns.py#L47-L49)
+
+The filename where the return annotation is defined, if provided

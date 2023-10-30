@@ -12,8 +12,8 @@ Represents an element in a docstring paragraph
 
 ### *attr* Element.**body**
 
-> **Important**
-> This attr is of type `str`
+> **Note**
+> This value is of type `str`
 
 > [Source: ../../miko/parsers/parser.py @ line 9](../../miko/parsers/parser.py#L9)
 
@@ -31,8 +31,8 @@ element1: option1, option2
 
 ### *attr* Element.**extra_arguments**
 
-> **Important**
-> This attr is of type `None`
+> **Note**
+> This value is of type `None`
 
 > [Source: ../../miko/parsers/parser.py @ line 20](../../miko/parsers/parser.py#L20)
 
@@ -68,8 +68,8 @@ The base class for a parser
 
 ### *attr* Parser.**names**
 
-> **Important**
-> This attr is of type `None`
+> **Note**
+> This value is of type `None`
 
 > [Source: ../../miko/parsers/parser.py @ line 55](../../miko/parsers/parser.py#L55)
 
@@ -77,8 +77,8 @@ The names of the section (will be normalized)
 
 ### *attr* Parser.**element**
 
-> **Important**
-> This attr is of type `None`
+> **Note**
+> This value is of type `None`
 
 > [Source: ../../miko/parsers/parser.py @ line 57](../../miko/parsers/parser.py#L57)
 
@@ -86,8 +86,8 @@ The element type
 
 ### *attr* Parser.**elements**
 
-> **Important**
-> This attr is of type `None`
+> **Note**
+> This value is of type `None`
 
 > [Source: ../../miko/parsers/parser.py @ line 59](../../miko/parsers/parser.py#L59)
 
@@ -95,8 +95,8 @@ Elements parsed in the docstring paragraph
 
 ### *attr* Parser.**extra_arguments**
 
-> **Important**
-> This attr is of type `None`
+> **Note**
+> This value is of type `None`
 
 > [Source: ../../miko/parsers/parser.py @ line 61](../../miko/parsers/parser.py#L61)
 

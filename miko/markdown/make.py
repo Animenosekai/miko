@@ -48,7 +48,7 @@ def make_module_docs(source_file: pathlib.Path, output_file: pathlib.Path, eleme
     output_file = pathlib.Path(output_file).resolve()
     with open(source_file) as f:
         r = ast.parse(f.read())
-    elements = static.get_elements(r)
+    elements = static.get_elements(r, filename=str(source_file))
     for element in elements:
         if isinstance(element.node, ast.Module):
             output_file.parent.mkdir(parents=True, exist_ok=True)
@@ -235,7 +235,8 @@ def render_constant_docs(element: static.ConstantElement,
 
     if element.parents and isinstance(element.parents[-1], ast.AnnAssign):
         annotation = element.parents[-1].annotation
-        name = render.stringify_type(static.get_value(annotation, builtin=True))
+        name = render.stringify_type(
+            static.get_value(annotation, builtin=True))
 
         if name:
             results.append(render.note(

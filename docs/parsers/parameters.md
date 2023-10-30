@@ -26,7 +26,7 @@ Parser for the `Parameters` paragraph
 
 ## *class* **Parameter**
 
-> [Source: ../../miko/parsers/parameters.py @ line 25-130](../../miko/parsers/parameters.py#L25-L130)
+> [Source: ../../miko/parsers/parameters.py @ line 25-135](../../miko/parsers/parameters.py#L25-L135)
 
 A parameter in the `Parameters` paragraph
 
@@ -36,9 +36,15 @@ A parameter in the `Parameters` paragraph
 
 The signature of the callable, if provided
 
-### *func* Parameter.**deprecated**
+### *func* Parameter.**filename**
 
 > [Source: ../../miko/parsers/parameters.py @ line 33-35](../../miko/parsers/parameters.py#L33-L35)
+
+The filename where the parameter is defined, if provided
+
+### *func* Parameter.**deprecated**
+
+> [Source: ../../miko/parsers/parameters.py @ line 38-40](../../miko/parsers/parameters.py#L38-L40)
 
 If the parameter is considered as deprecated
 
@@ -48,13 +54,13 @@ If the parameter is considered as deprecated
 
 ### *func* Parameter.**signature_parameter**
 
-> [Source: ../../miko/parsers/parameters.py @ line 38-43](../../miko/parsers/parameters.py#L38-L43)
+> [Source: ../../miko/parsers/parameters.py @ line 43-48](../../miko/parsers/parameters.py#L43-L48)
 
 Returns the signature parameter if provided
 
 ### *func* Parameter.**optional**
 
-> [Source: ../../miko/parsers/parameters.py @ line 46-53](../../miko/parsers/parameters.py#L46-L53)
+> [Source: ../../miko/parsers/parameters.py @ line 51-58](../../miko/parsers/parameters.py#L51-L58)
 
 If the parameter is optional
 
@@ -64,7 +70,7 @@ If the parameter is optional
 
 ### *func* Parameter.**default**
 
-> [Source: ../../miko/parsers/parameters.py @ line 56-72](../../miko/parsers/parameters.py#L56-L72)
+> [Source: ../../miko/parsers/parameters.py @ line 61-77](../../miko/parsers/parameters.py#L61-L77)
 
 The default value provided for the given parameter
 
@@ -73,13 +79,13 @@ The default value provided for the given parameter
 
 ### *func* Parameter.**types**
 
-> [Source: ../../miko/parsers/parameters.py @ line 75-88](../../miko/parsers/parameters.py#L75-L88)
+> [Source: ../../miko/parsers/parameters.py @ line 80-93](../../miko/parsers/parameters.py#L80-L93)
 
 Returns the parameter's possible types
 
 ### *func* Parameter.**render_options**
 
-> [Source: ../../miko/parsers/parameters.py @ line 90-109](../../miko/parsers/parameters.py#L90-L109)
+> [Source: ../../miko/parsers/parameters.py @ line 95-114](../../miko/parsers/parameters.py#L95-L114)
 
 #### Returns
 
@@ -87,31 +93,31 @@ Returns the parameter's possible types
 
 ### *func* Parameter.**exported**
 
-> [Source: ../../miko/parsers/parameters.py @ line 112-130](../../miko/parsers/parameters.py#L112-L130)
+> [Source: ../../miko/parsers/parameters.py @ line 117-135](../../miko/parsers/parameters.py#L117-L135)
 
 ## *class* **Parameters**
 
-> [Source: ../../miko/parsers/parameters.py @ line 133-166](../../miko/parsers/parameters.py#L133-L166)
+> [Source: ../../miko/parsers/parameters.py @ line 138-171](../../miko/parsers/parameters.py#L138-L171)
 
 Parser for the `Parameters` paragraph
 
 ### *attr* Parameters.**element**
 
-> [Source: ../../miko/parsers/parameters.py @ line 135](../../miko/parsers/parameters.py#L135)
+> [Source: ../../miko/parsers/parameters.py @ line 140](../../miko/parsers/parameters.py#L140)
 
 ### *attr* Parameters.**names**
 
-> [Source: ../../miko/parsers/parameters.py @ line 138](../../miko/parsers/parameters.py#L138)
+> [Source: ../../miko/parsers/parameters.py @ line 143](../../miko/parsers/parameters.py#L143)
 
 ### *func* Parameters.**signature**
 
-> [Source: ../../miko/parsers/parameters.py @ line 153-155](../../miko/parsers/parameters.py#L153-L155)
+> [Source: ../../miko/parsers/parameters.py @ line 158-160](../../miko/parsers/parameters.py#L158-L160)
 
 The signature of the callable, if provided
 
 ### *func* Parameters.**noself**
 
-> [Source: ../../miko/parsers/parameters.py @ line 158-160](../../miko/parsers/parameters.py#L158-L160)
+> [Source: ../../miko/parsers/parameters.py @ line 163-165](../../miko/parsers/parameters.py#L163-L165)
 
 If the first `self` parameter should be parsed
 
