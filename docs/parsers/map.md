@@ -95,7 +95,6 @@ Renders the options
 #### Returns
 
 - str
-    - 
 
 ### *func* MapElement.**dumps**
 
@@ -113,7 +112,6 @@ Renders the element
 #### Returns
 
 - str
-    - 
 
 ### *func* MapElement.**exported**
 
@@ -158,7 +156,6 @@ Parses and adds new content to the paragraph
 #### Returns
 
 - str
-    - 
 
 ### *func* MapParser.**__getitem__**
 
@@ -201,4 +198,3 @@ Parses and adds new content to the paragraph
 #### Returns
 
 - str
-    - 

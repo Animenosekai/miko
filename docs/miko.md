@@ -65,7 +65,6 @@ Returns the return annotation of the function
 #### Returns
 
 - Any
-    - 
 
 ### *func* Callable.**get_code**
 
@@ -82,7 +81,6 @@ Returns the __code__ object of a given callable object.
 #### Returns
 
 - code
-    - 
 
 - CodeType
     - The __code__ object
@@ -118,7 +116,6 @@ Returns the source code for the callable
 #### Returns
 
 - str
-    - 
 
 ## *const* **Function**
 
@@ -172,7 +169,6 @@ Cleans the name to normalize it
 #### Returns
 
 - str
-    - 
 
 ### *func* BaseDocumentation.**dumps**
 
@@ -193,7 +189,6 @@ Returns a clean docstring
 #### Returns
 
 - str
-    - 
 
 ### *func* BaseDocumentation.**exported**
 

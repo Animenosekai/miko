@@ -63,4 +63,3 @@ Extends the current
 #### Returns
 
 - str
-    - 

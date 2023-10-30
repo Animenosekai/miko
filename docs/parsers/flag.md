@@ -73,4 +73,3 @@ The exported data
 #### Returns
 
 - str
-    - 

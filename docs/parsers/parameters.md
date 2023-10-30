@@ -41,7 +41,6 @@ If the parameter is considered as deprecated
 #### Returns
 
 - bool
-    - 
 
 ### *func* Parameter.**signature_parameter**
 
@@ -58,7 +57,6 @@ If the parameter is optional
 #### Returns
 
 - bool
-    - 
 
 ### *func* Parameter.**default**
 
@@ -82,7 +80,6 @@ Returns the parameter's possible types
 #### Returns
 
 - str
-    - 
 
 ### *func* Parameter.**exported**
 
@@ -126,7 +123,6 @@ If the first `self` parameter should be parsed
 #### Returns
 
 - bool
-    - 
 
 ### *func* Parameters.**__getitem__**
 
@@ -140,7 +136,6 @@ If the first `self` parameter should be parsed
 #### Returns
 
 - Parameter
-    - 
 
 ### *func* Parameters.**__iter__**
 

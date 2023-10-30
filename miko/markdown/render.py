@@ -176,6 +176,8 @@ def parameters(paremeters: parsers.parameters.Parameters):
 def returns(returns: parsers.returns.Returns):
     """Renders a markdown returns"""
     def render_return(value: parsers.map.MapElement):
+        if not value.body:
+            return f"""- {stringify_type(value.name)}\n"""
         return f"""\
 - {stringify_type(value.name)}
     - {value.body}
@@ -186,6 +188,8 @@ def returns(returns: parsers.returns.Returns):
 def yields(yields: parsers.yields.Yields):
     """Renders a markdown returns"""
     def render_yield(value: parsers.map.MapElement):
+        if not value.body:
+            return f"""- {stringify_type(value.name)}\n"""
         return f"""\
 - {stringify_type(value.name)}
     - {value.body}
@@ -196,6 +200,8 @@ def yields(yields: parsers.yields.Yields):
 def raises(raises: parsers.raises.Raises):
     """Renders a markdown raises"""
     def render_raise(value: parsers.map.MapElement):
+        if not value.body:
+            return f"""- {stringify_type(value.name)}\n"""
         return f"""\
 - {stringify_type(value.name)}
     - {value.body}

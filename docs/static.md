@@ -100,7 +100,6 @@ See get_element for more information on loading arbitrary elements.
 ### Returns
 
 - Signature
-    - 
 
 - inspect.Signature
     - This the signature of the function,
@@ -228,7 +227,7 @@ Gets all of the elements which could be documented inside the AST
   - The Abstract Syntax Tree element to search into
 
 
-- **parents**: l, [, a, g, i, t, p, ., s, ], y, None, n
+- **parents**: a, y, l, [, s, i, ], p, g, None, t, ., n
   - Default Value: `none`
   - The parents of the current element
 
@@ -281,7 +280,6 @@ Cleans up the source code
 ### Returns
 
 - str
-    - 
 
 ## *func* **info**
 
@@ -383,7 +381,7 @@ Resolves an import
   - The name of the import
 
 
-- **module**: s, None, t, r
+- **module**: None, s, r, t
   - Default Value: `none`
   - The module of the import
 
@@ -406,7 +404,6 @@ or the unsafe method of resolving imports
 ### Returns
 
 - Path
-    - 
 
 ## *func* **get_imports**
 
@@ -420,7 +417,7 @@ Gets all imported files
   - The file to get imports from
 
 
-- **boundary**: l, a, h, t, p, i, ., b, None
+- **boundary**: a, h, l, i, b, p, None, t, .
   - Default Value: `none`
   - The boundary of the imports.
 This is used to bound the search to only a certain directory.

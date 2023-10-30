@@ -126,7 +126,6 @@ Renders the docstring back
 #### Returns
 
 - str
-    - 
 
 ### *func* Parser.**__getattr__**
 
