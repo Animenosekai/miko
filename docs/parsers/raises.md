@@ -22,10 +22,25 @@ Parser for the `Raises` paragraph
 
 ## *class* **Raises**
 
-> [Source: ../../miko/parsers/raises.py @ line 19-22](../../miko/parsers/raises.py#L19-L22)
+> [Source: ../../miko/parsers/raises.py @ line 19-39](../../miko/parsers/raises.py#L19-L39)
 
 Parser for the `Raises` paragraph
 
 ### *const* Raises.**names**
 
 > [Source: ../../miko/parsers/raises.py @ line 21](../../miko/parsers/raises.py#L21)
+
+### *func* Raises.**__init__**
+
+> [Source: ../../miko/parsers/raises.py @ line 24-34](../../miko/parsers/raises.py#L24-L34)
+
+#### Parameters
+
+- **kwargs**
+
+
+### *func* Raises.**raised**
+
+> [Source: ../../miko/parsers/raises.py @ line 37-39](../../miko/parsers/raises.py#L37-L39)
+
+The raised exceptions

@@ -30,13 +30,14 @@ class Returns(MapParser):
             annotation = self.signature.return_annotation
             annotations = try_retrieve_type(annotation)
             for annotation in annotations:
-                if annotation and not annotation in self.elements:
-                    if hasattr(annotation, "__name__"):
-                        name = annotation.__name__
-                    else:
-                        name = str(annotation)
+                if hasattr(annotation, "__name__"):
+                    name = annotation.__name__
+                else:
+                    name = str(annotation if annotation else "")
+                if name and not name in self:
                     self[name] = self.element(name=name,
                                               **self.extra_arguments)
+
 
     @property
     def signature(self) -> typing.Optional[inspect.Signature]:

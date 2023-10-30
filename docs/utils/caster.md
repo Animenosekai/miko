@@ -27,6 +27,6 @@ Tries casting the given value
   - The value to cast
 
 
-- **types**: `set[str`, `(str) -> any]`
+- **types**: `(str) -> any]`, `set[str`
   - The types to try casting to
 

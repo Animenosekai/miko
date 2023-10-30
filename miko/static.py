@@ -294,21 +294,29 @@ class Element(typing.Generic[NodeType]):
     docstring: typing.Optional[ast.Constant] = None
     """The docstring element"""
 
-    safe_annotations: bool = False
-    """If the annotations should be safely loaded"""
+    safe: bool = False
+    """If the annotations and exceptions should be safely loaded"""
 
     @property
     def signature(self) -> typing.Optional[inspect.Signature]:
         """If available, the signature of the node"""
         try:
-            return signature_from_ast(self.node, builtin=self.safe_annotations)
+            return signature_from_ast(self.node, builtin=self.safe)
         except Exception:
             return None
+
+    @property
+    def raised(self):
+        try:
+            return get_raised(self.node, safe=self.safe)
+        except Exception:
+            return []
 
     def document(self, **kwargs):
         """Documents the element"""
         return miko.Documentation(self.docstring.value if self.docstring else "",
                                   signature=self.signature,
+                                  raised=self.raised,
                                   **kwargs)
 
     @property
@@ -358,7 +366,7 @@ class ConstantElement(Element[ast.Name | ast.Module]):
 
 def get_elements(node: ast.AST,
                  parents: typing.Optional[typing.List[ast.AST]] = None,
-                 safe_annotations: bool = False):
+                 safe: bool = False):
     """
     Gets all of the elements which could be documented inside the AST
 
@@ -368,8 +376,8 @@ def get_elements(node: ast.AST,
         The Abstract Syntax Tree element to search into
     parents: typing.Optional[typing.List[ast.AST]], default = None
         The parents of the current element
-    safe_annotations: bool, default = False
-        If the annotations should be safely loaded
+    safe: bool, default = False
+        If the annotations and exceptions should be safely loaded
     """
     parents = parents or []
 
@@ -404,7 +412,7 @@ def get_elements(node: ast.AST,
                         adding_parents = parents + [element]
                     targets.append(ConstantElement(target,
                                                    parents=adding_parents,
-                                                   safe_annotations=safe_annotations))
+                                                   safe=safe))
 
         # If we have an annotated assignement
         # Example: some_var: some_type = some_value
@@ -417,7 +425,7 @@ def get_elements(node: ast.AST,
                 adding_parents = parents + [element]
             targets = [ConstantElement(element.target,
                                        parents=adding_parents,
-                                       safe_annotations=safe_annotations)]
+                                       safe=safe)]
 
         # Constants are inside ast.Expr
         if isinstance(element, ast.Expr):
@@ -461,11 +469,11 @@ def get_elements(node: ast.AST,
             if isinstance(element, ast.Module):
                 adding = [ConstantElement(element, parents=adding_parents,
                                           docstring=docstring,
-                                          safe_annotations=safe_annotations)]
+                                          safe=safe)]
             else:
                 adding = [Element(element, parents=adding_parents,
                                   docstring=docstring,
-                                  safe_annotations=safe_annotations)]
+                                  safe=safe)]
 
         else:
             # Might be another type of element,
@@ -478,7 +486,7 @@ def get_elements(node: ast.AST,
         # and the current element
         results.extend(adding
                        + get_elements(element, parents=parents + [node],
-                                      safe_annotations=safe_annotations))
+                                      safe=safe))
 
     # Filtering out duplicates
     output = []
@@ -535,10 +543,10 @@ def clean_elements(elements: typing.List[Element], indent: int = 4, **kwargs):
     return elements
 
 
-def clean(source: str, indent: int = 4, safe_annotations: bool = False, **kwargs) -> str:
+def clean(source: str, indent: int = 4, safe: bool = False, **kwargs) -> str:
     """Cleans up the source code"""
     tree = ast.parse(str(source))
-    elements = get_elements(tree, safe_annotations=safe_annotations)
+    elements = get_elements(tree, safe=safe)
     clean_elements(elements, indent=indent, **kwargs)
     ast.fix_missing_locations(tree)
     result = ast.unparse(tree)
@@ -546,10 +554,10 @@ def clean(source: str, indent: int = 4, safe_annotations: bool = False, **kwargs
     return isort.code(result)
 
 
-def info(source: str, indent: int = 4, safe_annotations: bool = False, **kwargs) -> typing.List[typing.Dict[str, typing.Any]]:
+def info(source: str, indent: int = 4, safe: bool = False, **kwargs) -> typing.List[typing.Dict[str, typing.Any]]:
     """Gathers information on the different elements of the source code"""
     tree = ast.parse(str(source))
-    elements = get_elements(tree, safe_annotations=safe_annotations)
+    elements = get_elements(tree, safe=safe)
     return [
         element.export(indent=indent, **kwargs)
         for element in elements
@@ -894,13 +902,35 @@ def get_imports(file: pathlib.Path,
     return imports
 
 
-# if __name__ == "__main__":
-#     c = Console()
+def get_raised(node: ast.AST, safe: bool = True, ignored: typing.Optional[typing.List] = None):
+    ignored = ignored or []
 
-#     with open("test.py", "r", encoding="utf-8") as f:
-#         source = f.read()
+    if not hasattr(node, "body"):
+        return []
 
-#     c.print(info(source))
+    results = []
+    for element in node.body:
+        if isinstance(element, ast.Raise):
+            if isinstance(element.exc, ast.Name):
+                results.append(element.exc.id)
+            continue
 
-#     with open("test_clean.py", "w", encoding="utf-8") as f:
-#         f.write(clean(source))
+        locally_ignored = ignored.copy()
+
+        # With `try...except` blocks we need to ignore what'
+        if isinstance(element, ast.Try):
+            for handler in element.handlers:
+                # The handlers don't have the try block's ignored
+                results.extend(get_raised(handler, ignored=ignored, safe=safe))
+
+                if isinstance(handler.type, ast.Tuple):
+                    for element in handler.type.elts:
+                        locally_ignored.append(get_value(element,
+                                                         builtin=safe))
+                else:
+                    locally_ignored.append(get_value(handler.type,
+                                                     builtin=safe))
+
+        results.extend(get_raised(element, ignored=locally_ignored, safe=safe))
+
+    return results
