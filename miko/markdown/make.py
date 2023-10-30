@@ -59,11 +59,11 @@ def render_module_docs(element: static.ConstantElement,
     if parent_path:
         results.append(render.heading(f"*module* {parent_path}.**{source_file.stem}**",
                                       1, level))
-        parent_path = f"{parent_path}.{source_file.stem}"
+        # parent_path = f"{parent_path}.{source_file.stem}"
     else:
         results.append(render.heading(f"*module* **{source_file.stem}**",
                                       1, level))
-        parent_path = source_file.stem
+        # parent_path = source_file.stem
 
     results.append(render.source_link(source_file, 0, 0, base_dir))
 

@@ -4,13 +4,13 @@
 
 Defines what is empty
 
-## *class* empty.**Empty**
+## *class* **Empty**
 
 > [Source: ../../miko/utils/empty.py @ line 8-9](../../miko/utils/empty.py#L8-L9)
 
 Represents an empty element
 
-## *func* empty.**is_empty**
+## *func* **is_empty**
 
 > [Source: ../../miko/utils/empty.py @ line 12-20](../../miko/utils/empty.py#L12-L20)
 

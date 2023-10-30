@@ -4,7 +4,7 @@
 
 Casts element to the right type
 
-## *func* caster.**try_retrieve_type**
+## *func* **try_retrieve_type**
 
 > [Source: ../../miko/utils/caster.py @ line 14-70](../../miko/utils/caster.py#L14-L70)
 
@@ -15,7 +15,7 @@ Tries to retrieve the types from a string
 - **value**
 
 
-## *func* caster.**try_cast**
+## *func* **try_cast**
 
 > [Source: ../../miko/utils/caster.py @ line 73-106](../../miko/utils/caster.py#L73-L106)
 

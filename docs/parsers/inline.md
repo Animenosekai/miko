@@ -25,17 +25,17 @@ def func():
     This is a function
 ```
 
-## *class* inline.**InlineParser**
+## *class* **InlineParser**
 
 > [Source: ../../miko/parsers/inline.py @ line 28-60](../../miko/parsers/inline.py#L28-L60)
 
 An inline section parser
 
-### *const* inline.InlineParser.**element**
+### *const* InlineParser.**element**
 
 > [Source: ../../miko/parsers/inline.py @ line 30](../../miko/parsers/inline.py#L30)
 
-### *func* inline.InlineParser.**append**
+### *func* InlineParser.**append**
 
 > [Source: ../../miko/parsers/inline.py @ line 33-35](../../miko/parsers/inline.py#L33-L35)
 
@@ -43,33 +43,22 @@ Extends the current
 
 #### Parameters
 
-- **self**
-
-
 - **content**: str
 
 
-### *func* inline.InlineParser.**dumps**
+### *func* InlineParser.**dumps**
 
 > [Source: ../../miko/parsers/inline.py @ line 37-57](../../miko/parsers/inline.py#L37-L57)
 
 #### Parameters
 
-- **self**
-
-
 - **indent**: int
   - Default Value: `4`
 
 
-### *func* inline.InlineParser.**__repr__**
+### *func* InlineParser.**__repr__**
 
 > [Source: ../../miko/parsers/inline.py @ line 59-60](../../miko/parsers/inline.py#L59-L60)
-
-#### Parameters
-
-- **self**
-
 
 #### Returns
 

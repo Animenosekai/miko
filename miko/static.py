@@ -314,7 +314,13 @@ class Element(typing.Generic[NodeType]):
     @property
     def documentation(self):
         """Returns the documentation for the node"""
-        return self.document()
+        kwargs = {}
+        if isinstance(self.node, ast.ClassDef):
+            kwargs["noself"] = True
+        elif isinstance(self.node, ast.FunctionDef):
+            if self.parents and isinstance(self.parents[-1], ast.ClassDef):
+                kwargs["noself"] = True
+        return self.document(**kwargs)
 
     def export(self, indent: int = 4, **kwargs):
         """Exports the data"""

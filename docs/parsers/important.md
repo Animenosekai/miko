@@ -19,12 +19,12 @@ Parser for the `Important` paragraph
 ...     """
 ```
 
-## *class* important.**Important**
+## *class* **Important**
 
 > [Source: ../../miko/parsers/important.py @ line 19-23](../../miko/parsers/important.py#L19-L23)
 
 The `Important` paragraph parser
 
-### *const* important.Important.**names**
+### *const* Important.**names**
 
 > [Source: ../../miko/parsers/important.py @ line 23](../../miko/parsers/important.py#L23)

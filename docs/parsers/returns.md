@@ -20,35 +20,27 @@ Parser for the `Returns` paragraph
 ...     """
 ```
 
-## *class* returns.**Returns**
+## *class* **Returns**
 
 > [Source: ../../miko/parsers/returns.py @ line 23-44](../../miko/parsers/returns.py#L23-L44)
 
 Parser for the `Returns` paragraph
 
-### *const* returns.Returns.**names**
+### *const* Returns.**names**
 
 > [Source: ../../miko/parsers/returns.py @ line 25](../../miko/parsers/returns.py#L25)
 
-### *func* returns.Returns.**__init__**
+### *func* Returns.**__init__**
 
 > [Source: ../../miko/parsers/returns.py @ line 27-39](../../miko/parsers/returns.py#L27-L39)
 
 #### Parameters
 
-- **self**
-
-
 - **kwargs**
 
 
-### *func* returns.Returns.**signature**
+### *func* Returns.**signature**
 
 > [Source: ../../miko/parsers/returns.py @ line 42-44](../../miko/parsers/returns.py#L42-L44)
 
 The signature of the callable, if provided
-
-#### Parameters
-
-- **self**
-

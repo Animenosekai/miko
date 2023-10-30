@@ -17,12 +17,12 @@ Parser for the `deprecated` flag
 ...     """
 ```
 
-## *class* deprecated.**Deprecated**
+## *class* **Deprecated**
 
 > [Source: ../../miko/parsers/deprecated.py @ line 17-21](../../miko/parsers/deprecated.py#L17-L21)
 
 The `deprecated` flag parser
 
-### *const* deprecated.Deprecated.**names**
+### *const* Deprecated.**names**
 
 > [Source: ../../miko/parsers/deprecated.py @ line 21](../../miko/parsers/deprecated.py#L21)

@@ -19,12 +19,12 @@ Parser for the `Notes` paragraph
 ...     """
 ```
 
-## *class* notes.**Notes**
+## *class* **Notes**
 
 > [Source: ../../miko/parsers/notes.py @ line 19-23](../../miko/parsers/notes.py#L19-L23)
 
 The `Notes` paragraph parser
 
-### *const* notes.Notes.**names**
+### *const* Notes.**names**
 
 > [Source: ../../miko/parsers/notes.py @ line 23](../../miko/parsers/notes.py#L23)

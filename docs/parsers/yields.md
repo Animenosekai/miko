@@ -20,12 +20,12 @@ Parser for the `Yields` paragraph
 ...     """
 ```
 
-## *class* yields.**Yields**
+## *class* **Yields**
 
 > [Source: ../../miko/parsers/yields.py @ line 19-21](../../miko/parsers/yields.py#L19-L21)
 
 Parser for the `Yields` paragraph
 
-### *const* yields.Yields.**names**
+### *const* Yields.**names**
 
 > [Source: ../../miko/parsers/yields.py @ line 21](../../miko/parsers/yields.py#L21)

@@ -19,12 +19,12 @@ Parser for the `Warning` paragraph
 ...     """
 ```
 
-## *class* warnings.**Warnings**
+## *class* **Warnings**
 
 > [Source: ../../miko/parsers/warnings.py @ line 19-23](../../miko/parsers/warnings.py#L19-L23)
 
 The `Warning` paragraph parser
 
-### *const* warnings.Warnings.**names**
+### *const* Warnings.**names**
 
 > [Source: ../../miko/parsers/warnings.py @ line 23](../../miko/parsers/warnings.py#L23)

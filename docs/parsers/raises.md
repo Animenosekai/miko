@@ -20,12 +20,12 @@ Parser for the `Raises` paragraph
 ...     """
 ```
 
-## *class* raises.**Raises**
+## *class* **Raises**
 
 > [Source: ../../miko/parsers/raises.py @ line 19-22](../../miko/parsers/raises.py#L19-L22)
 
 Parser for the `Raises` paragraph
 
-### *const* raises.Raises.**names**
+### *const* Raises.**names**
 
 > [Source: ../../miko/parsers/raises.py @ line 21](../../miko/parsers/raises.py#L21)
