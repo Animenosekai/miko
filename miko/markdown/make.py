@@ -238,8 +238,8 @@ def render_constant_docs(element: static.ConstantElement,
         name = render.stringify_type(static.get_value(annotation, builtin=True))
 
         if name:
-            results.append(render.important(
-                f"This {constant_type} is of type {name}"))
+            results.append(render.note(
+                f"This value is of type {name}"))
 
     results.append(render.source_link(source_file, element.node.lineno, (element.node.end_lineno
                                                                          or element.node.lineno), base_dir))
