@@ -33,11 +33,17 @@ An item in the map
 
 ### *attr* MapElement.**name**
 
+> **Important**
+> This attr is of type `str`
+
 > [Source: ../../miko/parsers/map.py @ line 25](../../miko/parsers/map.py#L25)
 
 The name for the map item
 
 ### *attr* MapElement.**options**
+
+> **Important**
+> This attr is of type `None`
 
 > [Source: ../../miko/parsers/map.py @ line 28](../../miko/parsers/map.py#L28)
 

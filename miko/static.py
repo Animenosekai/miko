@@ -96,7 +96,7 @@ def get_element(dot_path: str, builtin: bool = False) -> typing.Any:
     return result
 
 
-def get_dot_path(attr: ast.Attribute | ast.Name) -> str:
+def get_dot_path(attr: ast.expr) -> str:
     """
     Returns the dot path for a given attribute
 
@@ -112,6 +112,10 @@ def get_dot_path(attr: ast.Attribute | ast.Name) -> str:
     """
     if isinstance(attr, ast.Name):
         return attr.id
+    if isinstance(attr, ast.Subscript):
+        return get_dot_path(attr.value)
+    if isinstance(attr, ast.BinOp) and isinstance(attr.op, ast.BitOr):
+        return f"{get_dot_path(attr.left)}|{get_dot_path(attr.right)}"
     if not isinstance(attr, ast.Attribute):
         raise ValueError(
             f"The attribute `{attr}` doesn't seem to be providing enough information to generate the dot path")

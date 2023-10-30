@@ -27,7 +27,7 @@ Tries casting the given value
 
 ### Parameters
 
-- **types**: `(str) -> any]`, `set[str`
+- **types**: `set[str`, `(str) -> any]`
   - The types to try casting to
 
 

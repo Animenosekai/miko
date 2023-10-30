@@ -107,7 +107,7 @@ def source_link(source_file: pathlib.Path,
     return f"> [Source: {path} @ line {start}-{end}]({path}#L{start}-L{end})\n"
 
 
-def imports(imports: typing.List[static.Import], base_dir: pathlib.Path):
+def imports(imports: typing.List[static.Import], base_dir: typing.Optional[pathlib.Path] = None):
     """Renders a markdown imports"""
     def render_import(value: static.Import):
         path = relative_link(value.file, base_dir)

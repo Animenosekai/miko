@@ -34,9 +34,15 @@ A flag parser
 
 ### *attr* FlagParser.**element**
 
+> **Important**
+> This attr is of type `None`
+
 > [Source: ../../miko/parsers/flag.py @ line 27](../../miko/parsers/flag.py#L27)
 
 ### *attr* FlagParser.**elements**
+
+> **Important**
+> This attr is of type `None`
 
 > [Source: ../../miko/parsers/flag.py @ line 28](../../miko/parsers/flag.py#L28)
 
