@@ -48,7 +48,7 @@ Returns the dot path for a given attribute
 
 ### Parameters
 
-- **attr**: `expr`, `ast.Attribute`
+- **attr**: `ast.Attribute`, `expr`
   - The attribute to get the whole dot path from
 
 
@@ -76,7 +76,7 @@ to be fully loaded. Otherwise a dot path will be returned.
 See `get_element` for more information on loading arbitrary elements.
 
 
-- **expr**: `ast.expr`, `Optional`
+- **expr**: `Optional`, `ast.expr`
   - This value is **optional**
   - The expression to get the value from
 
@@ -275,11 +275,11 @@ Gets all of the elements which could be documented inside the AST
   - This value is **optional**
 
 
-- **node**: `ast.AST`, `AST`
+- **node**: `AST`, `ast.AST`
   - The Abstract Syntax Tree element to search into
 
 
-- **parents**: `i`, `Optional`, `y`, `s`, `[`, `A`, `.`, `n`, `S`, `p`, `t`, `]`, `L`, `g`, `T`, `None`, `a`
+- **parents**: `.`, `A`, `L`, `None`, `Optional`, `S`, `T`, `[`, `]`, `a`, `g`, `i`, `n`, `p`, `s`, `t`, `y`
   - This value is **optional**
   - The parents of the current element
 
@@ -462,7 +462,7 @@ Resolves an import
   - The level of the import
 
 
-- **module**: `r`, `Optional`, `s`, `t`, `None`
+- **module**: `None`, `Optional`, `r`, `s`, `t`
   - This value is **optional**
   - The module of the import
 
@@ -495,7 +495,7 @@ Gets all imported files
 
 ### Parameters
 
-- **boundary**: `i`, `Optional`, `b`, `.`, `p`, `t`, `P`, `None`, `l`, `a`, `h`
+- **boundary**: `.`, `None`, `Optional`, `P`, `a`, `b`, `h`, `i`, `l`, `p`, `t`
   - This value is **optional**
   - The boundary of the imports.
 This is used to bound the search to only a certain directory.

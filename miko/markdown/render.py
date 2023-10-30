@@ -139,11 +139,12 @@ def changelog(elements: parsers.changelog.Changelog):
 def copyright(elements: parsers.copyright.Copyright):
     """Renders a markdown copyright"""
     def license(author: parsers.copyright.License):
-        if author.year_from == author.year_to:
-            result = f"""- **Copyright {author.name}**, *{author.year_from}*"""
-        else:
-            result = f"""- **Copyright {author.name}**"""
-            result += f""", *{author.year_from} - {author.year_to}*"""
+        result = f"""- **{author.name}**"""
+        if author.year_from:
+            if author.year_from == author.year_to or not author.year_to:
+                result += f", *{author.year_from}*"
+            else:
+                result += f""", *{author.year_from} - {author.year_to}*"""
 
         if author.license:
             result += f""" ({author.license})"""
@@ -181,8 +182,8 @@ def parameters(parameters: parsers.parameters.Parameters):
         for element in additions:
             rendered_body += f"  - {element}\n"
         if parameter.types:
-            rendered_types = f""": {', '.join(stringify_type(t)
-                                              for t in parameter.types)}"""
+            rendered_types = f""": {', '.join(sorted(stringify_type(t)
+                                              for t in parameter.types))}"""
         else:
             rendered_types = ""
         return f"""\

@@ -1,12 +1,18 @@
-## *module* **test**
+# *module* **test**
 
-> [Source: test.py](test.py#L0-L0)
+> [Source: test.py @ line 0](test.py#L0)
 
 Documenting at the top of the module
 
-### *const* test.**MY_NEW_CONSTANT**
+## Imports
 
-> [Source: test.py](test.py#L11-L11)
+- [miko/parsers/__init__.py](miko/parsers/__init__.py): As `p`
+
+- [miko/parsers/important.py](miko/parsers/important.py): As `important`, `Important`
+
+## *const* **MY_NEW_CONSTANT**
+
+> [Source: test.py @ line 11](test.py#L11)
 
 Documenting a constant  
 This is a very important task
@@ -23,24 +29,24 @@ This is a very important task
 > **Warning**
 > This is a warning
 
-#### Examples
+### Examples
 
-##### Example 1
+#### Example 1
 
 ```python
 >>> from test import MY_NEW_CONSTANT
 >>> print(MY_NEW_CONSTANT)
 ```
 
-##### Example 2
+#### Example 2
 
 `print(MY_NEW_CONSTANT)`
 
-#### Copyright
+### Copyright
 
-- **Copyright Animenosekai**, *2021* (mit license)
+- **Animenosekai**, *2021* (MIT License)
 Worked on it
-- **Copyright Hey**, *2021 - 2023*
+- **Hey**, *2021 - 2023*
 Worked again on it
 <details>
     <summary><b>Changelog</b></summary>
@@ -51,28 +57,29 @@ Worked again on it
     </ul>
 </details>
 
-### *func* test.**test**
+## *func* **test**
 
-> [Source: test.py](test.py#L50-L97)
+> [Source: test.py @ line 50-97](test.py#L50-L97)
 
 Documenting a function
 
 > **Warning**
 > This value is deprecated
 
-#### Parameters
+### Parameters
 
-- **a**: int
+- **a**: `int`
   - Note: This parameter is **deprecated**
-  - Default Value: `<miko.utils.empty.Empty object at 0x1039f76d0>`
   - Hey
 
 
-- **b**: int
-  - Default Value: `<miko.utils.empty.Empty object at 0x1039f7c10>`
+- **args**
 
 
-- **c**: int
+- **b**: `int`
+
+
+- **c**: `int`
   - Default Value: `4`
 
 
@@ -80,48 +87,31 @@ Documenting a function
   - Default Value: `5`
 
 
-- **e**: int
+- **e**: `int`
   - Default Value: `6`
 
 
-- **args**
-  - Default Value: `<miko.utils.empty.Empty object at 0x1039f7e90>`
-
-
-- **f**: str
-  - Default Value: `<miko.utils.empty.Empty object at 0x1039f7e90>`
+- **f**: `str`
 
 
 - **kwargs**
-  - Default Value: `<miko.utils.empty.Empty object at 0x1039f7e90>`
 
 
-#### Returns
+### Returns
 
-- int
-    - 
+- `int`
 
-### *class* test.**Test**
+## *class* **Test**
 
-> [Source: test.py](test.py#L100-L104)
+> [Source: test.py @ line 100-104](test.py#L100-L104)
 
 Documenting a class
 
-#### *func* test.Test.**__init__**
+## *const* **b**
 
-> [Source: test.py](test.py#L103-L104)
+> [Source: test.py @ line 107](test.py#L107)
 
-Documenting a method
-
-##### Parameters
-
-- **self**
-  - Default Value: `<miko.utils.empty.Empty object at 0x103a004d0>`
-
-
-### *const* test.**b**
-
-> [Source: test.py](test.py#L107-L107)
+> Type: `int`
 
 > **Warning**
 > This value is deprecated

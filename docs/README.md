@@ -14,5 +14,5 @@ A new Python documentation style
 
 ## Copyright
 
-- **Copyright Animenosekai**, *None*
+- **Animenosekai**
 Original author
