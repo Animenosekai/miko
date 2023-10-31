@@ -1,8 +1,7 @@
 """
 Implementation of miko's static code analysis tools
 
-This is used to retrieve information on the different elements of the code
-without having to run it.
+This is used to retrieve information on the different elements of the code without having to run it.
 """
 import builtins
 import dataclasses
