@@ -609,30 +609,37 @@ It also exposes several attributes and methods to get information on the callabl
 
 This module provides different tools to statically analyze Python code and get information on it.
 
+#### `miko.markdown`
+
+This module provides different tools to render Markdown documentations out of different elements.
+
 ### Using the CLI
 
 `Miko` also has a CLI, which you can use to get information about a docstring or clean a docstring.
 
 ```swift
 🧃❯ miko --help
-usage: miko [-h] [--version] {info,clean} ...
+usage: miko [-h] [--version] {info,clean,docs,overview} ...
 
 See how to use a Python object at a glance!
 
 positional arguments:
-  {info,clean}   Actions
-    info         Gathers information on the different elements in the input
-    clean        Cleans the given input
+  {info,clean,docs,overview}
+                        Actions
+    info                Gathers information on the different elements in the input
+    clean               Cleans the given input
+    docs                Generate the documentation for the files loaded by the entry file
+    overview            Provides documentation for the given module
 
 options:
-  -h, --help     show this help message and exit
-  --version, -v  show program's version number and exit
+  -h, --help            show this help message and exit
+  --version, -v         show program's version number and exit
 ```
 
 Both `info` and `clean` have the same arguments :
 
 ```swift
-usage: miko <action> [-h] [--indent INDENT] [--noself] [--flag-prefix FLAG_PREFIX] [--safe-annotations] [--output OUTPUT] [--raw] input
+usage: miko <action> [-h] [--indent INDENT] [--noself] [--flag-prefix FLAG_PREFIX] [--safe] [--output OUTPUT] [--raw] input
 
 positional arguments:
   input                 The snippet of code or file to get the docstrings from.
@@ -644,7 +651,7 @@ options:
   --noself              Ignoring the "self" parameter from signatures. (useful for class methods)
   --flag-prefix FLAG_PREFIX
                         The prefix for the docstring flags. (default: "!")
-  --safe-annotations    If the annotations should be loaded safely
+  --safe                If the annotations and exceptions should be loaded safely (without loading the modules) (default: False)
   --output OUTPUT, -o OUTPUT
                         The file to output the result to. If not provided, `miko` will use STDOUT.
   --raw                 If the input should be treated as a docstring and not source code. (default: False)
@@ -672,6 +679,46 @@ It cleans the different docstrings, formats the code using `autopep8` and sorts 
 
 If the `--raw` flag is provided, the input will be treated as only being the docstring and not source code, thus only cleaning it.
 
+#### `docs`
+
+`docs` lets you generate markdown documentation for the given entry file.
+
+It will recursively look for all files imported and generate the documentation for them.
+
+```swift
+usage: miko docs [-h] [--output OUTPUT] [--ignore [IGNORE ...]] [--include-private] [--safe] entry
+
+positional arguments:
+  entry                 The entry file to document. An entry file could be for example the __init__.py of a library.
+
+options:
+  -h, --help            show this help message and exit
+  --output OUTPUT, -o OUTPUT
+                        The directory to output the result to. If not provided, `miko` will use "./docs"
+  --ignore [IGNORE ...]
+                        The files to ignore when generating the documentation
+  --include-private     If the private objects should be included in the documentation
+  --safe                If the annotations and exceptions should be loaded safely (without loading the modules) (default: False)
+```
+
+#### `overview`
+
+Overview is similar to `docs` but only produces Markdown documentation for a single file.
+
+```swift
+usage: miko overview [-h] [--output OUTPUT] [--include-private] [--safe] module
+
+positional arguments:
+  module                The module to provide documentation for
+
+options:
+  -h, --help            show this help message and exit
+  --output OUTPUT, -o OUTPUT
+                        The file to output the result to. If not provided, `miko` will use STDOUT
+  --include-private     If the private objects should be included in the documentation
+  --safe                If the annotations and exceptions should be loaded safely (without loading the modules) (default: False)
+```
+
 ### Using the VS Code Extension
 
 You can also use the `Miko` extension for Visual Studio Code.
@@ -680,7 +727,7 @@ It lets you format your files instantly using the command palette.
 
 ![VS Code Command Palette](./assets/docs/vscode_command_palette.png)
 
-You can add the `--noself` flag using the `Noself` setting in the Settings (UI) or the `miko-docs.noself` settings (JSON).
+You can configure the arguments passed to `miko` in the VS Code settings (UI or JSON).
 
 #### Installing the extension
 
