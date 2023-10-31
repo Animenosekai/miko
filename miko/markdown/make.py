@@ -48,8 +48,10 @@ def make_docs(entry_point: pathlib.Path,
         if imp.file.stem == "__init__":
             output_file = output_file.with_name("README.md")
 
-        make_module_docs(imp.file, output_file,
-                         element_filter=element_filter, safe=safe)
+        rendered = make_module_docs(imp.file, output_file,
+                                    element_filter=element_filter, safe=safe)
+
+        output_file.write_text(rendered)
 
 
 def make_module_docs(source_file: pathlib.Path, output_file: pathlib.Path,
@@ -65,7 +67,10 @@ def make_module_docs(source_file: pathlib.Path, output_file: pathlib.Path,
             output_file.parent.mkdir(parents=True, exist_ok=True)
             rendered = render_module_docs(element, elements, source_file,
                                           base_dir=output_file.parent, element_filter=element_filter)
-            return output_file.write_text(rendered)
+            return rendered
+    else:
+        # Should not come here
+        raise ValueError("The AST does not contain a module")
 
 
 def render_module_docs(element: static.ConstantElement,

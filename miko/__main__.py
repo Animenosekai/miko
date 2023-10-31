@@ -25,7 +25,12 @@ def main(args: argparse.Namespace):
 
     if args.action == "docs":
         if not args.entry:
-            return print("Please provide an entry file")
+            entry_file = pathlib.Path() / "__init__.py"
+        else:
+            entry_file = pathlib.Path(args.entry)
+
+        if not entry_file.is_file():
+            raise FileNotFoundError(f"The file '{args.entry}' does not exist")
 
         if args.output:
             output_dir = pathlib.Path(args.output)
@@ -52,6 +57,36 @@ def main(args: argparse.Namespace):
 
         return markdown.make.make_docs(args.entry, output_dir=output_dir, file_filter=ignore_file,
                                        element_filter=ignore_element, safe=args.safe)
+
+    if args.action == "overview":
+        if not args.module:
+            module = pathlib.Path() / "__init__.py"
+        else:
+            module = pathlib.Path(args.module)
+
+        if not module.is_file():
+            raise FileNotFoundError(f"The file '{args.module}' does not exist")
+
+        if args.output:
+            output_file = pathlib.Path(args.output)
+        else:
+            # this is a placeholder and won't actually be used
+            output_file = pathlib.Path("./miko_temp_overview.md")
+
+        if args.include_private:
+            def ignore_element(element: static.Element):
+                return False
+        else:
+            def ignore_element(element: static.Element):
+                return element.is_private
+
+        rendered = markdown.make.make_module_docs(args.module, output_file=output_file,
+                                                  element_filter=ignore_element,
+                                                  safe=args.safe)
+        if not args.output:
+            return print(rendered)
+        output_file.write_text(rendered)
+        return
 
     if pathlib.Path(args.input).is_file():
         source_code = pathlib.Path(args.input).read_text()
@@ -146,18 +181,30 @@ def entry():
     prepare_parser(parser_info)
     prepare_parser(parser_clean)
 
+    def prepare_docs_parser(parser: argparse.ArgumentParser):
+        parser.add_argument("--include-private", action="store_true", default=False,
+                            help="If the private objects should be included in the documentation")
+        parser.add_argument("--safe", action='store_true', required=False,
+                            help='If the annotations and exceptions should be loaded safely (without loading the modules) (default: False)')
+
     parser_docs = subparser.add_parser("docs",
                                        help="Generate the documentation for the files loaded by the entry file")
-    parser_docs.add_argument("entry", action='store', type=str, default=None,
+    parser_docs.add_argument("entry", action='store', type=str,
                              help='The entry file to document. An entry file could be for example the __init__.py of a library.')
     parser_docs.add_argument("--output", "-o", action='store', type=str,
                              required=False, default=None, help='The directory to output the result to. If not provided, `miko` will use "./docs"')
     parser_docs.add_argument("--ignore", action="store", nargs="*", type=str, default=[],
                              help="The files to ignore when generating the documentation")
-    parser_docs.add_argument("--include-private", action="store_true", default=False,
-                             help="If the private objects should be included in the documentation")
-    parser_docs.add_argument("--safe", action='store_true', required=False,
-                             help='If the annotations and exceptions should be loaded safely (without loading the modules) (default: False)')
+
+    prepare_docs_parser(parser_docs)
+
+    parser_overview = subparser.add_parser("overview",
+                                           help="Provides documentation for the given module")
+    parser_overview.add_argument("module", action='store', type=str,
+                                 help='The module to provide documentation for')
+    parser_overview.add_argument("--output", "-o", action='store', type=str,
+                             required=False, default=None, help='The file to output the result to. If not provided, `miko` will use STDOUT')
+    prepare_docs_parser(parser_overview)
 
     args = parser.parse_args()
 
