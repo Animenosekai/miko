@@ -48,8 +48,13 @@ def make_docs(entry_point: pathlib.Path,
         if imp.file.stem == "__init__":
             output_file = output_file.with_name("README.md")
 
-        rendered = make_module_docs(imp.file, output_file,
-                                    element_filter=element_filter, safe=safe)
+        try:
+            rendered = make_module_docs(imp.file, output_file,
+                                        element_filter=element_filter, safe=safe)
+        except Exception as exc:
+            print("Warning: Failed to make docs for", imp.file)
+            print(exc)
+            continue
 
         output_file.write_text(rendered)
 

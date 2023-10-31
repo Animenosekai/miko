@@ -125,7 +125,11 @@ def try_retrieve_type(value: typing.Union[str, type], filename: typing.Optional[
     if "|" in processing:
         results = []
         for value in split_options(processing, sep="|"):
-            results.extend(try_retrieve_type(value, filename=filename))
+            try:
+                results.extend(try_retrieve_type(value, filename=filename))
+            except RecursionError:
+                # For some reason, this happens sometimes ?
+                continue
         return results
 
     processing_lower = processing.lower()

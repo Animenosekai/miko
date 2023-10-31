@@ -180,7 +180,7 @@ def get_value(expr: typing.Optional[ast.expr], builtin: bool = False) -> typing.
         result = get_dot_path(expr)
         try:
             # print(result, ast.dump(expr.slice))
-            print(ast.dump(expr.slice))
+            # print(ast.dump(expr.slice))
             if isinstance(expr.slice, ast.Tuple):
                 sliced_list = []
                 for element in expr.slice.elts:
