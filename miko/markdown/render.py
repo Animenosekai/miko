@@ -182,8 +182,8 @@ def parameters(parameters: parsers.parameters.Parameters):
         for element in additions:
             rendered_body += f"  - {element}\n"
         if parameter.types:
-            rendered_types = f""": {', '.join(sorted(stringify_type(t)
-                                              for t in parameter.types))}"""
+            rendered_types = f""": {', '.join(sorted(set(stringify_type(t)
+                                              for t in parameter.types)))}"""
         else:
             rendered_types = ""
         return f"""\

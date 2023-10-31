@@ -34,13 +34,31 @@ A license in the `Copyright` section
 
 > [Source: ../../miko/parsers/copyright.py @ line 23-28](../../miko/parsers/copyright.py#L23-L28)
 
+#### Returns
+
+- `NoneType`
+
+- `str`
+
 ### *property* License.**year_from**
 
 > [Source: ../../miko/parsers/copyright.py @ line 31-40](../../miko/parsers/copyright.py#L31-L40)
 
+#### Returns
+
+- `NoneType`
+
+- `int`
+
 ### *property* License.**year_to**
 
 > [Source: ../../miko/parsers/copyright.py @ line 43-52](../../miko/parsers/copyright.py#L43-L52)
+
+#### Returns
+
+- `NoneType`
+
+- `int`
 
 ### *func* License.**render_options**
 

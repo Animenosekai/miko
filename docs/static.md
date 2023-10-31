@@ -63,7 +63,7 @@ Returns the dot path for a given attribute
 
 ## *func* **get_value**
 
-> [Source: ../miko/static.py @ line 125-177](../miko/static.py#L125-L177)
+> [Source: ../miko/static.py @ line 125-210](../miko/static.py#L125-L210)
 
 Returns the correct value from the given expression
 
@@ -76,22 +76,26 @@ to be fully loaded. Otherwise a dot path will be returned.
 See `get_element` for more information on loading arbitrary elements.
 
 
-- **expr**: `ast.expr`
+- **expr**: `NoneType`, `ast.expr`, `expr`
   - This value is **optional**
   - The expression to get the value from
 
 
 ### Returns
 
+- `Any`
+
 - `None`
     - If it couldn't get the value
+
+- `NoneType`
 
 - `str`
     - The value for the expression
 
 ## *func* **signature_from_ast**
 
-> [Source: ../miko/static.py @ line 180-271](../miko/static.py#L180-L271)
+> [Source: ../miko/static.py @ line 213-304](../miko/static.py#L213-L304)
 
 Computes the signature of a function from its AST
 
@@ -119,7 +123,7 @@ retrieved without ever running the code
 
 ## *func* **export_node**
 
-> [Source: ../miko/static.py @ line 274-286](../miko/static.py#L274-L286)
+> [Source: ../miko/static.py @ line 307-319](../miko/static.py#L307-L319)
 
 Exports the data of an AST node
 
@@ -134,17 +138,17 @@ Exports the data of an AST node
 
 ## *const* **NodeType**
 
-> [Source: ../miko/static.py @ line 289](../miko/static.py#L289)
+> [Source: ../miko/static.py @ line 322](../miko/static.py#L322)
 
 ## *class* **Element**
 
-> [Source: ../miko/static.py @ line 293-370](../miko/static.py#L293-L370)
+> [Source: ../miko/static.py @ line 326-403](../miko/static.py#L326-L403)
 
 A documented element
 
 ### *attr* Element.**node**
 
-> [Source: ../miko/static.py @ line 295](../miko/static.py#L295)
+> [Source: ../miko/static.py @ line 328](../miko/static.py#L328)
 
 > Type: `NodeType`
 
@@ -152,7 +156,7 @@ The node
 
 ### *attr* Element.**parents**
 
-> [Source: ../miko/static.py @ line 297](../miko/static.py#L297)
+> [Source: ../miko/static.py @ line 330](../miko/static.py#L330)
 
 > Type: `List`
 
@@ -160,7 +164,7 @@ The nesting where the element was defined
 
 ### *attr* Element.**docstring**
 
-> [Source: ../miko/static.py @ line 299](../miko/static.py#L299)
+> [Source: ../miko/static.py @ line 332](../miko/static.py#L332)
 
 > Type: `Optional`
 
@@ -168,7 +172,7 @@ The docstring element
 
 ### *attr* Element.**filename**
 
-> [Source: ../miko/static.py @ line 302](../miko/static.py#L302)
+> [Source: ../miko/static.py @ line 335](../miko/static.py#L335)
 
 > Type: `Optional`
 
@@ -176,7 +180,7 @@ The filename where the element was defined, for easier debugging
 
 ### *attr* Element.**safe**
 
-> [Source: ../miko/static.py @ line 304](../miko/static.py#L304)
+> [Source: ../miko/static.py @ line 337](../miko/static.py#L337)
 
 > Type: `bool`
 
@@ -184,17 +188,23 @@ If the annotations and exceptions should be safely loaded
 
 ### *property* Element.**signature**
 
-> [Source: ../miko/static.py @ line 308-313](../miko/static.py#L308-L313)
+> [Source: ../miko/static.py @ line 341-346](../miko/static.py#L341-L346)
 
 If available, the signature of the node
 
+#### Returns
+
+- `NoneType`
+
+- `Signature`
+
 ### *property* Element.**raised**
 
-> [Source: ../miko/static.py @ line 316-320](../miko/static.py#L316-L320)
+> [Source: ../miko/static.py @ line 349-353](../miko/static.py#L349-L353)
 
 ### *func* Element.**document**
 
-> [Source: ../miko/static.py @ line 322-328](../miko/static.py#L322-L328)
+> [Source: ../miko/static.py @ line 355-361](../miko/static.py#L355-L361)
 
 Documents the element
 
@@ -205,13 +215,13 @@ Documents the element
 
 ### *property* Element.**documentation**
 
-> [Source: ../miko/static.py @ line 331-339](../miko/static.py#L331-L339)
+> [Source: ../miko/static.py @ line 364-372](../miko/static.py#L364-L372)
 
 Returns the documentation for the node
 
 ### *func* Element.**export**
 
-> [Source: ../miko/static.py @ line 341-352](../miko/static.py#L341-L352)
+> [Source: ../miko/static.py @ line 374-385](../miko/static.py#L374-L385)
 
 Exports the data
 
@@ -226,25 +236,25 @@ Exports the data
 
 ### *property* Element.**exported**
 
-> [Source: ../miko/static.py @ line 355-357](../miko/static.py#L355-L357)
+> [Source: ../miko/static.py @ line 388-390](../miko/static.py#L388-L390)
 
 Exported data
 
 ### *property* Element.**is_private**
 
-> [Source: ../miko/static.py @ line 360-370](../miko/static.py#L360-L370)
+> [Source: ../miko/static.py @ line 393-403](../miko/static.py#L393-L403)
 
 If the element is private
 
 ## *class* **ConstantElement**
 
-> [Source: ../miko/static.py @ line 374-385](../miko/static.py#L374-L385)
+> [Source: ../miko/static.py @ line 407-418](../miko/static.py#L407-L418)
 
 A constant element
 
 ### *func* ConstantElement.**document**
 
-> [Source: ../miko/static.py @ line 378-381](../miko/static.py#L378-L381)
+> [Source: ../miko/static.py @ line 411-414](../miko/static.py#L411-L414)
 
 Documents the element
 
@@ -255,17 +265,17 @@ Documents the element
 
 ### *property* ConstantElement.**documentation**
 
-> [Source: ../miko/static.py @ line 384-385](../miko/static.py#L384-L385)
+> [Source: ../miko/static.py @ line 417-418](../miko/static.py#L417-L418)
 
 ## *func* **get_elements**
 
-> [Source: ../miko/static.py @ line 388-522](../miko/static.py#L388-L522)
+> [Source: ../miko/static.py @ line 421-555](../miko/static.py#L421-L555)
 
 Gets all of the elements which could be documented inside the AST
 
 ### Parameters
 
-- **filename**
+- **filename**: `NoneType`, `str`
   - This value is **optional**
 
 
@@ -273,7 +283,7 @@ Gets all of the elements which could be documented inside the AST
   - The Abstract Syntax Tree element to search into
 
 
-- **parents**: `None`, `typing.List[ast.AST]`
+- **parents**: `NoneType`, `None`, `list`, `typing.List[ast.AST]`
   - This value is **optional**
   - The parents of the current element
 
@@ -285,7 +295,7 @@ Gets all of the elements which could be documented inside the AST
 
 ## *func* **clean_elements**
 
-> [Source: ../miko/static.py @ line 525-566](../miko/static.py#L525-L566)
+> [Source: ../miko/static.py @ line 558-599](../miko/static.py#L558-L599)
 
 Cleans up the given elements
 
@@ -303,13 +313,13 @@ Cleans up the given elements
 
 ## *func* **clean**
 
-> [Source: ../miko/static.py @ line 569-577](../miko/static.py#L569-L577)
+> [Source: ../miko/static.py @ line 602-610](../miko/static.py#L602-L610)
 
 Cleans up the source code
 
 ### Parameters
 
-- **filename**
+- **filename**: `NoneType`, `str`
   - This value is **optional**
 
 
@@ -333,13 +343,13 @@ Cleans up the source code
 
 ## *func* **info**
 
-> [Source: ../miko/static.py @ line 580-587](../miko/static.py#L580-L587)
+> [Source: ../miko/static.py @ line 613-620](../miko/static.py#L613-L620)
 
 Gathers information on the different elements of the source code
 
 ### Parameters
 
-- **filename**
+- **filename**: `NoneType`, `str`
   - This value is **optional**
 
 
@@ -363,13 +373,13 @@ Gathers information on the different elements of the source code
 
 ## *class* **ImportLocation**
 
-> [Source: ../miko/static.py @ line 591-612](../miko/static.py#L591-L612)
+> [Source: ../miko/static.py @ line 624-645](../miko/static.py#L624-L645)
 
 The location of an import
 
 ### *attr* ImportLocation.**file**
 
-> [Source: ../miko/static.py @ line 593](../miko/static.py#L593)
+> [Source: ../miko/static.py @ line 626](../miko/static.py#L626)
 
 > Type: `Path`
 
@@ -377,7 +387,7 @@ The file where the import is located
 
 ### *attr* ImportLocation.**name**
 
-> [Source: ../miko/static.py @ line 595](../miko/static.py#L595)
+> [Source: ../miko/static.py @ line 628](../miko/static.py#L628)
 
 > Type: `str`
 
@@ -401,7 +411,7 @@ This is the name of the variable where the import is stored.
 
 ### *attr* ImportLocation.**node**
 
-> [Source: ../miko/static.py @ line 611](../miko/static.py#L611)
+> [Source: ../miko/static.py @ line 644](../miko/static.py#L644)
 
 > Type: `None`
 
@@ -409,17 +419,17 @@ The node of the import, used to retrieve the location within the file
 
 ## *const* **PYTHON_EXTENSIONS**
 
-> [Source: ../miko/static.py @ line 615](../miko/static.py#L615)
+> [Source: ../miko/static.py @ line 648](../miko/static.py#L648)
 
 ## *class* **Import**
 
-> [Source: ../miko/static.py @ line 619-625](../miko/static.py#L619-L625)
+> [Source: ../miko/static.py @ line 652-658](../miko/static.py#L652-L658)
 
 An import
 
 ### *attr* Import.**file**
 
-> [Source: ../miko/static.py @ line 621](../miko/static.py#L621)
+> [Source: ../miko/static.py @ line 654](../miko/static.py#L654)
 
 > Type: `Path`
 
@@ -427,7 +437,7 @@ The file which is imported
 
 ### *attr* Import.**locations**
 
-> [Source: ../miko/static.py @ line 623](../miko/static.py#L623)
+> [Source: ../miko/static.py @ line 656](../miko/static.py#L656)
 
 > Type: `List`
 
@@ -435,19 +445,19 @@ The locations of the import
 
 ## *const* **IMPORTS_CACHE**
 
-> [Source: ../miko/static.py @ line 628](../miko/static.py#L628)
+> [Source: ../miko/static.py @ line 661](../miko/static.py#L661)
 
 > Type: `Dict`
 
 ## *func* **resolve_import**
 
-> [Source: ../miko/static.py @ line 631-768](../miko/static.py#L631-L768)
+> [Source: ../miko/static.py @ line 664-801](../miko/static.py#L664-L801)
 
 Resolves an import
 
 ### Parameters
 
-- **context**
+- **context**: `NoneType`, `Path`
   - This value is **optional**
 
 
@@ -456,7 +466,7 @@ Resolves an import
   - The level of the import
 
 
-- **module**: `None`, `str`
+- **module**: `NoneType`, `None`, `str`
   - This value is **optional**
   - The module of the import
 
@@ -483,13 +493,13 @@ or the unsafe method of resolving imports
 
 ## *func* **get_imports**
 
-> [Source: ../miko/static.py @ line 771-925](../miko/static.py#L771-L925)
+> [Source: ../miko/static.py @ line 804-958](../miko/static.py#L804-L958)
 
 Gets all imported files
 
 ### Parameters
 
-- **boundary**: `None`, `pathlib.Path`
+- **boundary**: `NoneType`, `None`, `Path`, `pathlib.Path`
   - This value is **optional**
   - The boundary of the imports.
 This is used to bound the search to only a certain directory.
@@ -505,7 +515,7 @@ If an import is made from outside the boundary, it is ignored.
   - Whether to raise an error if an import cannot be resolved
 
 
-- **parents**
+- **parents**: `NoneType`, `set`
   - This value is **optional**
 
 
@@ -530,11 +540,11 @@ or the unsafe method of resolving imports
 
 ## *func* **get_raised**
 
-> [Source: ../miko/static.py @ line 928-972](../miko/static.py#L928-L972)
+> [Source: ../miko/static.py @ line 961-1005](../miko/static.py#L961-L1005)
 
 ### Parameters
 
-- **ignored**
+- **ignored**: `NoneType`, `list`
   - This value is **optional**
 
 

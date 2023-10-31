@@ -29,13 +29,13 @@ Makes the documentation for every file loaded by the entry point
 
 ### Parameters
 
-- **element_filter**: `() -> Any`
+- **element_filter**: `(ForwardRef('static.Element')) -> bool`
 
 
 - **entry_point**: `Path`
 
 
-- **file_filter**: `() -> Any`
+- **file_filter**: `(Path) -> bool`
 
 
 - **output_dir**: `Path`
@@ -60,7 +60,7 @@ Makes the documentation for a module
 
 ### Parameters
 
-- **element_filter**: `() -> Any`
+- **element_filter**: `(ForwardRef('static.Element')) -> bool`
 
 
 - **output_file**: `Path`
@@ -91,7 +91,7 @@ Makes the documentation for a constant
 
 ### Parameters
 
-- **base_dir**
+- **base_dir**: `NoneType`, `Path`
   - This value is **optional**
 
 
@@ -121,7 +121,7 @@ Makes the documentation for a function
 
 ### Parameters
 
-- **base_dir**
+- **base_dir**: `NoneType`, `Path`
   - This value is **optional**
 
 

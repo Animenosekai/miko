@@ -72,11 +72,11 @@ Tries to retrieve the types from a string
 
 ### Parameters
 
-- **filename**
+- **filename**: `NoneType`, `str`
   - This value is **optional**
 
 
-- **value**
+- **value**: `str`, `type`
 
 
 ### Returns
@@ -102,3 +102,9 @@ Tries casting the given value
 - **value**: `str`
   - The value to cast
 
+
+### Returns
+
+- `Any`
+
+- `str`

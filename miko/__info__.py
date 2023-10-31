@@ -20,7 +20,7 @@ def test(a: typing.Callable[[str, int], bool]):
     """
     Parameters
     ----------
-    a: () -> Any | (str, int) -> bool
+    a: (str, int) -> bool
 
     Raises
     ------

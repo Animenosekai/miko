@@ -10,7 +10,7 @@ Stores information on the current module version
 
 ### Parameters
 
-- **a**: `() -> Any`, `(str, int) -> bool`
+- **a**: `(str, int) -> bool`
 
 
 ### Raises

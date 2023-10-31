@@ -122,7 +122,7 @@ def get_dot_path(attr: ast.expr) -> str:
     return f"{get_dot_path(attr.value)}.{attr.attr}"
 
 
-def get_value(expr: typing.Optional[ast.expr], builtin: bool = False) -> typing.Optional[str]:
+def get_value(expr: typing.Optional[ast.expr], builtin: bool = False) -> typing.Optional[typing.Any]:
     """
     Returns the correct value from the given expression
 
@@ -161,7 +161,7 @@ def get_value(expr: typing.Optional[ast.expr], builtin: bool = False) -> typing.
             return get_element(result, builtin=builtin)
         except (AttributeError, ValueError):
             return result  # should not be a builtin
-    if isinstance(expr, (ast.Attribute, ast.Subscript)):
+    if isinstance(expr, ast.Attribute):
         # This happens when the value is defined as
         # an element of something else
         # new_var: some_module.some_var = ...
@@ -173,6 +173,39 @@ def get_value(expr: typing.Optional[ast.expr], builtin: bool = False) -> typing.
             return get_element(result, builtin=builtin)
         except (AttributeError, ValueError):
             return result  # should not be a builtin
+    if isinstance(expr, ast.Subscript):
+        # This happens when the value is defined as
+        # a subscript
+        # new_var: some_module.some_var[something] = ...
+        #                              ~~~~~~~~~~~
+        result = get_dot_path(expr)
+        try:
+            # print(result, ast.dump(expr.slice))
+            print(ast.dump(expr.slice))
+            if isinstance(expr.slice, ast.Tuple):
+                sliced_list = []
+                for element in expr.slice.elts:
+                    sliced_list.append(get_value(element, builtin=builtin))
+                sliced = tuple(sliced_list)
+            else:
+                sliced = get_value(expr.slice, builtin=builtin)
+        except Exception:
+            sliced = None
+        try:
+            result_element = get_element(result, builtin=builtin)
+            if not sliced:
+                return result_element
+            try:
+                return result_element[sliced]
+            except Exception:
+                return result_element
+        except (AttributeError, ValueError):
+            return result  # should not be a builtin
+    if isinstance(expr, ast.List):
+        results = []
+        for element in expr.elts:
+            results.append(get_value(element, builtin=builtin))
+        return results
     # print(type(expr), expr)
     return None
 

@@ -99,7 +99,7 @@ Renders a markdown deprecation warning
 
 ### Parameters
 
-- **base_dir**
+- **base_dir**: `NoneType`, `Path`
   - This value is **optional**
 
 
@@ -114,7 +114,7 @@ Renders a markdown source link
 
 ### Parameters
 
-- **base_dir**: `Path`
+- **base_dir**: `NoneType`, `Path`
   - This value is **optional**
   - The base directory of the output directory to use for relative paths
 
@@ -144,7 +144,7 @@ Renders a markdown imports
 
 ### Parameters
 
-- **base_dir**
+- **base_dir**: `NoneType`, `Path`
   - This value is **optional**
 
 

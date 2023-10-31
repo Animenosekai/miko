@@ -109,8 +109,8 @@ def try_retrieve_type(value: typing.Union[str, type], filename: typing.Optional[
         if (typing.get_origin(value) or value) in (typing.Union, types.UnionType, typing.Optional):
             results = []
             # We shouldn't have the Optional type because it is automatically converted to Union
-            if typing.get_origin(value) is typing.Optional:
-                results.append(None)
+            # if typing.get_origin(value) is typing.Optional:
+            #     results.append(None)
             for result in typing.get_args(value):
                 results.extend(try_retrieve_type(result, filename=filename))
             return results

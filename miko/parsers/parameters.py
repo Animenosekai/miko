@@ -99,7 +99,7 @@ class Parameter(MapElement):
         types = [stringify(element)
                  for element in self.types]
         if types:
-            results.append(" | ".join(sorted(types)))
+            results.append(" | ".join(sorted(set(types))))
 
         if self.deprecated:
             results.append("deprecated")

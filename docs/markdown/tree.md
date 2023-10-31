@@ -10,7 +10,7 @@ This module contains functions to work with the tree of elements
 
 ### Parameters
 
-- **elements**
+- **elements**: `NoneType`, `list`
   - This value is **optional**
 
 
