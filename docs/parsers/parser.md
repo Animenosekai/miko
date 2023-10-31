@@ -48,7 +48,7 @@ Appends the given value to the body of the element
   - The string to append to the body
 
 
-### *func* Element.**exported**
+### *property* Element.**exported**
 
 > [Source: ../../miko/parsers/parser.py @ line 43-47](../../miko/parsers/parser.py#L43-L47)
 
@@ -100,7 +100,7 @@ Elements parsed in the docstring paragraph
 
 The extra arguments passed in with the parser
 
-### *func* Parser.**name**
+### *property* Parser.**name**
 
 > [Source: ../../miko/parsers/parser.py @ line 70-74](../../miko/parsers/parser.py#L70-L74)
 
@@ -126,7 +126,7 @@ Renders the docstring back
 
 - `NotImplementedError`
 
-### *func* Parser.**exported**
+### *property* Parser.**exported**
 
 > [Source: ../../miko/parsers/parser.py @ line 105-113](../../miko/parsers/parser.py#L105-L113)
 

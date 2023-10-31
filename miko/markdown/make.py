@@ -302,10 +302,18 @@ def render_function_docs(element: static.Element[ast.FunctionDef | ast.AsyncFunc
 
     results = []
 
+    func_types = []
     if isinstance(element.node, ast.AsyncFunctionDef):
-        func_type = "async func"
+        func_types.append("async")
+
+    for decorator in element.node.decorator_list:
+        if isinstance(decorator, ast.Name) and decorator.id == "property":
+            func_types.append("property")
+            break
     else:
-        func_type = "func"
+        func_types.append("func")
+
+    func_type = " ".join(func_types)
 
     if parent_path:
         results.append(render.heading(f"*{func_type}* {parent_path}.**{element.node.name}**",

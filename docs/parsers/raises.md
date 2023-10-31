@@ -34,7 +34,7 @@ Parser for the `Raises` paragraph
 
 > [Source: ../../miko/parsers/raises.py @ line 21](../../miko/parsers/raises.py#L21)
 
-### *func* Raises.**raised**
+### *property* Raises.**raised**
 
 > [Source: ../../miko/parsers/raises.py @ line 37-39](../../miko/parsers/raises.py#L37-L39)
 

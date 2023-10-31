@@ -64,11 +64,11 @@ Sets the flag
   - Default Value: `!`
 
 
-### *func* FlagParser.**flag**
+### *property* FlagParser.**flag**
 
 > [Source: ../../miko/parsers/flag.py @ line 40-41](../../miko/parsers/flag.py#L40-L41)
 
-### *func* FlagParser.**exported**
+### *property* FlagParser.**exported**
 
 > [Source: ../../miko/parsers/flag.py @ line 44-46](../../miko/parsers/flag.py#L44-L46)
 

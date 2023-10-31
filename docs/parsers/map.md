@@ -96,7 +96,7 @@ Renders the element
 
 - `str`
 
-### *func* MapElement.**exported**
+### *property* MapElement.**exported**
 
 > [Source: ../../miko/parsers/map.py @ line 91-96](../../miko/parsers/map.py#L91-L96)
 

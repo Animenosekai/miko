@@ -114,7 +114,7 @@ def try_retrieve_type(value: typing.Union[str, type], filename: typing.Optional[
             for result in typing.get_args(value):
                 results.extend(try_retrieve_type(result, filename=filename))
             return results
-        print(type(value), value, typing.get_origin(value))
+        # print(type(value), value, typing.get_origin(value))
         return [typing.get_origin(value) or value]
 
     # processing = str(value).strip().lower()  # List => list

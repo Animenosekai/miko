@@ -115,7 +115,7 @@ Makes the documentation for a constant
 
 ## *func* **render_function_docs**
 
-> [Source: ../../miko/markdown/make.py @ line 295-365](../../miko/markdown/make.py#L295-L365)
+> [Source: ../../miko/markdown/make.py @ line 295-373](../../miko/markdown/make.py#L295-L373)
 
 Makes the documentation for a function
 

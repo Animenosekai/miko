@@ -30,15 +30,15 @@ Parser for the `Copyright` paragraph
 
 A license in the `Copyright` section
 
-### *func* License.**license**
+### *property* License.**license**
 
 > [Source: ../../miko/parsers/copyright.py @ line 23-28](../../miko/parsers/copyright.py#L23-L28)
 
-### *func* License.**year_from**
+### *property* License.**year_from**
 
 > [Source: ../../miko/parsers/copyright.py @ line 31-40](../../miko/parsers/copyright.py#L31-L40)
 
-### *func* License.**year_to**
+### *property* License.**year_to**
 
 > [Source: ../../miko/parsers/copyright.py @ line 43-52](../../miko/parsers/copyright.py#L43-L52)
 
@@ -50,7 +50,7 @@ A license in the `Copyright` section
 
 - `str`
 
-### *func* License.**exported**
+### *property* License.**exported**
 
 > [Source: ../../miko/parsers/copyright.py @ line 66-72](../../miko/parsers/copyright.py#L66-L72)
 

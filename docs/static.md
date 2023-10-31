@@ -182,13 +182,13 @@ The filename where the element was defined, for easier debugging
 
 If the annotations and exceptions should be safely loaded
 
-### *func* Element.**signature**
+### *property* Element.**signature**
 
 > [Source: ../miko/static.py @ line 308-313](../miko/static.py#L308-L313)
 
 If available, the signature of the node
 
-### *func* Element.**raised**
+### *property* Element.**raised**
 
 > [Source: ../miko/static.py @ line 316-320](../miko/static.py#L316-L320)
 
@@ -203,7 +203,7 @@ Documents the element
 - **kwargs**
 
 
-### *func* Element.**documentation**
+### *property* Element.**documentation**
 
 > [Source: ../miko/static.py @ line 331-339](../miko/static.py#L331-L339)
 
@@ -224,13 +224,13 @@ Exports the data
 - **kwargs**
 
 
-### *func* Element.**exported**
+### *property* Element.**exported**
 
 > [Source: ../miko/static.py @ line 355-357](../miko/static.py#L355-L357)
 
 Exported data
 
-### *func* Element.**is_private**
+### *property* Element.**is_private**
 
 > [Source: ../miko/static.py @ line 360-370](../miko/static.py#L360-L370)
 
@@ -253,7 +253,7 @@ Documents the element
 - **kwargs**
 
 
-### *func* ConstantElement.**documentation**
+### *property* ConstantElement.**documentation**
 
 > [Source: ../miko/static.py @ line 384-385](../miko/static.py#L384-L385)
 

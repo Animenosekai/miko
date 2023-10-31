@@ -30,19 +30,19 @@ Parser for the `Parameters` paragraph
 
 A parameter in the `Parameters` paragraph
 
-### *func* Parameter.**signature**
+### *property* Parameter.**signature**
 
 > [Source: ../../miko/parsers/parameters.py @ line 28-30](../../miko/parsers/parameters.py#L28-L30)
 
 The signature of the callable, if provided
 
-### *func* Parameter.**filename**
+### *property* Parameter.**filename**
 
 > [Source: ../../miko/parsers/parameters.py @ line 33-35](../../miko/parsers/parameters.py#L33-L35)
 
 The filename where the parameter is defined, if provided
 
-### *func* Parameter.**deprecated**
+### *property* Parameter.**deprecated**
 
 > [Source: ../../miko/parsers/parameters.py @ line 38-40](../../miko/parsers/parameters.py#L38-L40)
 
@@ -52,13 +52,13 @@ If the parameter is considered as deprecated
 
 - `bool`
 
-### *func* Parameter.**signature_parameter**
+### *property* Parameter.**signature_parameter**
 
 > [Source: ../../miko/parsers/parameters.py @ line 43-48](../../miko/parsers/parameters.py#L43-L48)
 
 Returns the signature parameter if provided
 
-### *func* Parameter.**optional**
+### *property* Parameter.**optional**
 
 > [Source: ../../miko/parsers/parameters.py @ line 51-58](../../miko/parsers/parameters.py#L51-L58)
 
@@ -68,7 +68,7 @@ If the parameter is optional
 
 - `bool`
 
-### *func* Parameter.**default**
+### *property* Parameter.**default**
 
 > [Source: ../../miko/parsers/parameters.py @ line 61-77](../../miko/parsers/parameters.py#L61-L77)
 
@@ -77,7 +77,7 @@ The default value provided for the given parameter
 > **Note**
 > This can be something other than a string if the `signature` of the callable is provided
 
-### *func* Parameter.**types**
+### *property* Parameter.**types**
 
 > [Source: ../../miko/parsers/parameters.py @ line 80-95](../../miko/parsers/parameters.py#L80-L95)
 
@@ -95,7 +95,7 @@ Returns the parameter's possible types
 
 - `str`
 
-### *func* Parameter.**exported**
+### *property* Parameter.**exported**
 
 > [Source: ../../miko/parsers/parameters.py @ line 117-134](../../miko/parsers/parameters.py#L117-L134)
 
@@ -113,13 +113,13 @@ Parser for the `Parameters` paragraph
 
 > [Source: ../../miko/parsers/parameters.py @ line 142](../../miko/parsers/parameters.py#L142)
 
-### *func* Parameters.**signature**
+### *property* Parameters.**signature**
 
 > [Source: ../../miko/parsers/parameters.py @ line 176-178](../../miko/parsers/parameters.py#L176-L178)
 
 The signature of the callable, if provided
 
-### *func* Parameters.**noself**
+### *property* Parameters.**noself**
 
 > [Source: ../../miko/parsers/parameters.py @ line 181-183](../../miko/parsers/parameters.py#L181-L183)
 

@@ -34,13 +34,13 @@ Parser for the `Returns` paragraph
 
 > [Source: ../../miko/parsers/returns.py @ line 25](../../miko/parsers/returns.py#L25)
 
-### *func* Returns.**signature**
+### *property* Returns.**signature**
 
 > [Source: ../../miko/parsers/returns.py @ line 42-44](../../miko/parsers/returns.py#L42-L44)
 
 The signature of the callable, if provided
 
-### *func* Returns.**filename**
+### *property* Returns.**filename**
 
 > [Source: ../../miko/parsers/returns.py @ line 47-49](../../miko/parsers/returns.py#L47-L49)
 

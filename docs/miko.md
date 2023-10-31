@@ -49,7 +49,7 @@ The line where the callable was defined
 
 The original name of the callable
 
-### *func* Callable.**local_variables**
+### *property* Callable.**local_variables**
 
 > [Source: ../miko/miko.py @ line 56-58](../miko/miko.py#L56-L58)
 
@@ -59,7 +59,7 @@ Returns the local variables of the function
 
 - `tuple`
 
-### *func* Callable.**parameters**
+### *property* Callable.**parameters**
 
 > [Source: ../miko/miko.py @ line 61-63](../miko/miko.py#L61-L63)
 
@@ -69,7 +69,7 @@ Returns the parameters of the function
 
 - `dict`
 
-### *func* Callable.**return_annotation**
+### *property* Callable.**return_annotation**
 
 > [Source: ../miko/miko.py @ line 66-68](../miko/miko.py#L66-L68)
 
@@ -102,25 +102,25 @@ Returns the __code__ object of a given callable object.
 
 - `TypeError`
 
-### *func* Callable.**is_method**
+### *property* Callable.**is_method**
 
 > [Source: ../miko/miko.py @ line 100-102](../miko/miko.py#L100-L102)
 
 Returns whether the callable is a method of an instantiated object or not
 
-### *func* Callable.**is_function**
+### *property* Callable.**is_function**
 
 > [Source: ../miko/miko.py @ line 105-107](../miko/miko.py#L105-L107)
 
 Returns whether the callable is a function or not
 
-### *func* Callable.**is_class**
+### *property* Callable.**is_class**
 
 > [Source: ../miko/miko.py @ line 110-112](../miko/miko.py#L110-L112)
 
 Returns whether the callable is a class or not
 
-### *func* Callable.**source_code**
+### *property* Callable.**source_code**
 
 > [Source: ../miko/miko.py @ line 115-117](../miko/miko.py#L115-L117)
 
@@ -164,7 +164,7 @@ Returns a clean docstring
   - Default Value: `4`
 
 
-### *func* BaseDocumentation.**exported**
+### *property* BaseDocumentation.**exported**
 
 > [Source: ../miko/miko.py @ line 304-314](../miko/miko.py#L304-L314)
 
