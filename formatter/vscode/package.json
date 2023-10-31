@@ -18,18 +18,23 @@
 	"main": "./out/extension.js",
 	"activationEvents": [
 		"onLanguage:python",
-		"onCommand:miko.format",
-		"onCommand:miko.formatAll"
+		"onCommand:miko-docs.format",
+		"onCommand:miko-docs.formatAll",
+		"onCommand:miko-docs.overview"
 	],
 	"contributes": {
 		"commands": [
 			{
-				"command": "miko.format",
+				"command": "miko-docs.format",
 				"title": "🧃 Format current document using Miko"
 			},
 			{
-				"command": "miko.formatAll",
+				"command": "miko-docs.formatAll",
 				"title": "🧃 Format all visible documents using Miko"
+			},
+			{
+				"command": "miko-docs.overview",
+				"title": "🧃 Overview the current document"
 			}
 		],
 		"configuration": {
@@ -49,6 +54,11 @@
 					"type": "boolean",
 					"default": true,
 					"description": "If the annotations and exceptions should be loaded safely (wihout loading the modules)"
+				},
+				"miko-docs.includePrivate": {
+					"type": "boolean",
+					"default": false,
+					"description": "If the private elements should be included in overviews"
 				}
 			}
 		}

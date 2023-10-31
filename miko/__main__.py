@@ -7,7 +7,7 @@ import miko
 from miko import static, markdown
 
 NO_ACTION = """\
-usage: miko [-h] [--version] {info,clean,docs} ...
+usage: miko [-h] [--version] {info,clean,docs,overview} ...
 miko: error: the following arguments are required: action"""
 
 

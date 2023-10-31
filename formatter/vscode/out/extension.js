@@ -2,10 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const cp = require("child_process");
+const path = require("path");
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
 const mikoOutputChannel = vscode.window.createOutputChannel("Miko Docs");
+const mikoOverviewScheme = "miko-docs-overview";
 const getPythonPath = () => {
     const pythonConfig = vscode.workspace.getConfiguration('python');
     const pythonPath = pythonConfig.get('defaultInterpreterPath');
@@ -94,11 +96,7 @@ function activate(context) {
             return;
         }
     });
-    const config = vscode.workspace.getConfiguration("miko-docs");
-    const noself = config.get("noSelf") || true;
-    const flagPrefix = config.get("flagPrefix") || "!";
-    const safe = config.get("safe") || true;
-    const disposableFormat = vscode.commands.registerCommand('miko.format', () => {
+    const mikoFormat = vscode.commands.registerCommand('miko-docs.format', () => {
         if (!vscode.window.activeTextEditor) {
             mikoOutputChannel.appendLine("No active text editor.");
             return; // We don't have any opened text editors
@@ -115,6 +113,10 @@ function activate(context) {
             indent = Math.floor(indent);
         }
         mikoOutputChannel.appendLine(`Indentation level: ${indent}`);
+        const config = vscode.workspace.getConfiguration("miko-docs");
+        const noself = config.get("noSelf") || true;
+        const flagPrefix = config.get("flagPrefix") || "!";
+        const safe = config.get("safe") || true;
         // Format the current file
         execMiko(document.fileName, indent, noself, flagPrefix, safe)
             .then(() => {
@@ -124,8 +126,8 @@ function activate(context) {
             vscode.window.showErrorMessage(err.message);
         });
     });
-    context.subscriptions.push(disposableFormat);
-    const disposableFormatAll = vscode.commands.registerCommand('miko.formatAll', () => {
+    context.subscriptions.push(mikoFormat);
+    const mikoFormatAll = vscode.commands.registerCommand('miko-docs.formatAll', () => {
         vscode.window.visibleTextEditors.forEach(editor => {
             mikoOutputChannel.appendLine(`Saving ${editor.document.fileName}`);
             editor.document.save();
@@ -137,6 +139,10 @@ function activate(context) {
                 indent = Math.floor(indent);
             }
             mikoOutputChannel.appendLine(`Indentation level for "${editor.document.fileName}": ${indent} `);
+            const config = vscode.workspace.getConfiguration("miko-docs");
+            const noself = config.get("noSelf") || true;
+            const flagPrefix = config.get("flagPrefix") || "!";
+            const safe = config.get("safe") || true;
             execMiko(editor.document.fileName, indent, noself, flagPrefix, safe)
                 .then(() => {
                 // editor.document.save();
@@ -149,7 +155,62 @@ function activate(context) {
             });
         });
     });
-    context.subscriptions.push(disposableFormatAll);
+    context.subscriptions.push(mikoFormatAll);
+    const overviewProvider = new class {
+        constructor() {
+            // emitter and its event
+            this.onDidChangeEmitter = new vscode.EventEmitter();
+            this.onDidChange = this.onDidChangeEmitter.event;
+        }
+        provideTextDocumentContent(uri) {
+            const pythonPath = getPythonPath();
+            if (!pythonPath) {
+                return Promise.reject(new Error("🕊️ Could not find a Python interpreter. Please set the \"python.defaultInterpreterPath\" setting to the path of your Python interpreter."));
+            }
+            const fileURI = uri.path.slice(0, -3);
+            const args = ["-m", "miko", "overview", fileURI];
+            const config = vscode.workspace.getConfiguration("miko-docs");
+            const includePrivate = config.get("includePrivate") || true;
+            const safe = config.get("safe") || true;
+            if (includePrivate) {
+                args.push("--include-private");
+            }
+            if (safe) {
+                args.push("--safe");
+            }
+            mikoOutputChannel.appendLine(`Calling python with arguments: ${args.join(" ")}`);
+            return new Promise((resolve, reject) => {
+                let opt = {};
+                // if (vscode.workspace.workspaceFolders) {
+                //     opt.cwd = vscode.workspace.workspaceFolders[0].uri.fsPath;
+                // }
+                opt.cwd = path.dirname(fileURI);
+                cp.execFile(pythonPath, args, opt, (err, out) => {
+                    if (err) {
+                        // return reject(err);
+                        return resolve(`\`\`\`python\n${err.message}\n\`\`\``);
+                    }
+                    return resolve(out);
+                });
+            });
+        }
+    };
+    context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(mikoOverviewScheme, overviewProvider));
+    const mikoOverview = vscode.commands.registerCommand('miko-docs.overview', async () => {
+        if (!vscode.window.activeTextEditor) {
+            mikoOutputChannel.appendLine("No active text editor");
+            return; // We don't have any opened text editors
+        }
+        // Save the current file
+        const document = vscode.window.activeTextEditor.document;
+        mikoOutputChannel.appendLine("Saving the current file");
+        document.save();
+        const uri = vscode.Uri.parse(`${mikoOverviewScheme}:` + document.uri.fsPath + ".md");
+        const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
+        vscode.commands.executeCommand("markdown.showPreviewToSide", doc.uri);
+        // const editor = await vscode.window.showTextDocument(doc, { preview: true, viewColumn: vscode.ViewColumn.Beside });
+    });
+    context.subscriptions.push(mikoOverview);
 }
 exports.activate = activate;
 // this method is called when your extension is deactivated
