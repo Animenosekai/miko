@@ -6,10 +6,6 @@ Implementation of miko's static code analysis tools
 This is used to retrieve information on the different elements of the code  
 without having to run it.
 
-## Imports
-
-- [../miko/__init__.py](../miko/__init__.py): As `miko`
-
 ## *func* **get_element**
 
 > [Source: ../miko/static.py @ line 27-96](../miko/static.py#L27-L96)

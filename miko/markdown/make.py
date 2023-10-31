@@ -18,42 +18,53 @@ def make_docs(entry_point: pathlib.Path,
               output_dir: pathlib.Path,
               file_filter: typing.Callable[[pathlib.Path],
                                            bool] = lambda x: False,
-              element_filter: typing.Callable[[static.Element], bool] = PrivateElement):
+              element_filter: typing.Callable[[
+                  static.Element], bool] = PrivateElement,
+              safe: bool = False):
     """
-    Makes the documentation for the every file loaded by the entry point
+    Makes the documentation for every file loaded by the entry point
 
     Note: An entry point could be for example the __init__.py file of a library
     """
     entry_point = pathlib.Path(entry_point).resolve()
+    if entry_point.is_dir():
+        entry_point = entry_point / "__init__.py"
+
+    if not entry_point.is_file():
+        raise FileNotFoundError(
+            f"Could not find the entry point: '{entry_point}'")
+
     output_dir = pathlib.Path(output_dir).resolve()
     imports = static.get_imports(entry_point, entry_point.parent)
 
-    make_module_docs(entry_point, output_dir / entry_point.with_suffix(".md"))
+    make_module_docs(entry_point, output_dir /
+                     entry_point.with_suffix(".md"), safe=safe)
 
     for imp in imports:
         if file_filter(imp.file):
             continue
+        output_file = output_dir / \
+            imp.file.relative_to(entry_point.parent).with_suffix(".md")
         if imp.file.stem == "__init__":
-            output_file = output_dir / \
-                imp.file.relative_to(entry_point.parent).with_name("README.md")
-        else:
-            output_file = output_dir / \
-                imp.file.relative_to(entry_point.parent).with_suffix(".md")
-        make_module_docs(imp.file, output_file, element_filter=element_filter)
+            output_file = output_file.with_name("README.md")
+
+        make_module_docs(imp.file, output_file,
+                         element_filter=element_filter, safe=safe)
 
 
-def make_module_docs(source_file: pathlib.Path, output_file: pathlib.Path, element_filter: typing.Callable[[static.Element], bool] = PrivateElement):
+def make_module_docs(source_file: pathlib.Path, output_file: pathlib.Path,
+                     element_filter: typing.Callable[[static.Element], bool] = PrivateElement, safe: bool = False):
     """Makes the documentation for a module"""
     source_file = pathlib.Path(source_file).resolve()
     output_file = pathlib.Path(output_file).resolve()
     with open(source_file) as f:
         r = ast.parse(f.read())
-    elements = static.get_elements(r, filename=str(source_file))
+    elements = static.get_elements(r, filename=str(source_file), safe=safe)
     for element in elements:
         if isinstance(element.node, ast.Module):
             output_file.parent.mkdir(parents=True, exist_ok=True)
             rendered = render_module_docs(element, elements, source_file,
-                                          base_dir=output_file.parent)
+                                          base_dir=output_file.parent, element_filter=element_filter)
             return output_file.write_text(rendered)
 
 

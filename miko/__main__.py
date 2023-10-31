@@ -4,10 +4,10 @@ import json
 import pathlib
 
 import miko
-from miko import static
+from miko import static, markdown
 
 NO_ACTION = """\
-usage: miko [-h] [--version] {info,clean} ...
+usage: miko [-h] [--version] {info,clean,docs} ...
 miko: error: the following arguments are required: action"""
 
 
@@ -22,6 +22,36 @@ def main(args: argparse.Namespace):
     """
     if not args.action:
         return print(NO_ACTION)
+
+    if args.action == "docs":
+        if not args.entry:
+            return print("Please provide an entry file")
+
+        if args.output:
+            output_dir = pathlib.Path(args.output)
+        else:
+            output_dir = pathlib.Path("./docs")
+
+        if not output_dir.is_dir():
+            output_dir.mkdir(parents=True)
+
+        ignored = []
+        for group in args.ignore:
+            for path in group:
+                ignored.append(pathlib.Path(path))
+
+        def ignore_file(file: pathlib.Path):
+            return file in ignored
+
+        if args.include_private:
+            def ignore_element(element: static.Element):
+                return False
+        else:
+            def ignore_element(element: static.Element):
+                return element.is_private
+
+        return markdown.make.make_docs(args.entry, output_dir=output_dir, file_filter=ignore_file,
+                                       element_filter=ignore_element, safe=args.safe)
 
     if pathlib.Path(args.input).is_file():
         source_code = pathlib.Path(args.input).read_text()
@@ -98,7 +128,7 @@ def entry():
         parser.add_argument("--flag-prefix", action='store', required=False,
                             default="!", help='The prefix for the docstring flags. (default: "!")')
         parser.add_argument("--safe", action='store_true', required=False,
-                            help='If the annotations and exceptions should be loaded safely (without loading the modules) (default: False))')
+                            help='If the annotations and exceptions should be loaded safely (without loading the modules) (default: False)')
         parser.add_argument("--output", "-o", action='store', type=str,
                             required=False, default=None, help='The file to output the result to. If not provided, `miko` will use STDOUT.')
         parser.add_argument("input", action='store', type=str, default=None,
@@ -115,6 +145,19 @@ def entry():
 
     prepare_parser(parser_info)
     prepare_parser(parser_clean)
+
+    parser_docs = subparser.add_parser("docs",
+                                       help="Generate the documentation for the files loaded by the entry file")
+    parser_docs.add_argument("entry", action='store', type=str, default=None,
+                             help='The entry file to document. An entry file could be for example the __init__.py of a library.')
+    parser_docs.add_argument("--output", "-o", action='store', type=str,
+                             required=False, default=None, help='The directory to output the result to. If not provided, `miko` will use "./docs"')
+    parser_docs.add_argument("--ignore", action="store", nargs="*", type=str, default=[],
+                             help="The files to ignore when generating the documentation")
+    parser_docs.add_argument("--include-private", action="store_true", default=False,
+                             help="If the private objects should be included in the documentation")
+    parser_docs.add_argument("--safe", action='store_true', required=False,
+                             help='If the annotations and exceptions should be loaded safely (without loading the modules) (default: False)')
 
     args = parser.parse_args()
 
