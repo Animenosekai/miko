@@ -4,6 +4,12 @@
 
 This module contains functions for making documentation from the AST.
 
+## Imports
+
+- [../../miko/markdown/render.py](../../miko/markdown/render.py): As `render`
+
+- [../../miko/markdown/tree.py](../../miko/markdown/tree.py): As `tree`
+
 ## *func* **PrivateElement**
 
 > [Source: ../../miko/markdown/make.py @ line 12-14](../../miko/markdown/make.py#L12-L14)
@@ -17,7 +23,7 @@ Returns True if the given element is private
 
 ## *func* **make_docs**
 
-> [Source: ../../miko/markdown/make.py @ line 17-52](../../miko/markdown/make.py#L17-L52)
+> [Source: ../../miko/markdown/make.py @ line 17-54](../../miko/markdown/make.py#L17-L54)
 
 Makes the documentation for every file loaded by the entry point
 
@@ -48,7 +54,7 @@ Makes the documentation for every file loaded by the entry point
 
 ## *func* **make_module_docs**
 
-> [Source: ../../miko/markdown/make.py @ line 55-68](../../miko/markdown/make.py#L55-L68)
+> [Source: ../../miko/markdown/make.py @ line 57-73](../../miko/markdown/make.py#L57-L73)
 
 Makes the documentation for a module
 
@@ -69,23 +75,23 @@ Makes the documentation for a module
 
 ## *func* **render_module_docs**
 
-> [Source: ../../miko/markdown/make.py @ line 71-141](../../miko/markdown/make.py#L71-L141)
+> [Source: ../../miko/markdown/make.py @ line 76-146](../../miko/markdown/make.py#L76-L146)
 
 Makes the documentation for a module
 
 ## *func* **render_class_docs**
 
-> [Source: ../../miko/markdown/make.py @ line 144-227](../../miko/markdown/make.py#L144-L227)
+> [Source: ../../miko/markdown/make.py @ line 149-232](../../miko/markdown/make.py#L149-L232)
 
 ## *func* **render_constant_docs**
 
-> [Source: ../../miko/markdown/make.py @ line 230-287](../../miko/markdown/make.py#L230-L287)
+> [Source: ../../miko/markdown/make.py @ line 235-292](../../miko/markdown/make.py#L235-L292)
 
 Makes the documentation for a constant
 
 ### Parameters
 
-- **base_dir**: `Optional`
+- **base_dir**
   - This value is **optional**
 
 
@@ -109,13 +115,13 @@ Makes the documentation for a constant
 
 ## *func* **render_function_docs**
 
-> [Source: ../../miko/markdown/make.py @ line 290-360](../../miko/markdown/make.py#L290-L360)
+> [Source: ../../miko/markdown/make.py @ line 295-365](../../miko/markdown/make.py#L295-L365)
 
 Makes the documentation for a function
 
 ### Parameters
 
-- **base_dir**: `Optional`
+- **base_dir**
   - This value is **optional**
 
 

@@ -40,16 +40,8 @@ Parser for the `Returns` paragraph
 
 The signature of the callable, if provided
 
-#### Returns
-
-- `Optional`
-
 ### *func* Returns.**filename**
 
 > [Source: ../../miko/parsers/returns.py @ line 47-49](../../miko/parsers/returns.py#L47-L49)
 
 The filename where the return annotation is defined, if provided
-
-#### Returns
-
-- `Optional`

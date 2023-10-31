@@ -22,6 +22,36 @@ def stringify(t):
     return str(t)
 
 
+def split_options(value: str, sep: str = ",") -> typing.List[str]:
+    """Retrieves the different options for an element"""
+    results = []
+    current = ""
+    # Avoid splitting on commas inside expressions
+    count_brackets = 0
+    count_parenthesis = 0
+    for letter in value:
+        if letter == "(":
+            count_parenthesis += 1
+        elif letter == ")":
+            count_parenthesis -= 1
+        elif letter == "[":
+            count_brackets += 1
+        elif letter == "]":
+            count_brackets -= 1
+        elif letter == sep and not count_brackets and not count_parenthesis:
+            current = current.strip()
+            if current:
+                # This happens when the first letter is a comma
+                results.append(current)
+            current = ""
+            continue
+        current += letter
+    current = current.strip()
+    if current:
+        results.append(current)
+    return results
+
+
 @dataclasses.dataclass(frozen=True)
 class Callable:
     """Represents a callable type"""
@@ -76,11 +106,15 @@ def try_retrieve_type(value: typing.Union[str, type], filename: typing.Optional[
             ))
             return results
 
-        if typing.get_origin(value) in (typing.Union, types.UnionType):
+        if (typing.get_origin(value) or value) in (typing.Union, types.UnionType, typing.Optional):
             results = []
+            # We shouldn't have the Optional type because it is automatically converted to Union
+            if typing.get_origin(value) is typing.Optional:
+                results.append(None)
             for result in typing.get_args(value):
                 results.extend(try_retrieve_type(result, filename=filename))
             return results
+        print(type(value), value, typing.get_origin(value))
         return [typing.get_origin(value) or value]
 
     # processing = str(value).strip().lower()  # List => list
@@ -90,7 +124,7 @@ def try_retrieve_type(value: typing.Union[str, type], filename: typing.Optional[
     # If we have a Union type
     if "|" in processing:
         results = []
-        for value in processing.split("|"):
+        for value in split_options(processing, sep="|"):
             results.extend(try_retrieve_type(value, filename=filename))
         return results
 
@@ -100,8 +134,8 @@ def try_retrieve_type(value: typing.Union[str, type], filename: typing.Optional[
         if processing_lower.startswith("union") or processing_lower.startswith("optional"):
             inside, _, _ = processing.partition("[")[2].rpartition("]")
             results = []
-            for val in inside.split(","):
-                results.extend(val)
+            for val in split_options(inside):
+                results.append(val)
             if processing_lower.startswith("optional"):
                 results.append(None)
             return results

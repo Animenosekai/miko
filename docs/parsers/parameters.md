@@ -36,19 +36,11 @@ A parameter in the `Parameters` paragraph
 
 The signature of the callable, if provided
 
-#### Returns
-
-- `Optional`
-
 ### *func* Parameter.**filename**
 
 > [Source: ../../miko/parsers/parameters.py @ line 33-35](../../miko/parsers/parameters.py#L33-L35)
 
 The filename where the parameter is defined, if provided
-
-#### Returns
-
-- `Optional`
 
 ### *func* Parameter.**deprecated**
 
@@ -66,10 +58,6 @@ If the parameter is considered as deprecated
 
 Returns the signature parameter if provided
 
-#### Returns
-
-- `Optional`
-
 ### *func* Parameter.**optional**
 
 > [Source: ../../miko/parsers/parameters.py @ line 51-58](../../miko/parsers/parameters.py#L51-L58)
@@ -85,10 +73,6 @@ If the parameter is optional
 > [Source: ../../miko/parsers/parameters.py @ line 61-77](../../miko/parsers/parameters.py#L61-L77)
 
 The default value provided for the given parameter
-
-#### Returns
-
-- `Union`
 
 > **Note**
 > This can be something other than a string if the `signature` of the callable is provided
@@ -134,10 +118,6 @@ Parser for the `Parameters` paragraph
 > [Source: ../../miko/parsers/parameters.py @ line 176-178](../../miko/parsers/parameters.py#L176-L178)
 
 The signature of the callable, if provided
-
-#### Returns
-
-- `Optional`
 
 ### *func* Parameters.**noself**
 

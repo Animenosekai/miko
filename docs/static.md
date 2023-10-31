@@ -6,6 +6,10 @@ Implementation of miko's static code analysis tools
 This is used to retrieve information on the different elements of the code  
 without having to run it.
 
+## Imports
+
+- [../miko/__init__.py](../miko/__init__.py): As `miko`
+
 ## *func* **get_element**
 
 > [Source: ../miko/static.py @ line 27-96](../miko/static.py#L27-L96)
@@ -72,7 +76,7 @@ to be fully loaded. Otherwise a dot path will be returned.
 See `get_element` for more information on loading arbitrary elements.
 
 
-- **expr**: `Optional`, `ast.expr`
+- **expr**: `ast.expr`
   - This value is **optional**
   - The expression to get the value from
 
@@ -81,8 +85,6 @@ See `get_element` for more information on loading arbitrary elements.
 
 - `None`
     - If it couldn't get the value
-
-- `Optional`
 
 - `str`
     - The value for the expression
@@ -103,7 +105,7 @@ Otherwise a dot path will be returned.
 See get_element for more information on loading arbitrary elements.
 
 
-- **node**: ` ast.FunctionDef`, `ast.AsyncFunctionDef `
+- **node**: `ast.AsyncFunctionDef`, `ast.FunctionDef`
   - The node to get the signature from
 
 
@@ -186,10 +188,6 @@ If the annotations and exceptions should be safely loaded
 
 If available, the signature of the node
 
-#### Returns
-
-- `Optional`
-
 ### *func* Element.**raised**
 
 > [Source: ../miko/static.py @ line 316-320](../miko/static.py#L316-L320)
@@ -267,7 +265,7 @@ Gets all of the elements which could be documented inside the AST
 
 ### Parameters
 
-- **filename**: `Optional`
+- **filename**
   - This value is **optional**
 
 
@@ -275,7 +273,7 @@ Gets all of the elements which could be documented inside the AST
   - The Abstract Syntax Tree element to search into
 
 
-- **parents**: `.`, `A`, `L`, `None`, `Optional`, `S`, `T`, `[`, `]`, `a`, `g`, `i`, `n`, `p`, `s`, `t`, `y`
+- **parents**: `None`, `typing.List[ast.AST]`
   - This value is **optional**
   - The parents of the current element
 
@@ -311,7 +309,7 @@ Cleans up the source code
 
 ### Parameters
 
-- **filename**: `Optional`
+- **filename**
   - This value is **optional**
 
 
@@ -341,7 +339,7 @@ Gathers information on the different elements of the source code
 
 ### Parameters
 
-- **filename**: `Optional`
+- **filename**
   - This value is **optional**
 
 
@@ -449,7 +447,7 @@ Resolves an import
 
 ### Parameters
 
-- **context**: `Optional`
+- **context**
   - This value is **optional**
 
 
@@ -458,7 +456,7 @@ Resolves an import
   - The level of the import
 
 
-- **module**: `None`, `Optional`, `r`, `s`, `t`
+- **module**: `None`, `str`
   - This value is **optional**
   - The module of the import
 
@@ -491,7 +489,7 @@ Gets all imported files
 
 ### Parameters
 
-- **boundary**: `.`, `None`, `Optional`, `P`, `a`, `b`, `h`, `i`, `l`, `p`, `t`
+- **boundary**: `None`, `pathlib.Path`
   - This value is **optional**
   - The boundary of the imports.
 This is used to bound the search to only a certain directory.
@@ -507,7 +505,7 @@ If an import is made from outside the boundary, it is ignored.
   - Whether to raise an error if an import cannot be resolved
 
 
-- **parents**: `Optional`
+- **parents**
   - This value is **optional**
 
 
@@ -536,7 +534,7 @@ or the unsafe method of resolving imports
 
 ### Parameters
 
-- **ignored**: `Optional`
+- **ignored**
   - This value is **optional**
 
 

@@ -10,7 +10,7 @@ This module contains functions to work with the tree of elements
 
 ### Parameters
 
-- **elements**: `Optional`
+- **elements**
   - This value is **optional**
 
 

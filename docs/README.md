@@ -12,6 +12,8 @@ A new Python documentation style
 
 - [../miko/static.py](../miko/static.py): As `static`
 
+- [../miko/markdown/__init__.py](../miko/markdown/__init__.py): As `markdown`
+
 ## Copyright
 
 - **Animenosekai**

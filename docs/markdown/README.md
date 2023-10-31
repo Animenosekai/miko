@@ -4,7 +4,7 @@
 
 ## Imports
 
-- [../../miko/markdown/make.py](../../miko/markdown/make.py): As `make`
+- [../../miko/markdown/make.py](../../miko/markdown/make.py): As `make`, `make_docs`, `make_module_docs`
 
 - [../../miko/markdown/render.py](../../miko/markdown/render.py): As `render`
 
