@@ -589,7 +589,7 @@ parsed = MyCoolDocumentation(
 
 ##### Methods
 
-- **`Documentation.dumps`**
+- **`BaseDocumentation.dumps`**
 
 The `dumps` method, which might look familiar to common serialization libraries, lets you dump the documentation string to the cleanest format possible, using all the information the current `Documentation` has.
 
@@ -612,6 +612,13 @@ This module provides different tools to statically analyze Python code and get i
 #### `miko.markdown`
 
 This module provides different tools to render Markdown documentations out of different elements.
+
+#### API Reference
+
+Head over to the [API Reference](./docs) to learn more about the different classes and functions exposed by the Python API.
+
+> **Note**  
+> The API reference has been generated using `miko` itself.
 
 ### Using the CLI
 
