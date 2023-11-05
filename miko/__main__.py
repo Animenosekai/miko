@@ -88,9 +88,12 @@ def main(args: argparse.Namespace):
         output_file.write_text(rendered)
         return
 
-    if pathlib.Path(args.input).is_file():
-        source_code = pathlib.Path(args.input).read_text()
-    else:
+    try:
+        if pathlib.Path(args.input).is_file():
+            source_code = pathlib.Path(args.input).read_text()
+        else:
+            raise ValueError("Internal Error: The given input is not a file path")
+    except Exception:
         source_code = str(args.input)
 
     if args.action == "info":

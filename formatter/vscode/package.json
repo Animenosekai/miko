@@ -12,7 +12,8 @@
 		"vscode": "^1.69.0"
 	},
 	"categories": [
-		"Formatters"
+		"Formatters",
+		"Programming Languages"
 	],
 	"icon": "miko_icon_rounded.png",
 	"main": "./out/extension.js",
@@ -23,6 +24,18 @@
 		"onCommand:miko-docs.overview"
 	],
 	"contributes": {
+		"languages": [
+			{
+				"id": "python",
+				"aliases": [
+					"Python"
+				],
+				"extensions": [
+					"py",
+					"pyw"
+				]
+			}
+		],
 		"commands": [
 			{
 				"command": "miko-docs.format",
@@ -40,12 +53,12 @@
 		"configuration": {
 			"title": "Miko Docs",
 			"properties": {
-				"miko-docs.noSelf": {
+				"miko-docs.format.noSelf": {
 					"type": "boolean",
 					"default": true,
 					"description": "Ignoring the 'self' parameter from signatures. (useful for class methods)"
 				},
-				"miko-docs.flagPrefix": {
+				"miko-docs.format.flagPrefix": {
 					"type": "string",
 					"default": "!",
 					"description": "The prefix for the docstring flags. (default: \"!\")"
@@ -55,10 +68,15 @@
 					"default": true,
 					"description": "If the annotations and exceptions should be loaded safely (wihout loading the modules)"
 				},
-				"miko-docs.includePrivate": {
+				"miko-docs.overview.includePrivate": {
 					"type": "boolean",
 					"default": false,
 					"description": "If the private elements should be included in overviews"
+				},
+				"miko-docs.format.enable": {
+					"type": "boolean",
+					"default": true,
+					"description": "If miko should format the document when asked by VS Code"
 				}
 			}
 		}
