@@ -303,7 +303,9 @@ class BaseDocumentation:
     @property
     def exported(self):
         """The exported data"""
-        results = {}
+        results: typing.Dict[str, typing.Any] = {
+            "description": self.description
+        }
         for attr in self.__annotations__:
             result = getattr(self, attr)
             if isinstance(result, parsers.parser.Parser):
