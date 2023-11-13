@@ -15,12 +15,39 @@ import typing
 from importlib.machinery import PathFinder
 
 import ast_comments as ast
+from ast_comments import Comment, _Unparser
 if typing.TYPE_CHECKING:
     import ast
+
 import autopep8
+import black
 import isort
 
 import miko
+
+class Unparser(_Unparser):
+    """The unparser, used by `unparse`"""
+    def __init__(self, *, _avoid_backslashes=False, indent: int = 4):
+        self.spaces_indent = " " * int(indent)
+        super().__init__(_avoid_backslashes=_avoid_backslashes)
+
+    def visit_Comment(self, node: Comment) -> None:
+        if node.inline:
+            self.write(f"  {node.value}")
+        else:
+            # self.fill("\n")
+            self.fill(node.value)
+
+    def fill(self, text: str = ""):
+        """Indent a piece of text and append it, according to the current
+        indentation level"""
+        self.maybe_newline()
+        self.write(self.spaces_indent * self._indent + text)
+
+def unparse(ast_obj: ast.AST, indent: int = 4) -> str:
+    """Writes back the AST as Python code"""
+    return Unparser(indent=indent).visit(ast_obj)
+
 
 
 def get_element(dot_path: str, builtin: bool = False) -> typing.Any:
@@ -598,14 +625,18 @@ def clean_elements(elements: typing.List[Element], indent: int = 4, **kwargs):
     return elements
 
 
-def clean(source: str, indent: int = 4, safe: bool = False, filename: typing.Optional[str] = None, **kwargs) -> str:
+def clean(source: str, indent: int = 4, safe: bool = False, filename: typing.Optional[str] = None, use_black: bool = False, **kwargs) -> str:
     """Cleans up the source code"""
     tree = ast.parse(str(source))
     elements = get_elements(tree, safe=safe, filename=filename)
     clean_elements(elements, indent=indent, **kwargs)
     ast.fix_missing_locations(tree)
-    result = ast.unparse(tree)
-    result = autopep8.fix_code(result)
+    # result = ast.unparse(tree)
+    result = unparse(tree, indent=indent)
+    if use_black:
+        result = black.format_str(result, mode=black.FileMode())
+    else:
+        result = autopep8.fix_code(result)
     return isort.code(result)
 
 

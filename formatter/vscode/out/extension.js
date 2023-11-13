@@ -31,7 +31,7 @@ const getPythonPath = () => {
  * @param safe - Whether to use safe type annotations and exceptions.
  * @returns A Promise that resolves to the output of the formatter.
  */
-const execMikoClean = (file, indent, noself, flagPrefix, safe) => {
+const execMikoClean = (file, indent, noself, flagPrefix, safe, useBlack) => {
     const pythonPath = getPythonPath();
     if (!pythonPath) {
         return Promise.reject(new Error(mikoErrorMsg.pythonNotFound));
@@ -43,6 +43,9 @@ const execMikoClean = (file, indent, noself, flagPrefix, safe) => {
     }
     if (safe) {
         args.push("--safe");
+    }
+    if (useBlack) {
+        args.push("--use-black");
     }
     mikoOutputChannel.appendLine(`Calling python with arguments: ${args.join(" ")}`);
     return new Promise((resolve, reject) => vscode.window.withProgress({
@@ -128,9 +131,10 @@ function activate(context) {
     vscode.languages.registerDocumentFormattingEditProvider('python', {
         provideDocumentFormattingEdits(document) {
             mikoOutputChannel.appendLine("");
-            mikoOutputChannel.appendLine("`format` command comming from vscode: `provideDocumentFormattingEdits`");
+            mikoOutputChannel.appendLine("`format` command coming from vscode: `provideDocumentFormattingEdits`");
             const config = vscode.workspace.getConfiguration("miko-docs");
             if (!(config.get("format.enable"))) {
+                mikoOutputChannel.appendLine("config `format.enable` is set to `false`");
                 return Promise.resolve([]);
             }
             const text = document.getText();
@@ -145,11 +149,12 @@ function activate(context) {
             mikoOutputChannel.appendLine(`Indentation level: ${indent}`);
             const noself = config.get("format.noSelf") || true;
             const flagPrefix = config.get("format.flagPrefix") || "!";
+            const useBlack = config.get("format.useBlack") || false;
             const safe = config.get("safe") || true;
             const documentStart = document.lineAt(0).range.start;
             const documentEnd = document.lineAt(document.lineCount - 1).range.end;
             const documentRange = new vscode.Range(documentStart, documentEnd);
-            return execMikoClean(text, indent, noself, flagPrefix, safe)
+            return execMikoClean(text, indent, noself, flagPrefix, safe, useBlack)
                 .then((result) => {
                 vscode.window.showInformationMessage('🍡 Successfully formatted the current file using Miko!');
                 return [vscode.TextEdit.replace(documentRange, result)];
@@ -162,7 +167,7 @@ function activate(context) {
     });
     const mikoFormat = vscode.commands.registerCommand('miko-docs.format', () => {
         mikoOutputChannel.appendLine("");
-        mikoOutputChannel.appendLine("`format` command comming from user: `miko-docs.format`");
+        mikoOutputChannel.appendLine("`format` command coming from user: `miko-docs.format`");
         if (!vscode.window.activeTextEditor) {
             mikoOutputChannel.appendLine("No active text editor.");
             return; // We don't have any opened text editors
@@ -192,9 +197,10 @@ function activate(context) {
         const config = vscode.workspace.getConfiguration("miko-docs");
         const noself = config.get("format.noSelf") || true;
         const flagPrefix = config.get("format.flagPrefix") || "!";
+        const useBlack = config.get("format.useBlack") || false;
         const safe = config.get("safe") || true;
         // Format the current file
-        execMikoClean(document.fileName, indent, noself, flagPrefix, safe)
+        execMikoClean(document.fileName, indent, noself, flagPrefix, safe, useBlack)
             .then((result) => {
             const edit = new vscode.WorkspaceEdit();
             const documentStart = document.lineAt(0).range.start;
@@ -211,7 +217,7 @@ function activate(context) {
     context.subscriptions.push(mikoFormat);
     const mikoFormatAll = vscode.commands.registerCommand('miko-docs.formatAll', () => {
         mikoOutputChannel.appendLine("");
-        mikoOutputChannel.appendLine("`format` command comming from user: `miko-docs.formatAll`");
+        mikoOutputChannel.appendLine("`format` command coming from user: `miko-docs.formatAll`");
         vscode.window.visibleTextEditors.forEach(editor => {
             const document = editor.document;
             if (document.languageId !== "python") {
@@ -235,8 +241,9 @@ function activate(context) {
             const config = vscode.workspace.getConfiguration("miko-docs");
             const noself = config.get("format.noSelf") || true;
             const flagPrefix = config.get("format.flagPrefix") || "!";
+            const useBlack = config.get("format.useBlack") || false;
             const safe = config.get("safe") || true;
-            execMikoClean(editor.document.fileName, indent, noself, flagPrefix, safe)
+            execMikoClean(editor.document.fileName, indent, noself, flagPrefix, safe, useBlack)
                 .then((result) => {
                 const edit = new vscode.WorkspaceEdit();
                 const documentStart = document.lineAt(0).range.start;
@@ -310,7 +317,7 @@ function activate(context) {
     context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(mikoOverviewScheme, overviewProvider));
     const mikoOverview = vscode.commands.registerCommand('miko-docs.overview', async () => {
         mikoOutputChannel.appendLine("");
-        mikoOutputChannel.appendLine("`overview` command comming from user: `miko-docs.overview`");
+        mikoOutputChannel.appendLine("`overview` command coming from user: `miko-docs.overview`");
         if (!vscode.window.activeTextEditor) {
             mikoOutputChannel.appendLine("No active text editor");
             return; // We don't have any opened text editors

@@ -138,6 +138,7 @@ def main(args: argparse.Namespace):
                                      indent=args.indent,
                                      noself=args.noself,
                                      flag_prefix=args.flag_prefix,
+                                     use_black=args.use_black,
                                      safe=args.safe)
 
     if args.output and pathlib.Path(args.output).is_file():
@@ -180,6 +181,8 @@ def entry():
                              help='If the output should be minified. (default: False)')
     parser_clean = subparser.add_parser("clean",
                                         help="Cleans the given input")
+    parser_clean.add_argument("--use-black", action='store_true', required=False,
+                              help='If the output should be formatted with black (by default it will use `autopep8`)')
 
     prepare_parser(parser_info)
     prepare_parser(parser_clean)

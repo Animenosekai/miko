@@ -77,6 +77,11 @@
 					"type": "boolean",
 					"default": true,
 					"description": "If miko should format the document when asked by VS Code"
+				},
+				"miko-docs.format.useBlack": {
+					"type": "boolean",
+					"default": true,
+					"description": "If miko should use black to format the document (defauts to `autopep8`)"
 				}
 			}
 		}
