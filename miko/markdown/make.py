@@ -115,6 +115,12 @@ def render_module_docs(element: static.ConstantElement,
     for warning in documentation.warnings:
         results.append(render.warning(warning))
 
+    for tip in documentation.tips:
+        results.append(render.tip(tip))
+
+    for caution in documentation.caution:
+        results.append(render.caution(caution))
+
     imports = static.get_imports(source_file, source_file.parent,
                                  recursive=False)
     if imports:
@@ -206,6 +212,12 @@ def render_class_docs(element: static.Element[ast.ClassDef],
     for warning in documentation.warnings:
         results.append(render.warning(warning))
 
+    for tip in documentation.tips:
+        results.append(render.tip(tip))
+
+    for caution in documentation.caution:
+        results.append(render.caution(caution))
+
     if documentation.examples:
         results.append(render.heading("Examples", 2, level))
 
@@ -279,6 +291,12 @@ def render_constant_docs(element: static.ConstantElement,
 
     for warning in documentation.warnings:
         results.append(render.warning(warning))
+
+    for tip in documentation.tips:
+        results.append(render.tip(tip))
+
+    for caution in documentation.caution:
+        results.append(render.caution(caution))
 
     if documentation.examples:
         results.append(render.heading("Examples", 2, level))
@@ -360,6 +378,12 @@ def render_function_docs(element: static.Element[ast.FunctionDef | ast.AsyncFunc
 
     for warning in documentation.warnings:
         results.append(render.warning(warning))
+
+    for tip in documentation.tips:
+        results.append(render.tip(tip))
+
+    for caution in documentation.caution:
+        results.append(render.caution(caution))
 
     if documentation.examples:
         results.append(render.heading("Examples", 2, level))

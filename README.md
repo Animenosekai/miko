@@ -11,10 +11,10 @@
 
 [![PyPI version](https://badge.fury.io/py/miko.svg)](https://pypi.org/project/miko/)
 [![Downloads](https://static.pepy.tech/personalized-badge/miko?period=total&units=international_system&left_color=grey&right_color=blue&left_text=Total%20Downloads)](https://pepy.tech/project/miko)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/miko)](https://pypistats.org/packages/miko)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/miko)](https://pypi.org/project/miko/)
-[![PyPI - Status](https://img.shields.io/pypi/status/miko)](https://pypi.org/project/miko/)
-[![GitHub - License](https://img.shields.io/github/license/Animenosekai/miko)](https://github.com/Animenosekai/miko/blob/master/LICENSE)
+[![PyPI — Downloads](https://img.shields.io/pypi/dm/miko)](https://pypistats.org/packages/miko)
+[![PyPI — Python Version](https://img.shields.io/pypi/pyversions/miko)](https://pypi.org/project/miko/)
+[![PyPI — Status](https://img.shields.io/pypi/status/miko)](https://pypi.org/project/miko/)
+[![GitHub — License](https://img.shields.io/github/license/Animenosekai/miko)](https://github.com/Animenosekai/miko/blob/master/LICENSE)
 [![GitHub top language](https://img.shields.io/github/languages/top/Animenosekai/miko)](https://github.com/Animenosekai/miko)
 [![CodeQL Checks Badge](https://github.com/Animenosekai/miko/workflows/CodeQL%20Python%20Analysis/badge.svg)](https://github.com/Animenosekai/miko/actions?query=workflow%3ACodeQL)
 <!-- [![Pytest](https://github.com/Animenosekai/miko/actions/workflows/pytest.yml/badge.svg)](https://github.com/Animenosekai/miko/actions/workflows/pytest.yml) -->
@@ -175,7 +175,7 @@ There are 3 types of docstring sections to be aware of:
 
 #### Map Sections
 
-> **Note**  
+> [!NOTE]  
 > Sometimes also called *Block Sections*
 
 These are sections which contains a list of named elements :
@@ -488,7 +488,7 @@ def func():
     """
 ```
 
-> **Note**  
+> [!NOTE]  
 > You can customize the prefix used to recognize a flag using the `flag_prefix` parameter when creating the `Documentation` object.
 
 Here are the built-in flag sections you can use:
@@ -613,11 +613,14 @@ This module provides different tools to statically analyze Python code and get i
 
 This module provides different tools to render Markdown documentations out of different elements.
 
+> [!NOTE]  
+> Miko uses GitHub Flavored Markdown (GFM) to render markdown.
+
 #### API Reference
 
 Head over to the [API Reference](./docs) to learn more about the different classes and functions exposed by the Python API.
 
-> **Note**  
+> [!NOTE]  
 > The API reference has been generated using `miko` itself.
 
 ### Using the CLI
@@ -670,13 +673,13 @@ The `miko info` command provides information on the different elements in the in
 
 It statically analyzes the source code, gathers information on all elements (classes, functions, modules, variables, etc.), parses their docstrings and outputs a JSON encoded output with all the information.
 
-> **Note**  
+> [!NOTE]  
 > The `info` command also has the `--minify` flag which lets you minify the output JSON.
 
 If the `--raw` flag is provided, the input will be treated as only being the docstring and not source code, thus only parsing it as a docstring.
 
-> **Warning**  
-> Beware that the output structure is different using `--raw`
+> [!Warning]  
+> Beware that the output structure is different using `--raw`.
 
 #### `clean`
 
@@ -744,9 +747,9 @@ You can also use the `.vsix` file to install the extension.
 
 Head to the [extension folder](./formatter/vscode) and download the [`.vsix`](./formatter/vscode/miko-docs-2.0.0.vsix) file.
 
-Then, go to the *Extensions* section in VS Code, click on the three dots and select *Install from VSIX...*
+Then, go to the *Extensions*' section in VS Code, click on the three dots and select `Install from VSIX...`.
 
-![Install from VSIX](./assets/docs/vscode_install_from_vsix.png)
+![Install from `VSIX`](./assets/docs/vscode_install_from_vsix.png)
 
 ## Deployment
 
@@ -762,7 +765,7 @@ Please make sure to update the tests as appropriate.
 
 ## Authors
 
-- **Anime no Sekai** - *Initial work* - [Animenosekai](https://github.com/Animenosekai)
+- **Anime no Sekai** — *Initial work* — [Animenosekai](https://github.com/Animenosekai)
 
 ## License
 

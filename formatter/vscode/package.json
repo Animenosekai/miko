@@ -80,7 +80,7 @@
 				},
 				"miko-docs.format.useBlack": {
 					"type": "boolean",
-					"default": true,
+					"default": false,
 					"description": "If miko should use black to format the document (defauts to `autopep8`)"
 				}
 			}
